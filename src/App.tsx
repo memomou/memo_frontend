@@ -7,6 +7,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 20vh;
+  background-color: ${props => props.theme.backgroundColor};
 `;
 
 interface TextProps {
