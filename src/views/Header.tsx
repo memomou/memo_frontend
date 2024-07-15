@@ -12,6 +12,6 @@ const Container = styled.div`
 `;
 
 function Header() {
-  return ( <Container>Title</Container> );
+  return ( <Container>이건 뭘까</Container> );
 }
 export default Header;
