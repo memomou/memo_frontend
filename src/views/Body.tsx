@@ -1,10 +1,7 @@
 import styled from "styled-components";
-import Sidebar from "./Sidebar";
-import Content from "./Content";
-import Form from "../components/Form";
-import { RadiusText } from "../components/Text";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Root from "./pages/Root";
+import LoginPage from "./pages/Login";
 
 const Container = styled.div`
   display: flex;
@@ -18,11 +15,10 @@ const Container = styled.div`
 function Body() {
   return (
     <Container>
-      <Router>
         <Routes>
           <Route path="/" element={<Root/>} />
+          <Route path="/login" element={<LoginPage/>} />
         </Routes>
-      </Router>
     </Container>
   );
 }

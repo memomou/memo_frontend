@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 interface TextProps {
-  $bgColor: string;
+  $bgColor?: string;
+  $width?: string;
+  $height?: string;
 }
 
 interface RadiusTextProps extends TextProps {

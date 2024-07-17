@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -32,11 +33,22 @@ const ActionButton = styled.button`
 `
 
 function Header() {
-  return ( <Container>
+  return (
+  <Container>
+      <Link to="/login">로그인</Link>
+      <Routes>
+        <Route path="/" element={null} />
+        <Route path="/" element={null} />
+      </Routes>
+      <Routes>
+        <Route path="/" element={null} />
+        <Route path="/" element={null} />
+      </Routes>
     <Title>타이틀</Title>
     <Action>
         <ActionButton>Login</ActionButton>
     </Action>
-  </Container> );
+  </Container>
+  )
 }
 export default Header;

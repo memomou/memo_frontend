@@ -4,7 +4,7 @@ import { TextProps } from "./Text";
 const InputStyled = styled.input.attrs({
   type: "password",
 })<TextProps>`
-  background-color: ${(props) => props.$bgColor};
+  background-color: ${(props) => props.$bgColor ?? "white"};
   font-size: 2rem;
   height: 50px;
 `;
