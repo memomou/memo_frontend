@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Root from "./pages/Root";
 import LoginPage from "./pages/Login";
+import SignupPage from "./pages/SignUpPage";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ function Body() {
         <Routes>
           <Route path="/" element={<Root/>} />
           <Route path="/login" element={<LoginPage/>} />
+          <Route path="/signup" element={<SignupPage/>} />
         </Routes>
     </Container>
   );

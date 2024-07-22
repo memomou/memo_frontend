@@ -25,30 +25,57 @@ const Action = styled.div`
   display: flex;
   gap: 10px;
   margin-left: auto;
-`
+`;
+
+const HomeButton = styled(Link)`
+  display: flex;
+  gap: 10px;
+  margin-right: auto;
+`;
+
 const ActionButton = styled.button`
   padding: 5px 5px;
   font-size: 15px;
   cursor: pointer;
-`
+`;
 
 function Header() {
   return (
-  <Container>
-      <Link to="/login">로그인</Link>
+    <Container>
+      <HomeButton to="/">Home</HomeButton>
+      <Title>타이틀</Title>
       <Routes>
-        <Route path="/" element={null} />
-        <Route path="/" element={null} />
+        <Route
+          path="/"
+          element={
+            <Action>
+              <ActionButton>
+                <Link to="/login">로그인</Link>
+              </ActionButton>
+              <ActionButton>
+                <Link to="/signup">회원가입</Link>
+              </ActionButton>
+            </Action>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <ActionButton>
+              <Link to="/signup">회원가입</Link>
+            </ActionButton>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <ActionButton>
+            <Link to="/login">로그인</Link>
+          </ActionButton>
+          }
+        />
       </Routes>
-      <Routes>
-        <Route path="/" element={null} />
-        <Route path="/" element={null} />
-      </Routes>
-    <Title>타이틀</Title>
-    <Action>
-        <ActionButton>Login</ActionButton>
-    </Action>
-  </Container>
-  )
+    </Container>
+  );
 }
 export default Header;

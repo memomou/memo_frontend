@@ -36,26 +36,23 @@ const CenterForm = styled.form<TextProps>`
   }
 `;
 
-
-
-function LoginPage(props: any) {
+function SignupPage(props: any) {
   const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${config.backendUri}/auth/login/email`, {
-          email,
-          password,
-        },
-        {
-          withCredentials: true, // 쿠키를 포함
-        }
-      );
+      const response = await axios.post(`${config.backendUri}/auth/register/email`, {
+        email,
+        password,
+        nickname,
+      }, {
+        withCredentials: true, // 쿠키를 포함
+      });
       console.log('Login Successful:', response.data);
-      console.log('Set-Cookie header:', response);
     } catch (error) {
       console.error('Login Failed:', error);
     }
@@ -63,7 +60,7 @@ function LoginPage(props: any) {
 
   return ( <Styled>
     <CenterForm onSubmit={handleSubmit} $width="100px">
-      <h1>로그인</h1>
+      <h1>회원가입</h1>
         <label>
           <span>아이디</span>
           <input
@@ -71,6 +68,15 @@ function LoginPage(props: any) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+        <span>닉네임</span>
+          <input
+            type="nickname"
+            id="nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
           />
         </label>
         <label>
@@ -89,4 +95,4 @@ function LoginPage(props: any) {
   </Styled> );
 }
 
-export default LoginPage;
+export default SignupPage;
