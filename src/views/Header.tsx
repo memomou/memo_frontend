@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 40px;
-  font-size: 2rem;
   background-color: ${(props) => props.theme.headerbgColor};
   color: ${(props) => props.theme.headerTextColor};
   border: 1px solid black;
@@ -33,48 +32,37 @@ const HomeButton = styled(Link)`
   margin-right: auto;
 `;
 
-const ActionButton = styled.button`
-  padding: 5px 5px;
-  font-size: 15px;
-  cursor: pointer;
+const StyledLink = styled(Link)<{ selected?: boolean }>`
+  text-decoration: none;
+  cursor: ${(props) => (props.selected ? "not-allowed" : "pointer")};
+  pointer-events: ${(props) => (props.selected ? "none" : "auto")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => (props.selected ? "gray" : "black")};
+  background-color:
+    ${(props) => {
+      if (props.selected) {
+        return "#f1f1f1";
+      } else {
+        return "white";
+      }
+    }
+  };
+  border: 1px solid black;
 `;
 
 function Header() {
+  const location = useLocation();
+
   return (
     <Container>
       <HomeButton to="/">Home</HomeButton>
       <Title>타이틀</Title>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Action>
-              <ActionButton>
-                <Link to="/login">로그인</Link>
-              </ActionButton>
-              <ActionButton>
-                <Link to="/signup">회원가입</Link>
-              </ActionButton>
-            </Action>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <ActionButton>
-              <Link to="/signup">회원가입</Link>
-            </ActionButton>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <ActionButton>
-            <Link to="/login">로그인</Link>
-          </ActionButton>
-          }
-        />
-      </Routes>
+        <Action>
+            <StyledLink to="/login" selected={location.pathname === '/login'}>로그인</StyledLink>
+            <StyledLink to="/signup" selected={location.pathname === '/signup'}>회원가입</StyledLink>
+        </Action>
     </Container>
   );
 }
