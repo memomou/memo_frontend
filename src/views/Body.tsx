@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Root from "./pages/Root";
-import LoginPage from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 
 const Container = styled.div`

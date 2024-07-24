@@ -1,39 +1,14 @@
 import styled from "styled-components";
-import { TextProps } from "../../components/Text";
 import { useState } from "react";
 import axios from 'axios';
 import config from '../../config';
-
+import CenterForm from "../../components/Form.style";
 const Styled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
   flex: 1;
   background-color: ${(props) => props.theme.ContentbgColor};
-`;
-
-const CenterForm = styled.form<TextProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: white;
-  label {
-    display: flex;
-    align-items: center;
-    span {
-      min-width: 80px;
-    }
-    input {
-      background-color: ${(props) => props.$bgColor};
-      height: ${(props) => props.$height ?? "15px"};
-      width: ${(props) => props.$width ?? "100px"};
-    }
-  }
 `;
 
 function SignupPage(props: any) {
@@ -59,7 +34,7 @@ function SignupPage(props: any) {
   };
 
   return ( <Styled>
-    <CenterForm onSubmit={handleSubmit} $width="100px">
+    <CenterForm onSubmit={handleSubmit}>
       <h1>회원가입</h1>
         <label>
           <span>아이디</span>
@@ -88,9 +63,7 @@ function SignupPage(props: any) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button style={
-          {width : "100px", height : "30px"}
-        } type="submit">Submit</button>
+        <button type="submit">Submit</button>
     </CenterForm>
   </Styled> );
 }
