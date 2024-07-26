@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from 'axios';
-import config from '../../config';
+import axios from "axios";
+import config from "../../config";
 import CenterForm from "../../components/Form.style";
 
 const Styled = styled.div`
@@ -13,54 +13,54 @@ const Styled = styled.div`
   background-color: ${(props) => props.theme.ContentbgColor};
 `;
 
-
 function LoginPage(props: any) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${config.backendUri}/auth/login/email`, {
+      const response = await axios.post(
+        `${config.backendUri}/auth/login/email`,
+        {
           email,
           password,
-        },
-        {
-          withCredentials: true, // 쿠키를 포함
         }
       );
-      console.log('Login Successful:', response.data);
-      console.log('Set-Cookie header:', response);
+      console.log("Login Successful:", response.data);
+      console.log("Set-Cookie header:", response);
     } catch (error) {
-      console.error('Login Failed:', error);
+      console.error("Login Failed:", error);
     }
   };
 
-  return ( <Styled>
-    <CenterForm onSubmit={handleSubmit}>
-      <h1>로그인</h1>
-      <label>
-        <span>아이디</span>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      <label>
-      <span>패스워드</span>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </CenterForm>
-  </Styled> );
+  return (
+    <Styled>
+      <CenterForm onSubmit={handleSubmit}>
+        <h1>로그인</h1>
+        <label>
+          <span>아이디</span>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+          <span>패스워드</span>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button type="submit">Submit</button>
+      </CenterForm>
+    </Styled>
+  );
 }
 
 export default LoginPage;
