@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../components/atom/atoms";
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -54,14 +56,21 @@ const StyledLink = styled(Link)<{ selected?: boolean }>`
 
 function Header() {
   const location = useLocation();
-
+  const user = useRecoilValue(userAtom);
+  console.log(user);
   return (
     <Container>
       <HomeButton to="/">Home</HomeButton>
       <Title>타이틀</Title>
         <Action>
-            <StyledLink to="/login" selected={location.pathname === '/login'}>로그인</StyledLink>
-            <StyledLink to="/signup" selected={location.pathname === '/signup'}>회원가입</StyledLink>
+            {user.isLogin ? (
+              <StyledLink to="/mypage" selected={location.pathname === '/mypage'}>{user.nickname}</StyledLink>
+            ) : (
+              <>
+                <StyledLink to="/login" selected={location.pathname === '/login'}>로그인</StyledLink>
+                <StyledLink to="/signup" selected={location.pathname === '/signup'}>회원가입</StyledLink>
+              </>
+            )}
         </Action>
     </Container>
   );

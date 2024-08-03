@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 import config from "../../config";
 import CenterForm from "../../components/Form.style";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userAtom } from "../../components/atom/atoms";
 
 const Styled = styled.div`
   display: flex;
@@ -14,12 +16,11 @@ const Styled = styled.div`
 `;
 
 function LoginPage(props: any) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+const setUser = useSetRecoilState(userAtom);
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     try {
       const response = await axios.post(
         `${config.backendUri}/auth/login/email`,
@@ -28,7 +29,8 @@ function LoginPage(props: any) {
           password,
         }
       );
-      console.log('Login Successful:', response.data);
+      console.log('Login Successful:', response);
+      setUser({...response.data.user, isLogin: true});
     } catch (error) {
       console.error("Login Failed:", error);
     }
