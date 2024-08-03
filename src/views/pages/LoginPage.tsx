@@ -5,7 +5,7 @@ import config from "../../config";
 import CenterForm from "../../components/Form.style";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../../components/atom/atoms";
-
+import { useNavigate } from "react-router-dom";
 const Styled = styled.div`
   display: flex;
   align-items: center;
@@ -18,7 +18,8 @@ const Styled = styled.div`
 function LoginPage(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-const setUser = useSetRecoilState(userAtom);
+  const setUser = useSetRecoilState(userAtom);
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -31,6 +32,9 @@ const setUser = useSetRecoilState(userAtom);
       );
       console.log('Login Successful:', response);
       setUser({...response.data.user, isLogin: true});
+      localStorage.setItem('accessToken', response.data.token.accessToken);
+      localStorage.setItem('refreshToken', response.data.token.refreshToken);
+      navigate('/');
     } catch (error) {
       console.error("Login Failed:", error);
     }

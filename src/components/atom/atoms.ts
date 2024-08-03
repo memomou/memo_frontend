@@ -1,6 +1,14 @@
 import { atom } from "recoil";
 
-export const userAtom = atom({
+interface UserState {
+  isLogin: boolean;
+  id?: number;
+  email?: string;
+  nickname?: string;
+  role?: string;
+}
+
+export const userAtom = atom<UserState | undefined>({
   key: 'user',
   default: {
     isLogin: false,

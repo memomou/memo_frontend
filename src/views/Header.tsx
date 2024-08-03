@@ -1,8 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../components/atom/atoms";
+import { DropdownMenu, MenuItem, StyledLink, StyledBtn, MenuItemLink } from "./Header.style";
+import { useState } from "react";
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -26,6 +34,7 @@ const Action = styled.div`
   display: flex;
   gap: 10px;
   margin-left: auto;
+  position: relative;
 `;
 
 const HomeButton = styled(Link)`
@@ -34,44 +43,65 @@ const HomeButton = styled(Link)`
   margin-right: auto;
 `;
 
-const StyledLink = styled(Link)<{ selected?: boolean }>`
-  text-decoration: none;
-  cursor: ${(props) => (props.selected ? "not-allowed" : "pointer")};
-  pointer-events: ${(props) => (props.selected ? "none" : "auto")};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${(props) => (props.selected ? "gray" : "black")};
-  background-color:
-    ${(props) => {
-      if (props.selected) {
-        return "#f1f1f1";
-      } else {
-        return "white";
-      }
-    }
-  };
-  border: 1px solid black;
-`;
-
 function Header() {
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
   const location = useLocation();
   const user = useRecoilValue(userAtom);
+  const setUser = useSetRecoilState(userAtom);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!isDropdownVisible);
+  };
+
+  const navigate = useNavigate();
+  const navigateToFn = (path: string) => {
+    return () => {
+      setDropdownVisible(false);
+      navigate(path);
+    }
+  }
+
+  const handleLogout = () => {
+    console.log('Logout');
+    setDropdownVisible(false);
+    setUser(undefined);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    navigate('/');
+  };
+
   console.log(user);
   return (
     <Container>
       <HomeButton to="/">Home</HomeButton>
       <Title>타이틀</Title>
-        <Action>
-            {user.isLogin ? (
-              <StyledLink to="/mypage" selected={location.pathname === '/mypage'}>{user.nickname}</StyledLink>
-            ) : (
-              <>
-                <StyledLink to="/login" selected={location.pathname === '/login'}>로그인</StyledLink>
-                <StyledLink to="/signup" selected={location.pathname === '/signup'}>회원가입</StyledLink>
-              </>
-            )}
-        </Action>
+      <Action>
+        {user ? (
+          <>
+            <StyledBtn onClick={toggleDropdown}>
+              {user.nickname}
+            </StyledBtn>
+            <DropdownMenu $isVisible={isDropdownVisible}>
+              <MenuItem onClick={navigateToFn(`/user/${user.id}`)} >
+                개인 블로그
+              </MenuItem>
+              <MenuItem onClick={navigateToFn(`/user/setting`)}>
+                개인 설정
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+            </DropdownMenu>
+          </>
+        ) : (
+          <>
+            <StyledLink to="/login" selected={location.pathname === "/login"}>
+              로그인
+            </StyledLink>
+            <StyledLink to="/signup" selected={location.pathname === "/signup"}>
+              회원가입
+            </StyledLink>
+          </>
+        )}
+      </Action>
     </Container>
   );
 }
