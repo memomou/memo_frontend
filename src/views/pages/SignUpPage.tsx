@@ -20,15 +20,12 @@ function SignupPage(props: any) {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        `${config.backendUri}/auth/register/email`,
-        {
-          email,
-          password,
-          nickname,
-        }
-      );
-      console.log("Login Successful:", response.data);
+      const response = await axios.post(`${config.backendUri}/auth/register/email`, {
+        email,
+        password,
+        nickname,
+      });
+      console.log('Login Successful:', response.data);
     } catch (error) {
       console.error("Login Failed:", error);
     }

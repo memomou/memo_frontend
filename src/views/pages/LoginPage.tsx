@@ -28,8 +28,7 @@ function LoginPage(props: any) {
           password,
         }
       );
-      console.log("Login Successful:", response.data);
-      console.log("Set-Cookie header:", response);
+      console.log('Login Successful:', response.data);
     } catch (error) {
       console.error("Login Failed:", error);
     }
