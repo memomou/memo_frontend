@@ -5,6 +5,7 @@ import Header from "./views/Header";
 import Wrapper from "./views/Wrapper";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { userAtom } from "./components/atom/atoms";
+import "./App.css";
 function App() {
   const user = useRecoilValue(userAtom);
   return (
