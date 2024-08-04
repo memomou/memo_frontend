@@ -3,18 +3,17 @@ import { useState } from "react";
 import axios from "axios";
 import config from "../../config";
 import CenterForm from "../../components/Form.style";
-const Styled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  background-color: ${(props) => props.theme.ContentbgColor};
-`;
+import { Styled } from "./authPage.style";
+import { useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { userAtom } from "../../components/atom/atoms";
 
 function SignupPage(props: any) {
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+  const setUser = useSetRecoilState(userAtom);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,7 +24,11 @@ function SignupPage(props: any) {
         password,
         nickname,
       });
-      console.log('Login Successful:', response.data);
+      console.log('회원가입 완료:', response.data);
+      setUser({...response.data.user});
+      localStorage.setItem('accessToken', response.data.token.accessToken);
+      localStorage.setItem('refreshToken', response.data.token.refreshToken);
+      navigate('/');
     } catch (error) {
       console.error("Login Failed:", error);
     }

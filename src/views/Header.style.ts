@@ -77,7 +77,8 @@ export const Action = styled.div`
 `;
 
 export const StyledBase = css<StyledProps>`
-  height: 35px;
+  height: 30px;
+  padding: 0 5px;
   text-decoration: none;
   cursor: ${(props) => (props.selected ? "not-allowed" : "pointer")};
   pointer-events: ${(props) => (props.selected ? "none" : "auto")};

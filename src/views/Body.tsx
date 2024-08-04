@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Root from "./pages/Root";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
+import PosterPostPage from "./pages/PosterPostPage";
 
 const Container = styled.div`
   display: flex;
@@ -20,6 +21,7 @@ function Body() {
           <Route path="/" element={<Root/>} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignupPage/>} />
+          <Route path="/post/new" element={<PosterPostPage/>} />
         </Routes>
     </Container>
   );

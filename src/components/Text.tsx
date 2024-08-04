@@ -4,6 +4,7 @@ interface TextProps {
   $bgColor?: string;
   $width?: string;
   $height?: string;
+  $fontSize?: string;
 }
 
 interface RadiusTextProps extends TextProps {

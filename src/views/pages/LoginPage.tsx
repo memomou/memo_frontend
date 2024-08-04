@@ -6,14 +6,7 @@ import CenterForm from "../../components/Form.style";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../../components/atom/atoms";
 import { useNavigate } from "react-router-dom";
-const Styled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  flex: 1;
-  background-color: ${(props) => props.theme.ContentbgColor};
-`;
+import { Styled } from "./authPage.style";
 
 function LoginPage(props: any) {
   const [email, setEmail] = useState('');
@@ -62,7 +55,7 @@ function LoginPage(props: any) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button type="submit">Submit</button>
+        <button type="submit">로그인</button>
       </CenterForm>
     </Styled>
   );

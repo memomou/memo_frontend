@@ -64,7 +64,7 @@ function Header() {
   return (
     <Container>
       <HomeButton to="/">Home</HomeButton>
-      <Title>타이틀</Title>
+      <Title>MEMO LOG</Title>
       <Action>
         {user ? (
           <>
