@@ -43,6 +43,39 @@ interface StyledProps {
   selected?: boolean;
 }
 
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background-color: ${(props) => props.theme.headerbgColor};
+  color: ${(props) => props.theme.headerTextColor};
+  border: 1px solid black;
+  padding: 10px 10px;
+`;
+
+export const HomeButton = styled(Link)`
+  display: flex;
+  gap: 10px;
+  margin-right: auto;
+`;
+
+export const Title = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+export const Action = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+  position: relative;
+`;
+
 export const StyledBase = css<StyledProps>`
   height: 35px;
   text-decoration: none;
@@ -58,9 +91,9 @@ export const StyledBase = css<StyledProps>`
 `;
 
 export const StyledLink = styled(Link)<{ selected?: boolean }>`
-${StyledBase}
+  ${StyledBase}
 `;
 
 export const StyledBtn = styled.button<{ selected?: boolean }>`
-${StyledBase}
+  ${StyledBase}
 `;

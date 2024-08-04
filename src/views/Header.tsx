@@ -8,67 +8,57 @@ import {
 } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../components/atom/atoms";
-import { DropdownMenu, MenuItem, StyledLink, StyledBtn, MenuItemLink } from "./Header.style";
-import { useState } from "react";
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  background-color: ${(props) => props.theme.headerbgColor};
-  color: ${(props) => props.theme.headerTextColor};
-  border: 1px solid black;
-  padding: 10px 10px;
-`;
-
-const Title = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Action = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-left: auto;
-  position: relative;
-`;
-
-const HomeButton = styled(Link)`
-  display: flex;
-  gap: 10px;
-  margin-right: auto;
-`;
+import { DropdownMenu, MenuItem, StyledLink, StyledBtn, Container, HomeButton, Title, Action } from "./Header.style";
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
 
 function Header() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const profileBtnRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const user = useRecoilValue(userAtom);
   const setUser = useSetRecoilState(userAtom);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setDropdownVisible(!isDropdownVisible);
   };
 
   const navigate = useNavigate();
   const navigateToFn = (path: string) => {
     return () => {
-      setDropdownVisible(false);
       navigate(path);
     }
   }
 
   const handleLogout = () => {
     console.log('Logout');
-    setDropdownVisible(false);
     setUser(undefined);
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     navigate('/');
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    // 프로필 버튼이 아닌 다른 곳을 클릭하면 드롭다운 메뉴를 닫음
+    if (!(profileBtnRef.current && !profileBtnRef.current.contains(event.target as Node))) {
+      setDropdownVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    // 클릭 이벤트 리스너 추가
+    document.addEventListener('click', handleClickOutside);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('Value changed:', isDropdownVisible);
+  }, [isDropdownVisible]);
 
   console.log(user);
   return (
@@ -78,10 +68,14 @@ function Header() {
       <Action>
         {user ? (
           <>
-            <StyledBtn onClick={toggleDropdown}>
+            <StyledLink to="/post/new">
+              새 글 작성
+            </StyledLink>
+            <div>
+            <StyledBtn onClick={toggleDropdown} ref={profileBtnRef}>
               {user.nickname}
             </StyledBtn>
-            <DropdownMenu $isVisible={isDropdownVisible}>
+            <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
               <MenuItem onClick={navigateToFn(`/user/${user.id}`)} >
                 개인 블로그
               </MenuItem>
@@ -90,6 +84,7 @@ function Header() {
               </MenuItem>
               <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
             </DropdownMenu>
+            </div>
           </>
         ) : (
           <>
