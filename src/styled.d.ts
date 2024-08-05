@@ -10,3 +10,9 @@ declare module "styled-components" {
     FooterbgColor?: string;
   }
 }
+
+declare global {
+  interface Window {
+    mytest: any;
+  }
+}

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import SlateEditor from "../../components/SlateEditor/SlateEditor";
+import { Editable, Slate, withReact } from "slate-react";
 
 interface PosterNewFormProps {
   $bgColor?: string;
@@ -6,6 +8,19 @@ interface PosterNewFormProps {
   $height?: string;
   $fontSize?: string;
 }
+
+export const StyledEditable = styled(Editable)`
+  background-color: lightgray;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  min-height: 200px;
+  width: 400px;
+  /* 필요에 따라 추가 스타일 정의 */
+`;
+
+export const StyledSlateEditor = styled(SlateEditor)`
+`;
 
 const PosterNewForm = styled.form<PosterNewFormProps>`
   display: flex;
@@ -22,6 +37,13 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
   input {
     border: 0px;
   }
+
+  .editor-wrapper {
+    background: 'white';
+    height: 300px;
+    margin: "20px auto"
+  }
+
   h1 {
     font-size: 23px;
   }
