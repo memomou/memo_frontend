@@ -19,11 +19,6 @@ function Header() {
   const user = useRecoilValue(userAtom);
   const setUser = useSetRecoilState(userAtom);
 
-  const toggleDropdown = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setDropdownVisible(!isDropdownVisible);
-  };
-
   const navigate = useNavigate();
   const navigateToFn = (path: string) => {
     return () => {
@@ -41,7 +36,9 @@ function Header() {
 
   const handleClickOutside = (event: MouseEvent) => {
     // 프로필 버튼이 아닌 다른 곳을 클릭하면 드롭다운 메뉴를 닫음
-    if (!(profileBtnRef.current && !profileBtnRef.current.contains(event.target as Node))) {
+    if ((profileBtnRef.current && profileBtnRef.current.contains(event.target as Node))) {
+      setDropdownVisible((current)=>!current);
+    } else {
       setDropdownVisible(false);
     }
   };
@@ -72,7 +69,7 @@ function Header() {
               새 글 작성
             </StyledLink>
             <div>
-            <StyledBtn onClick={toggleDropdown} ref={profileBtnRef}>
+            <StyledBtn ref={profileBtnRef}>
               {user.nickname}
             </StyledBtn>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
