@@ -2250,21 +2250,6 @@
     "@types/node" "*"
     "@types/send" "*"
 
-"@types/slate-react@^0.50.1":
-  version "0.50.1"
-  resolved "https://registry.yarnpkg.com/@types/slate-react/-/slate-react-0.50.1.tgz#37407c83002d7b0920a17a5569f7e89670cc58dd"
-  integrity sha512-Mm0KKNRYAj+vHrNXSjICzOgNXgm66rbh9NaSf1WvBBL6oRIeoJJeceMenZP7NDVwLokd7fBuRsn7jSRzT9Z/4Q==
-  dependencies:
-    slate-react "*"
-
-"@types/slate@^0.47.15":
-  version "0.47.15"
-  resolved "https://registry.yarnpkg.com/@types/slate/-/slate-0.47.15.tgz#1c350b9c932f9846dcd3a40d652f8d78f92c09f0"
-  integrity sha512-e9o9LaNpJao2LKVZ3sLJdsG12kiZ3h/z3kKR9aPWBDUXShnQP2P5KtIvj1Jl/cirqwYeCnWB1XLPxgZ/LhsdJQ==
-  dependencies:
-    "@types/react" "*"
-    immutable "^3.8.2"
-
 "@types/sockjs@^0.3.33":
   version "0.3.36"
   resolved "https://registry.yarnpkg.com/@types/sockjs/-/sockjs-0.3.36.tgz#ce322cf07bcc119d4cbf7f88954f3a3bd0f67535"
@@ -5414,11 +5399,6 @@ immer@^9.0.7:
   version "9.0.21"
   resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.21.tgz#1e025ea31a40f24fb064f1fef23e931496330176"
   integrity sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==
-
-immutable@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
 
 import-fresh@^3.1.0, import-fresh@^3.2.1:
   version "3.3.0"
@@ -8718,7 +8698,7 @@ slash@^4.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-4.0.0.tgz#2422372176c4c6c5addb5e2ada885af984b396a7"
   integrity sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==
 
-slate-react@*, slate-react@^0.107.1:
+slate-react@^0.107.1:
   version "0.107.1"
   resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.107.1.tgz#01b38d17745e86b3aab1187ff325f074b7df9096"
   integrity sha512-CDIFzeSkTqwOaFHIxRg4MnOsv0Ml8/PoaWiM5zL5hvDYFqVXQUEhMNQqpPEFTWJ5xVLzEv/rd9N3WloiCyEWYQ==
