@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
-
+import { CustomEditor } from "./helper";
 function SlateEditor({
   initialValue,
   renderEditable = (props) => <Editable {...props} />, // 기본적으로 Editable 사용
@@ -26,7 +26,39 @@ function SlateEditor({
     return <Leaf {...props} />
   }, [])
 
-  return ( <Slate editor={editor} initialValue={value}>
+  return (
+    <Slate
+      editor={editor}
+      initialValue={value}
+      onChange={value => {
+        const isAstChange = editor.operations.some(
+          op => 'set_selection' !== op.type
+        )
+        if (isAstChange) {
+          // Save the value to Local Storage.
+          const content = JSON.stringify(value)
+          localStorage.setItem('content', content)
+        }
+      }}
+    >
+      <div>
+        <button
+          onClick={event => {
+            event.preventDefault()
+            CustomEditor.toggleBoldMark(editor)
+          }}
+        >
+          Bold
+        </button>
+        <button
+          onClick={event => {
+            event.preventDefault()
+            CustomEditor.toggleCodeBlock(editor)
+          }}
+        >
+          Code Block
+        </button>
+      </div>
       {renderEditable({
         className: "slate-editable",
         renderElement,
@@ -38,20 +70,13 @@ function SlateEditor({
           switch (event.key) {
             case '`': {
               event.preventDefault();
-              const [match] = Editor.nodes(editor, {
-                match: n => Element.isElement(n) && n.type === 'code',
-              })
-              Transforms.setNodes(
-                editor,
-                { type: match ? 'paragraph' : 'code' },
-                { match: n => Element.isElement(n) && Editor.isBlock(editor, n) }
-              )
+              CustomEditor.toggleCodeBlock(editor);
               break;
             }
 
             case 'b': {
               event.preventDefault();
-              Editor.addMark(editor, 'bold', true);
+              CustomEditor.toggleBoldMark(editor);
               break;
             }
           }
