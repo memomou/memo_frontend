@@ -10,9 +10,9 @@ interface PosterNewFormProps {
 }
 
 export const StyledEditable = styled(Editable)`
-  background-color: lightgray;
+  background-color: white;
   padding: 20px;
-  border: 2px solid #333;
+  border: 2px solid gray;
   border-radius: 8px;
   min-height: 200px;
   width: 400px;

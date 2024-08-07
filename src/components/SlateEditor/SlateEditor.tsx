@@ -12,26 +12,15 @@ const defaultValue : Element[] = [
 ]
 
 function SlateEditor({
+  editor,
   initialValue,
   renderEditable = (props) => <Editable {...props} />, // 기본적으로 Editable 사용
 }: {
-  initialValue?: Descendant[],
+  editor: Editor,
+  initialValue: Descendant[],
   renderEditable?: (props: any) => JSX.Element, // 커스텀 Editable 컴포넌트를 위한 프로퍼티
 })
   {
-  const [editor] = useState(() => withReact(withHistory(createEditor())))
-  const initialValue_ = useMemo(
-    () => {
-      const content = localStorage.getItem('content');
-      if (content) {
-        return JSON.parse(content)
-      } else {
-        return defaultValue
-      }
-    },
-    []
-  )
-  const [value, setValue] = useState<Descendant[]>(initialValue ?? initialValue_);
   const renderElement = useCallback((props: any) => {
     switch (props.element.type) {
       case 'code':
@@ -50,7 +39,7 @@ function SlateEditor({
   return (
     <Slate
       editor={editor}
-      initialValue={value}
+      initialValue={initialValue}
       onChange={value => {
         const isAstChange = editor.operations.some(
           op => 'set_selection' !== op.type
