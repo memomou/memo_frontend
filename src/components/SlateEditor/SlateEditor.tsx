@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { CustomEditor } from "./helper";
+import { withHistory } from 'slate-history';
 
 const defaultValue : Element[] = [
   {
@@ -18,7 +19,7 @@ function SlateEditor({
   renderEditable?: (props: any) => JSX.Element, // 커스텀 Editable 컴포넌트를 위한 프로퍼티
 })
   {
-  const [editor] = useState(() => withReact(createEditor()))
+  const [editor] = useState(() => withReact(withHistory(createEditor())))
   const initialValue_ = useMemo(
     () => {
       const content = localStorage.getItem('content');
