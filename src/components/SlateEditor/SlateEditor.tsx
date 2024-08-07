@@ -1,7 +1,15 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { CustomEditor } from "./helper";
+
+const defaultValue : Element[] = [
+  {
+    type: 'paragraph',
+    children: [{ text: 'A line of text in a paragraph.' }],
+  }
+]
+
 function SlateEditor({
   initialValue,
   renderEditable = (props) => <Editable {...props} />, // 기본적으로 Editable 사용
@@ -11,6 +19,17 @@ function SlateEditor({
 })
   {
   const [editor] = useState(() => withReact(createEditor()))
+  const initialValue_ = useMemo(
+    () => {
+      const content = localStorage.getItem('content');
+      if (content) {
+        return JSON.parse(content)
+      } else {
+        return defaultValue
+      }
+    },
+    []
+  )
   const [value, setValue] = useState<Descendant[]>(initialValue ?? initialValue_);
   const renderElement = useCallback((props: any) => {
     switch (props.element.type) {
@@ -20,6 +39,7 @@ function SlateEditor({
         return <DefaultElement {...props} />
     }
   }, [])
+
 
   // Define a leaf rendering function that is memoized with `useCallback`.
   const renderLeaf = useCallback((props: any) => {
@@ -58,6 +78,14 @@ function SlateEditor({
         >
           Code Block
         </button>
+        <button
+          onClick={event => {
+            event.preventDefault()
+            CustomEditor.resetNodes(editor, { nodes: defaultValue })
+          }}
+        >
+          Reset
+        </button>
       </div>
       {renderEditable({
         className: "slate-editable",
@@ -84,13 +112,6 @@ function SlateEditor({
       })}
   </Slate>);
 }
-
-const initialValue_: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  },
-]
 
 // Define a React component renderer for our code blocks.
 const CodeElement = (props: any) => {
