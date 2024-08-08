@@ -1,8 +1,9 @@
+// https://codesandbox.io/s/slateeditor-with-types-6zpfi?file=/src/components/SlateEditor/toolbarElements.tsx
+
 import { useCallback, useMemo, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { CustomEditor } from "./helper";
-import { withHistory } from 'slate-history';
 
 const defaultValue : Element[] = [
   {

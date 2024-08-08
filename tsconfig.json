@@ -6,6 +6,8 @@
       "dom.iterable",
       "esnext"
     ],
+    "noImplicitAny": false, // 암묵적인 any를 허용
+    "suppressImplicitAnyIndexErrors": true, // 인덱스 시그니처에서 암묵적인 any 경고 억제
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

@@ -5,6 +5,9 @@ import { useMemo, useState } from "react";
 import { withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
+import axios from "axios";
+import config from "../../config";
+import { useNavigate } from "react-router-dom";
 
 const defaultValue : Element[] = [
   {
@@ -14,6 +17,7 @@ const defaultValue : Element[] = [
 ]
 
 function PosterPostPage(props: any) {
+  const navigate = useNavigate();
   const initialValue_ = useMemo(
     () => {
       const content = localStorage.getItem('content');
@@ -26,10 +30,28 @@ function PosterPostPage(props: any) {
     []
   )
   const [editor] = useState(() => withReact(withHistory(createEditor())));
-  const [value, setValue] = useState<Descendant[]>(initialValue_);
   const onButtonClick = (event:React.FormEvent) => {
     event.preventDefault();
-    console.log(editor.children);
+    console.log("editor.children", editor.children);
+    const jsonContent = JSON.stringify(editor.children);
+    console.log("jsonContent", jsonContent);
+    // post 보내기
+    // 성공하면 navigate('/')
+
+    try {
+      // const response = await axios.post(
+      //   `${config.backendUri}/posts`,
+      //   {
+      //     email,
+      //     password,
+      //   }
+      // );
+
+      // console.log('게시글 저장 성공:', response);
+      // navigate('/');
+    } catch (error) {
+      console.error("게시글 저장 실패:", error);
+    }
   }
   return (
     <Styled>
@@ -38,7 +60,7 @@ function PosterPostPage(props: any) {
         <div className="editor-wrapper">
           <StyledSlateEditor
             editor={editor}
-            initialValue={value}
+            initialValue={initialValue_}
             renderEditable={(editableProps) => <StyledEditable {...editableProps} />}
           />
         </div>
