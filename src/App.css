@@ -1,4 +1,6 @@
 /* https://github.com/hankchizljaw/modern-css-reset */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;

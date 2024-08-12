@@ -11,8 +11,8 @@ interface PosterNewFormProps {
 
 export const StyledEditable = styled(Editable)`
   background-color: white;
-  padding: 20px;
-  border: 2px solid gray;
+  padding: 5px;
+  border: 1px solid gray;
   border-radius: 8px;
   min-height: 200px;
   width: 400px;
@@ -40,7 +40,7 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
 
   .editor-wrapper {
     background: 'white';
-    height: 300px;
+    min-height: 300px;
     margin: "20px auto"
   }
 

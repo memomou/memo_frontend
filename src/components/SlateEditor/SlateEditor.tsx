@@ -1,11 +1,12 @@
 // https://codesandbox.io/s/slateeditor-with-types-6zpfi?file=/src/components/SlateEditor/toolbarElements.tsx
 
 import { useCallback, useMemo, useState } from "react";
-import { Descendant, Editor, createEditor, Transforms, Element } from "slate";
+import { Descendant, Editor, createEditor, Transforms, Element as SlateElement } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
-import { CustomEditor } from "./helper";
-
-const defaultValue : Element[] = [
+import { CustomEditor, resetNodes } from "./helper";
+import { Leaf, Element } from "./toolbarElements";
+import { Toolbar, MarkButton, BlockButton} from "./components";
+const defaultValue : SlateElement[] = [
   {
     type: 'paragraph',
     children: [{ text: 'A line of text in a paragraph.' }],
@@ -13,26 +14,19 @@ const defaultValue : Element[] = [
 ]
 
 function SlateEditor({
-  editor,
-  initialValue,
-  renderEditable = (props) => <Editable {...props} />, // 기본적으로 Editable 사용
-}: {
-  editor: Editor,
-  initialValue: Descendant[],
-  renderEditable?: (props: any) => JSX.Element, // 커스텀 Editable 컴포넌트를 위한 프로퍼티
-})
-  {
+      editor,
+      initialValue,
+      renderEditable = (props) => <Editable {...props} />,
+    } : {
+      editor: Editor,
+      initialValue: Descendant[],
+      renderEditable?: (props: any) => JSX.Element,
+    })
+{
   const renderElement = useCallback((props: any) => {
-    switch (props.element.type) {
-      case 'code':
-        return <CodeElement {...props} />
-      default:
-        return <DefaultElement {...props} />
-    }
+    return <Element {...props} />
   }, [])
 
-
-  // Define a leaf rendering function that is memoized with `useCallback`.
   const renderLeaf = useCallback((props: any) => {
     return <Leaf {...props} />
   }, [])
@@ -46,38 +40,22 @@ function SlateEditor({
           op => 'set_selection' !== op.type
         )
         if (isAstChange) {
-          // Save the value to Local Storage.
           const content = JSON.stringify(value)
           localStorage.setItem('content', content)
         }
       }}
     >
-      <div>
-        <button
-          onClick={event => {
-            event.preventDefault()
-            CustomEditor.toggleBoldMark(editor)
-          }}
-        >
-          Bold
-        </button>
-        <button
-          onClick={event => {
-            event.preventDefault()
-            CustomEditor.toggleCodeBlock(editor)
-          }}
-        >
-          Code Block
-        </button>
-        <button
-          onClick={event => {
-            event.preventDefault()
-            CustomEditor.resetNodes(editor, { nodes: defaultValue })
-          }}
-        >
-          Reset
-        </button>
-      </div>
+      <Toolbar>
+            <MarkButton format="bold" icon="format_bold" />
+            <MarkButton format="italic" icon="format_italic" />
+            <MarkButton format="underline" icon="format_underlined" />
+            <MarkButton format="code" icon="code" />
+            <BlockButton format="heading-one" icon="looks_one" />
+            <BlockButton format="heading-two" icon="looks_two" />
+            <BlockButton format="block-quote" icon="format_quote" />
+            <BlockButton format="numbered-list" icon="format_list_numbered" />
+            <BlockButton format="bulleted-list" icon="format_list_bulleted" />
+      </Toolbar>
       {renderEditable({
         className: "slate-editable",
         renderElement,
@@ -104,29 +82,5 @@ function SlateEditor({
   </Slate>);
 }
 
-// Define a React component renderer for our code blocks.
-const CodeElement = (props: any) => {
-  return (
-    <pre {...props.attributes}>
-      <code>{props.children}</code>
-    </pre>
-  )
-}
-
-const DefaultElement = (props: any) => {
-  return <p {...props.attributes}>{props.children}</p>
-}
-
-// Define a React component to render leaves with bold text.
-const Leaf = (props: any) => {
-  return (
-    <span
-      {...props.attributes}
-      style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal' }}
-    >
-      {props.children}
-    </span>
-  )
-}
 
 export default SlateEditor;
