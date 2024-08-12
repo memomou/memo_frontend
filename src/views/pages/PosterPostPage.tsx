@@ -17,6 +17,7 @@ const defaultValue : Element[] = [
 ]
 
 function PosterPostPage(props: any) {
+  const [title, setTitle] = useState('');
   const navigate = useNavigate();
   const initialValue_ = useMemo(
     () => {
@@ -29,12 +30,18 @@ function PosterPostPage(props: any) {
     },
     []
   )
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   const onButtonClick = (event:React.FormEvent) => {
     event.preventDefault();
     console.log("editor.children", editor.children);
     const jsonContent = JSON.stringify(editor.children);
     console.log("jsonContent", jsonContent);
+    console.log("title", title);
     // post 보내기
     // 성공하면 navigate('/')
 
@@ -56,7 +63,12 @@ function PosterPostPage(props: any) {
   return (
     <Styled>
       <PosterNewForm $width="500px">
-        <input type="text" placeholder="제목"  />
+        <input
+          type="text"
+          placeholder="제목"
+          value={title}
+          onChange={handleTitleChange}
+        />
         <div className="editor-wrapper">
           <StyledSlateEditor
             editor={editor}
