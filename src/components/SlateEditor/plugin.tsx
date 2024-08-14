@@ -2,7 +2,7 @@
 import isUrl from "is-url";
 import { Editor, Element } from "slate";
 
-import { CustomEditor } from "./helper";
+import { wrapLink } from "./helper";
 
 export function withLinks(editor: Editor): Editor {
   const { insertData, insertText, isInline } = editor;
@@ -13,7 +13,7 @@ export function withLinks(editor: Editor): Editor {
 
   editor.insertText = (text: string): void => {
     if (text && isUrl(text)) {
-      CustomEditor.wrapLink(editor, text);
+      wrapLink(editor, text);
     } else {
       insertText(text);
     }
@@ -23,7 +23,7 @@ export function withLinks(editor: Editor): Editor {
     const text = data.getData("text/plain");
 
     if (text && isUrl(text)) {
-      CustomEditor.wrapLink(editor, text);
+      wrapLink(editor, text);
     } else {
       insertData(data);
     }

@@ -3,9 +3,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element as SlateElement } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
-import { CustomEditor, resetNodes } from "./helper";
+import { resetNodes } from "./helper";
 import { Leaf, Element } from "./toolbarElements";
 import { Toolbar, MarkButton, BlockButton} from "./components";
+import {toggleKeyboardShortcut} from "./keyboardShortcut";
 const defaultValue : SlateElement[] = [
   {
     type: 'paragraph',
@@ -61,22 +62,7 @@ function SlateEditor({
         renderElement,
         renderLeaf,
         onKeyDown: (event: any) => {
-          if (!event.ctrlKey) {
-            return;
-          }
-          switch (event.key) {
-            case '`': {
-              event.preventDefault();
-              CustomEditor.toggleCodeBlock(editor);
-              break;
-            }
-
-            case 'b': {
-              event.preventDefault();
-              CustomEditor.toggleBoldMark(editor);
-              break;
-            }
-          }
+          toggleKeyboardShortcut(event, editor);
         },
       })}
   </Slate>);

@@ -12,8 +12,10 @@ interface PosterNewFormProps {
 export const StyledEditable = styled(Editable)`
   background-color: white;
   padding: 5px;
-  border: 1px solid gray;
-  border-radius: 8px;
+  border-left: 1px solid #eee ;  /* 왼쪽 border */
+  border-right: 1px solid #eee; /* 오른쪽 border */
+  border-bottom: 1px solid #eee; /* 아래쪽 border */
+  border-top: none;             /* 위쪽 border 제거 */
   min-height: 200px;
   width: 400px;
   /* 필요에 따라 추가 스타일 정의 */

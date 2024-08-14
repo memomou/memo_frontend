@@ -2,7 +2,7 @@
  * Keyboard shortcut related logic for the SlateEditor component
  */
 import { isHotkey } from "is-hotkey";
-import { CustomEditor } from "./helper";
+import { toggleMark } from "./helper";
 
 export const HOTKEYS = {
   "ctrl+b": "bold",
@@ -20,7 +20,7 @@ export const toggleKeyboardShortcut = (event, editor) => {
     if (isHotkey(hotkey, event)) {
       event.preventDefault();
       const mark = HOTKEYS[hotkey];
-      CustomEditor.toggleMark(editor, mark);
+      toggleMark(editor, mark);
     }
   }
 };
