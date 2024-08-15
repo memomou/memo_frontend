@@ -21,6 +21,7 @@ export const toggleKeyboardShortcut = (event, editor) => {
       event.preventDefault();
       const mark = HOTKEYS[hotkey];
       toggleMark(editor, mark);
+      break;
     }
   }
 };
