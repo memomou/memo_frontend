@@ -24,7 +24,7 @@ function LoginPage(props: any) {
         }
       );
       console.log('Login Successful:', response);
-      setUser({...response.data.user, isLogin: true});
+      setUser({...response.data.user});
       localStorage.setItem('accessToken', response.data.token.accessToken);
       localStorage.setItem('refreshToken', response.data.token.refreshToken);
       navigate('/');

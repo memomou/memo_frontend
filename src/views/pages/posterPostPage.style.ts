@@ -18,6 +18,10 @@ export const StyledEditable = styled(Editable)`
   border-top: none;             /* 위쪽 border 제거 */
   min-height: 200px;
   width: 400px;
+  &:focus-visible {
+  border: 1px solid #0078d4;
+  outline: none;
+  }
   /* 필요에 따라 추가 스타일 정의 */
 `;
 

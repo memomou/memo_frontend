@@ -54,10 +54,8 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    console.log('Value changed:', isDropdownVisible);
+    console.log('isDropdownVisible changed:', isDropdownVisible);
   }, [isDropdownVisible]);
-
-  console.log(user);
   return (
     <Container>
       <HomeButton to="/">Home</HomeButton>
