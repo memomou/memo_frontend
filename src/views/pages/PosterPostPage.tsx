@@ -7,7 +7,7 @@ import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from '../../helpers/helper';
-
+import { serialize } from "../../components/SlateEditor/serialize";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -54,7 +54,8 @@ function PosterPostPage(props: any) {
     console.log("title", title);
     // post 보내기
     // 성공하면 navigate('/')
-
+    const deserialzedContent = serialize(editor as Element);
+    console.log("deserializedContent", deserialzedContent);
     try {
       // const response = await axios.post(
       //   `${config.backendUri}/posts`,

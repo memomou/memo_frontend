@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Descendant, Editor, createEditor, Transforms, Element as SlateElement } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { resetNodes } from "./helper";
-import { Leaf, Element } from "./toolbarElements";
+import { Leaf, Element } from "./deserialize";
 import { Toolbar, MarkButton, BlockButton} from "./components";
 import {toggleKeyboardShortcut} from "./keyboardShortcut";
 
