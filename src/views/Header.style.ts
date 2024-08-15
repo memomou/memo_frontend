@@ -59,6 +59,10 @@ export const HomeButton = styled(Link)`
   display: flex;
   gap: 10px;
   margin-right: auto;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: ${(props) => props.theme.headerbgColor};
+  color: ${(props) => props.theme.headerTextColor};
 `;
 
 export const Title = styled.div`

@@ -1,4 +1,6 @@
-export function Element({ attributes, children, element }) {
+import { Element as slateElement } from 'slate'
+
+export function Element({ attributes, children, element } : { attributes: any, children: any, element: slateElement }) {
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;

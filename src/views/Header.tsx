@@ -58,8 +58,7 @@ function Header() {
   }, [isDropdownVisible]);
   return (
     <Container>
-      <HomeButton to="/">Home</HomeButton>
-      <Title>MEMO LOG</Title>
+      <HomeButton to="/">MEMO LOG</HomeButton>
       <Action>
         {user ? (
           <>
