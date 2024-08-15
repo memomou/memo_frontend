@@ -12,14 +12,11 @@ interface PosterNewFormProps {
 export const StyledEditable = styled(Editable)`
   background-color: white;
   padding: 5px;
-  border-left: 1px solid #eee ;  /* 왼쪽 border */
-  border-right: 1px solid #eee; /* 오른쪽 border */
   border-bottom: 1px solid #eee; /* 아래쪽 border */
-  border-top: none;             /* 위쪽 border 제거 */
+  /* border-top: none;             위쪽 border 제거 */
   min-height: 200px;
-  width: 400px;
   &:focus-visible {
-  border: 1px solid #0078d4;
+  border: auto;
   outline: none;
   }
   /* 필요에 따라 추가 스타일 정의 */
@@ -40,14 +37,26 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
   background-color: white;
   width: ${(props) => props.$width ?? "300px"};
 
-  input {
+  div input {
     border: 0px;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #eee; /* 아래쪽 border */
   }
 
   .editor-wrapper {
-    background: 'white';
-    min-height: 300px;
-    margin: "20px auto"
+    width: 100%;
+    .text-editor-wrapper {
+    }
+  }
+
+  .placeholder {
+    &:focus {
+      display: none;
+    }
+    color: #ccc;
   }
 
   h1 {

@@ -2,7 +2,7 @@ import PosterNewForm from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
 import { Styled } from "./authPage.style";
 import { useMemo, useState } from "react";
-import { withReact } from "slate-react";
+import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +15,19 @@ const defaultValue : Element[] = [
   }
 ]
 
+function renderPlaceholder(props: RenderPlaceholderProps) {
+  const { children, attributes } = props;
+
+  return (
+    <span {...attributes} style={{ opacity: 0.5, fontStyle: 'italic', width: "0px", pointerEvents: "none" }} className="placeholder">
+      {children || '내용을 입력하세요...'}
+    </span>
+  );
+}
+
 function PosterPostPage(props: any) {
   const [title, setTitle] = useState('');
+  const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
   const navigate = useNavigate();
   const initialValue_ = useMemo(
     () => {
@@ -62,18 +73,30 @@ function PosterPostPage(props: any) {
   return (
     <Styled>
       <PosterNewForm $width="500px">
-        <input
-          type="text"
-          placeholder="제목"
-          value={title}
-          onChange={handleTitleChange}
-        />
         <div className="editor-wrapper">
-          <StyledSlateEditor
-            editor={editor}
-            initialValue={initialValue_}
-            renderEditable={(editableProps) => <StyledEditable {...editableProps} />}
+          <input
+            type="text"
+            placeholder="제목을 입력하세요"
+            value={title}
+            onChange={handleTitleChange}
           />
+          <div className='text-editor-wrapper'>
+            <StyledSlateEditor
+              editor={editor}
+              initialValue={initialValue_}
+              renderEditable={
+                (editableProps) =>
+                  <StyledEditable
+                    {...editableProps}
+                    placeholder={placeholder}
+                    renderPlaceholder={renderPlaceholder} // 커스텀 플레이스홀더 추가
+                    disableDefaultStyles={true}
+                    onFocus={() => setPlaceHolder('')}
+                    onBlur={() => setPlaceHolder('내용을 입력하세요')}
+                  />
+              }
+            />
+          </div>
         </div>
         <button onClick={onButtonClick} type="submit">Submit</button>
       </PosterNewForm>

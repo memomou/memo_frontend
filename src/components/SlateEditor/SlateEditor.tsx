@@ -7,6 +7,10 @@ import { resetNodes } from "./helper";
 import { Leaf, Element } from "./toolbarElements";
 import { Toolbar, MarkButton, BlockButton} from "./components";
 import {toggleKeyboardShortcut} from "./keyboardShortcut";
+
+// TODO Link Plugin 설치해보기
+// https://codesandbox.io/p/sandbox/slateeditor-with-types-forked-4yl2tz?file=%2Fsrc%2Fcomponents%2FSlateEditor%2Fplugins.tsx%3A21%2C1
+
 const defaultValue : SlateElement[] = [
   {
     type: 'paragraph',
