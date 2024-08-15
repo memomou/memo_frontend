@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from "axios";
-import config from "../../config";
 import CenterForm from "../../components/Form.style";
 import { Styled } from "./authPage.style";
 import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { userAtom } from "../../components/atom/atoms";
+import { axiosInstance } from '../../helpers/helper';
 
 function SignupPage(props: any) {
   const [email, setEmail] = useState("");
@@ -19,7 +18,7 @@ function SignupPage(props: any) {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${config.backendUri}/auth/register/email`, {
+      const response = await axiosInstance.post(`/auth/register/email`, {
         email,
         password,
         nickname,

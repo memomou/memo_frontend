@@ -5,9 +5,8 @@ import { useMemo, useState } from "react";
 import { withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
-import axios from "axios";
-import config from "../../config";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from '../../helpers/helper';
 
 const defaultValue : Element[] = [
   {

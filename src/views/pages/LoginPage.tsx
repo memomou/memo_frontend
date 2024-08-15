@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from "axios";
 import config from "../../config";
 import CenterForm from "../../components/Form.style";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "../../components/atom/atoms";
 import { useNavigate } from "react-router-dom";
 import { Styled } from "./authPage.style";
-
+import { axiosInstance } from '../../helpers/helper';
 function LoginPage(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,8 +15,8 @@ function LoginPage(props: any) {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        `${config.backendUri}/auth/login/email`,
+      const response = await axiosInstance.post(
+        `/auth/login/email`,
         {
           email,
           password,
