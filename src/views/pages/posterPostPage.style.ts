@@ -11,7 +11,6 @@ interface PosterNewFormProps {
 
 export const StyledEditable = styled(Editable)`
   background-color: white;
-  padding: 5px;
   border-bottom: 1px solid #eee; /* 아래쪽 border */
   /* border-top: none;             위쪽 border 제거 */
   min-height: 200px;
@@ -37,13 +36,17 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
   background-color: white;
   width: ${(props) => props.$width ?? "300px"};
 
-  div input {
+  .title-input {
+    width: 100%;
     border: 0px;
     display: block;
-    width: 100%;
     margin-bottom: 10px;
-    padding-bottom: 2px;
+    padding-bottom: 4px;
     border-bottom: 1px solid #eee; /* 아래쪽 border */
+    font-size: 1.2rem;
+    &::placeholder {
+      color: #ccc;
+    }
   }
 
   .editor-wrapper {
@@ -58,6 +61,15 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
     }
     color: #ccc;
   }
+
+  /* .BottomContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    div {
+      color: white;
+    }
+  } */
 
   h1 {
     font-size: 23px;
@@ -76,9 +88,27 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
     }
   }
   button {
-    width: 100px;
+
+  }
+  & > .BottomContainer {
     height: 30px;
-    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    & > button:nth-child(1) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      width: auto;
+    }
+
+    & > button:nth-child(2) {
+      background-color: #12B886;
+      width: 100px;
+      color: white;
+      border-radius: 5px;
+    }
   }
 `;
 
