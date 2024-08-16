@@ -53,6 +53,11 @@ export const Container = styled.div`
   color: ${(props) => props.theme.headerTextColor};
   border: 1px solid black;
   padding: 10px 10px;
+
+  .profileBtn {
+    min-width: 50px;
+    max-width: 100px;
+  }
 `;
 
 export const HomeButton = styled(Link)`
@@ -90,9 +95,9 @@ export const StyledBase = css<StyledProps>`
   justify-content: center;
   align-items: center;
   color: ${(props) => (props.selected ? "gray" : "black")};
-  background-color: ${(props) => (props.selected ? "#f1f1f1" : "white")};
-  border: 1px solid black;
-  position: relative
+  background-color: ${(props) => (props.selected ? "#f1f1f1" : "ivory")};
+  position: relative;
+  border-radius: 4px;
 `;
 
 export const StyledLink = styled(Link)<{ selected?: boolean }>`

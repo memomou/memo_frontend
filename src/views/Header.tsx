@@ -62,12 +62,19 @@ function Header() {
       <Action>
         {user ? (
           <>
+        {
+          location.pathname !== "/post/new" && (
             <StyledLink to="/post/new">
               새 글 작성
             </StyledLink>
-            <div>
-            <StyledBtn ref={profileBtnRef}>
-              {user.nickname}
+          )
+        }
+            <StyledBtn ref={profileBtnRef} className='profileBtn'>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em" width="1em" fill="currentColor">
+                <circle cx="12" cy="8" r="4" fill="currentColor" />
+                <path d="M12 12c-3.87 0-7 3.13-7 7h14c0-3.87-3.13-7-7-7z" fill="currentColor"/>
+              </svg>
+              <span>{user.nickname} 님</span>
             </StyledBtn>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
               <MenuItem onClick={navigateToFn(`/user/${user.id}`)} >
@@ -78,7 +85,6 @@ function Header() {
               </MenuItem>
               <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
             </DropdownMenu>
-            </div>
           </>
         ) : (
           <>
