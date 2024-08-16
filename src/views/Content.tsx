@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Styled = styled.div`
@@ -8,6 +9,7 @@ const Styled = styled.div`
 `;
 
 function Content() {
+  const [posts, setPosts] = useState('');
   return (
     <Styled>
       Content

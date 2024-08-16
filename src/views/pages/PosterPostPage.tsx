@@ -8,6 +8,7 @@ import { Descendant, createEditor, Element } from "slate";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from '../../helpers/helper';
 import { serialize } from "../../components/SlateEditor/serialize";
+import type { PostType } from "../../types/post";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -57,16 +58,16 @@ function PosterPostPage(props: any) {
     const deserialzedContent = serialize(editor as Element);
     console.log("deserializedContent", deserialzedContent);
     try {
-      // const response = await axios.post(
-      //   `${config.backendUri}/posts`,
-      //   {
-      //     email,
-      //     password,
-      //   }
-      // );
-
-      // console.log('게시글 저장 성공:', response);
-      // navigate('/');
+      axiosInstance.post('/posts', {
+        title: title,
+        content: deserialzedContent,
+        contentSlate: jsonContent,
+      }).then((response) => {
+        console.log('게시글 저장 성공:', response);
+        const data = response.data as PostType;
+        console.log(initialValue_)
+        navigate('/');
+      });
     } catch (error) {
       console.error("게시글 저장 실패:", error);
     }
