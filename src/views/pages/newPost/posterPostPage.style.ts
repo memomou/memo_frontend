@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SlateEditor from "../../components/SlateEditor/SlateEditor";
+import SlateEditor from "../../../components/SlateEditor/SlateEditor";
 import { Editable, Slate, withReact } from "slate-react";
 
 interface PosterNewFormProps {
@@ -10,10 +10,12 @@ interface PosterNewFormProps {
 }
 
 export const StyledEditable = styled(Editable)`
+  font-size: 1.2rem;
   background-color: white;
   border-bottom: 1px solid #eee; /* 아래쪽 border */
   /* border-top: none;             위쪽 border 제거 */
-  min-height: 200px;
+  /* min-height: 600px; */
+  aspect-ratio: 6 / 5;
   &:focus-visible {
   border: auto;
   outline: none;
@@ -34,16 +36,17 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
   border: 1px solid black;
   border-radius: 10px;
   background-color: white;
-  width: ${(props) => props.$width ?? "300px"};
+  width: 100%;
+  max-width: 600px;
 
   .title-input {
     width: 100%;
     border: 0px;
     display: block;
     margin-bottom: 10px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #eee; /* 아래쪽 border */
-    font-size: 1.2rem;
+    padding-bottom: 6px;
+    border-bottom: 3px solid #eee; /* 아래쪽 border */
+    font-size: 1.6rem;
     &::placeholder {
       color: #ccc;
     }
@@ -88,10 +91,8 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
     }
   }
   button {
-
   }
   & > .BottomContainer {
-    height: 30px;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -104,8 +105,10 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
     }
 
     & > button:nth-child(2) {
-      background-color: #12B886;
-      width: 100px;
+      font-size: 1.2rem;
+      background-color: #12b886;
+      height: 50px;
+      aspect-ratio: 5 / 2;
       color: white;
       border-radius: 5px;
     }

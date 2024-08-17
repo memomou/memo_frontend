@@ -1,14 +1,13 @@
 /* https://github.com/hankchizljaw/modern-css-reset */
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 body {
   font-family: 'Malgun Gothic', sans-serif;
+}
+
+* *::before *::after {
+  box-sizing: border-box;
 }
 
 input:focus::placeholder {
@@ -140,6 +139,7 @@ video {
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -181,10 +181,12 @@ table {
 input,
 textarea {
   all: unset;
+  box-sizing: border-box;
 }
 
 button {
   all: unset;
+  box-sizing: border-box;
   text-align: center;
   line-height: normal;
   cursor: pointer;

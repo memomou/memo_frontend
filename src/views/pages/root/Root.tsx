@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Content from "../Content";
+import Content from "./Content";
 
 const Styled = styled.div`
   flex: 1;

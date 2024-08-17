@@ -7,8 +7,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userAtom } from "../components/atom/atoms";
-import { DropdownMenu, MenuItem, StyledLink, StyledBtn, Container, HomeButton, Title, Action } from "./Header.style";
+import { userAtom } from "../../components/atom/atoms";
+import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Title, Action } from "./Header.style";
 import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
 
 function Header() {
@@ -53,24 +53,23 @@ function Header() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('isDropdownVisible changed:', isDropdownVisible);
-  }, [isDropdownVisible]);
   return (
-    <Container>
+    <HeaderContainer>
       <HomeButton to="/">MEMO LOG</HomeButton>
       <Action>
         {user ? (
           <>
         {
           location.pathname !== "/post/new" && (
-            <StyledLink to="/post/new">
-              새 글 작성
-            </StyledLink>
+            <StyledBtn>
+              <Link to="/post/new">
+                새 글 작성
+              </Link>
+            </StyledBtn>
           )
         }
             <StyledBtn ref={profileBtnRef} className='profileBtn'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em" width="1em" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" fill="currentColor">
                 <circle cx="12" cy="8" r="4" fill="currentColor" />
                 <path d="M12 12c-3.87 0-7 3.13-7 7h14c0-3.87-3.13-7-7-7z" fill="currentColor"/>
               </svg>
@@ -97,7 +96,7 @@ function Header() {
           </>
         )}
       </Action>
-    </Container>
+    </HeaderContainer>
   );
 }
 export default Header;

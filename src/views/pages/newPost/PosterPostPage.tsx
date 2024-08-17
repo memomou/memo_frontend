@@ -1,18 +1,18 @@
 import PosterNewForm from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
-import { Styled } from "./authPage.style";
+import { Styled } from "../auth/authPage.style";
 import { useMemo, useState } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from '../../helpers/helper';
-import { serialize } from "../../components/SlateEditor/serialize";
-import type { PostType } from "../../types/post";
+import { axiosInstance } from '../../../helpers/helper';
+import { serialize } from "../../../components/SlateEditor/serialize";
+import type { PostType } from "../../../types/post";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
+    children: [{ text: '' }],
   }
 ]
 
@@ -34,7 +34,12 @@ function PosterPostPage(props: any) {
     () => {
       const content = localStorage.getItem('content');
       if (content) {
-        return JSON.parse(content)
+        try {
+          return JSON.parse(content)
+        } catch (error) {
+          console.error("Error parsing content:", error);
+          return defaultValue;
+        }
       } else {
         return defaultValue
       }
@@ -47,7 +52,7 @@ function PosterPostPage(props: any) {
   };
 
   const [editor] = useState(() => withReact(withHistory(createEditor())));
-  const onButtonClick = (event:React.FormEvent) => {
+  const onButtonClick = async (event:React.FormEvent) => {
     event.preventDefault();
     console.log("editor.children", editor.children);
     const jsonContent = JSON.stringify(editor.children);
@@ -58,23 +63,21 @@ function PosterPostPage(props: any) {
     const deserialzedContent = serialize(editor as Element);
     console.log("deserializedContent", deserialzedContent);
     try {
-      axiosInstance.post('/posts', {
+      const response = await axiosInstance.post('/posts', {
         title: title,
         content: deserialzedContent,
         contentSlate: jsonContent,
-      }).then((response) => {
-        console.log('게시글 저장 성공:', response);
-        const data = response.data as PostType;
-        console.log(initialValue_)
-        navigate('/');
       });
+      console.log('게시글 저장 성공:', response);
+      localStorage.setItem('content', JSON.stringify(defaultValue));
+      navigate('/');
     } catch (error) {
       console.error("게시글 저장 실패:", error);
     }
   }
   return (
     <Styled>
-      <PosterNewForm $width="500px">
+      <PosterNewForm>
         <div className="editor-wrapper">
           <input
             className="title-input"

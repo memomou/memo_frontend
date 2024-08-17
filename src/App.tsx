@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import Body from "./views/Body";
 import Footer from "./views/Footer";
-import Header from "./views/Header";
+import Header from "./views/header/Header";
 import Wrapper from "./views/Wrapper";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { userAtom } from "./components/atom/atoms";
@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        console.log(axiosInstance);
         const response = await axiosInstance.get('/users/me');
         console.log('Login Successful:', response);
         setUser({...response.data.user});

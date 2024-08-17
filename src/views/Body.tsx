@@ -1,17 +1,14 @@
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Root from "./pages/Root";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignUpPage";
-import PosterPostPage from "./pages/PosterPostPage";
+import Root from "./pages/root/Root";
+import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignUpPage";
+import PosterPostPage from "./pages/newPost/PosterPostPage";
 
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 160px);
-  min-height: 450px;
-
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  flex: 1;
+  background-color: ${(props) => props.theme.ContentbgColor};
 `;
 
 function Body() {

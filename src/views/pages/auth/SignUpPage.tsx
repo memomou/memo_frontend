@@ -1,28 +1,29 @@
 import styled from "styled-components";
 import { useState } from "react";
-import config from "../../config";
-import CenterForm from "../../components/Form.style";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userAtom } from "../../components/atom/atoms";
-import { useNavigate } from "react-router-dom";
+import CenterForm from "../../../components/Form.style";
 import { Styled } from "./authPage.style";
-import { axiosInstance } from '../../helpers/helper';
-function LoginPage(props: any) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import { useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { userAtom } from "../../../components/atom/atoms";
+import { axiosInstance } from '../../../helpers/helper';
+
+function SignupPage(props: any) {
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     try {
-      const response = await axiosInstance.post(
-        `/auth/login/email`,
-        {
-          email,
-          password,
-        }
-      );
-      console.log('Login Successful:', response);
+      const response = await axiosInstance.post(`/auth/register/email`, {
+        email,
+        password,
+        nickname,
+      });
+      console.log('회원가입 완료:', response.data);
       setUser({...response.data.user});
       localStorage.setItem('accessToken', response.data.token.accessToken);
       localStorage.setItem('refreshToken', response.data.token.refreshToken);
@@ -35,7 +36,7 @@ function LoginPage(props: any) {
   return (
     <Styled>
       <CenterForm onSubmit={handleSubmit}>
-        <h1>로그인</h1>
+        <h1>회원가입</h1>
         <label>
           <span>아이디</span>
           <input
@@ -43,6 +44,15 @@ function LoginPage(props: any) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+          <span>닉네임</span>
+          <input
+            type="nickname"
+            id="nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
           />
         </label>
         <label>
@@ -54,10 +64,10 @@ function LoginPage(props: any) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button type="submit">로그인</button>
+        <button type="submit">Submit</button>
       </CenterForm>
     </Styled>
   );
 }
 
-export default LoginPage;
+export default SignupPage;
