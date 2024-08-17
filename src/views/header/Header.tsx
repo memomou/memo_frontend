@@ -55,7 +55,11 @@ function Header() {
 
   return (
     <HeaderContainer>
-      <HomeButton to="/">MEMO LOG</HomeButton>
+      {/* // https://www.onlinewebfonts.com/icon/80555 */}
+
+      <HomeButton to="/">
+        <img className="logo" src="/catQuestionLogo.svg" alt="logo" />
+      <span>Memou</span></HomeButton>
       <Action>
         {user ? (
           <>

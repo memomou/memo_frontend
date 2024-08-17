@@ -6,7 +6,7 @@ export const lightTheme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = {
-  headerbgColor: "aliceblue" ,//"#96C5F7"
+  headerbgColor: "#f0f0f0" ,//"#96C5F7"
   headerTextColor: "black",
   SideBarbgColor: "#A9D3FF",
   SideBarTextColor: "black",

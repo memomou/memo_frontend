@@ -78,11 +78,13 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  /* height: 60px; */
   background-color: ${(props) => props.theme.headerbgColor};
   color: ${(props) => props.theme.headerTextColor};
   border-bottom: 2px solid #ddd;
   padding: 10px 10px;
+
+
 
   .profileBtn {
     min-width: 50px;
@@ -91,12 +93,18 @@ export const HeaderContainer = styled.div`
 
   ${HomeButton} {
     display: flex;
-    gap: 10px;
+    justify-content: center;  /* 가로 중앙 정렬 */
+    align-items: center;
+    /* gap: 10px; */
     margin-right: auto;
     font-size: 2.5rem;
     font-weight: bold;
     background-color: ${(props) => props.theme.headerbgColor};
     color: ${(props) => props.theme.headerTextColor};
+    height: 2.3rem;
+    .logo {
+      height: 100%;
+    }
   }
 
   ${Action} {
