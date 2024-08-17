@@ -98,7 +98,7 @@ function PosterPostPage(props: any) {
                     {...editableProps}
                     placeholder={placeholder}
                     renderPlaceholder={renderPlaceholder} // 커스텀 플레이스홀더 추가
-                    disableDefaultStyles={true}
+                    // disableDefaultStyles={true}
                     onFocus={() => setPlaceHolder('')}
                     onBlur={() => setPlaceHolder('내용을 입력하세요')}
                   />

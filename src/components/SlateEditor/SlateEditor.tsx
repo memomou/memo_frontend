@@ -45,8 +45,8 @@ function SlateEditor({
           op => 'set_selection' !== op.type
         )
         if (isAstChange) {
-          const content = JSON.stringify(value)
-          console.log("content", content)
+          // 현재 상태 저장
+          // const content = JSON.stringify(value)
           // localStorage.setItem('content', content)
         }
       }}
