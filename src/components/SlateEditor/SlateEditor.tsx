@@ -46,7 +46,8 @@ function SlateEditor({
         )
         if (isAstChange) {
           const content = JSON.stringify(value)
-          localStorage.setItem('content', content)
+          console.log("content", content)
+          // localStorage.setItem('content', content)
         }
       }}
     >

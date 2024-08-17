@@ -1,7 +1,7 @@
 import PosterNewForm from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
 import { Styled } from "../auth/authPage.style";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element } from "slate";
@@ -33,6 +33,7 @@ function PosterPostPage(props: any) {
   const initialValue_ = useMemo(
     () => {
       const content = localStorage.getItem('content');
+      console.log("content", content);
       if (content) {
         try {
           return JSON.parse(content)
@@ -46,6 +47,9 @@ function PosterPostPage(props: any) {
     },
     []
   )
+  useEffect(() => {
+    console.log("initialValue", initialValue_);
+  }, []);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -58,8 +62,6 @@ function PosterPostPage(props: any) {
     const jsonContent = JSON.stringify(editor.children);
     console.log("jsonContent", jsonContent);
     console.log("title", title);
-    // post 보내기
-    // 성공하면 navigate('/')
     const deserialzedContent = serialize(editor as Element);
     console.log("deserializedContent", deserialzedContent);
     try {

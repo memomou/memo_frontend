@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PostType } from "../../../types/post";
 import { axiosInstance } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
+import { Link } from "react-router-dom";
 
 function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -31,10 +32,12 @@ function Content() {
         </div>
         <div className="recentPosts">
           {posts.length && posts.map((post) => (
-            <div className="post" key={post.id}>
-              <h4>{post.title}</h4>
-              <p>{post.content}</p>
-            </div>
+            <Link to={`/post/${post.id}`}>
+              <div className="post" key={post.id}>
+                <h4>{post.title}</h4>
+                <p>{post.content}</p>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
