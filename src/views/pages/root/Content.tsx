@@ -34,8 +34,12 @@ function Content() {
           {posts.length && posts.map((post) => (
             <Link to={`/post/${post.id}`}>
               <div className="post" key={post.id}>
-                <h4>{post.title}</h4>
-                <p>{post.content}</p>
+                <div className="title">
+                  <div>{post.title}</div>
+                </div>
+                <div className="content">
+                  <p>{post.content}</p>
+                </div>
               </div>
             </Link>
           ))}

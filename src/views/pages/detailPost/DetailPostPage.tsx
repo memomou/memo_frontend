@@ -29,11 +29,10 @@ function PosterPostPage(props: any) {
     <Styled>
       <DetailPosterForm>
         <div className="title">
-          <span>{post?.title}</span>
+          <span>{post?.title ?? "..."}</span>
         </div>
         <div className="content">
-          <p>Detail Poster Content</p>
-          <div dangerouslySetInnerHTML={{ __html: post?.content ?? "" }} />
+          <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
         </div>
       </DetailPosterForm>
     </Styled>

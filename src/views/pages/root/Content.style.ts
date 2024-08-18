@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const ContentContainer = styled.div`
+  font-size: 1.1rem;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -8,7 +9,6 @@ export const ContentContainer = styled.div`
   .recentPosterWrapper {
     .recentPosterTitle {
       h1 {
-        font-size: 1.5rem;
         margin-bottom: 20px;
       }
     }
@@ -22,13 +22,26 @@ export const ContentContainer = styled.div`
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        h4 {
-          font-size: 1.4rem;
-          margin-bottom: 10px;
+        .title {
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          display: -webkit-box;
+          line-height: 1.5rem;
+          overflow: hidden;
+          font-weight: bold;
+          height: 26px;
         }
-        p {
-          font-size: 1.2rem;
+        .content {
+          margin-top: 5px;
+          padding-top: 10px;
+          border-top: 1px solid #eee;
           color: #666;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 5;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
         }
       }
     }
