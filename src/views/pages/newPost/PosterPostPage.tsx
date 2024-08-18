@@ -8,7 +8,6 @@ import { Descendant, createEditor, Element } from "slate";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
-import type { PostType } from "../../../types/post";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -88,7 +87,6 @@ function PosterPostPage(props: any) {
             value={title}
             onChange={handleTitleChange}
           />
-          <div className='text-editor-wrapper'>
             <StyledSlateEditor
               editor={editor}
               initialValue={initialValue_}
@@ -104,7 +102,6 @@ function PosterPostPage(props: any) {
                   />
               }
             />
-          </div>
         </div>
         <div className="BottomContainer">
 

@@ -1,18 +1,18 @@
 import styled from "styled-components";
+import { PostForm } from "../../../components/PostForm.style";
 
 const DetailPosterForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  margin: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: white;
-  width: 100%;
-  max-width: 600px;
-  h1 {
-    font-size: 23px;
+  ${PostForm}
+
+
+  .title {
+    font-size: var(--font-size-title);
+    border-bottom: 3px solid #eee;
+    padding: 10px;
+  }
+
+  .content {
+    padding: 10px;
   }
 `;
 

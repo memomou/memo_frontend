@@ -1,60 +1,53 @@
 import styled from "styled-components";
 import SlateEditor from "../../../components/SlateEditor/SlateEditor";
 import { Editable, Slate, withReact } from "slate-react";
-
-interface PosterNewFormProps {
-  $bgColor?: string;
-  $width?: string;
-  $height?: string;
-  $fontSize?: string;
-}
-
+import { PostForm } from "../../../components/PostForm.style";
 export const StyledEditable = styled(Editable)`
-  font-size: 1.2rem;
   background-color: white;
   border-bottom: 1px solid #eee; /* 아래쪽 border */
   /* border-top: none;             위쪽 border 제거 */
   /* min-height: 600px; */
-  aspect-ratio: 6 / 5;
+  flex: 1;
   &:focus-visible {
   border: auto;
   outline: none;
   }
   /* 필요에 따라 추가 스타일 정의 */
+  padding: 10px;
+
 `;
 
 export const StyledSlateEditor = styled(SlateEditor)`
 `;
 
-const PosterNewForm = styled.form<PosterNewFormProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
-  margin: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: white;
-  width: 100%;
-  max-width: 600px;
+const PosterNewForm = styled.form`
+  ${PostForm}
 
   .title-input {
     width: 100%;
     border: 0px;
     display: block;
     margin-bottom: 10px;
-    padding-bottom: 6px;
+    padding: 10px;
     border-bottom: 3px solid #eee; /* 아래쪽 border */
-    font-size: 1.6rem;
+    font-size: var(--font-size-title);
     &::placeholder {
       color: #ccc;
     }
   }
+  .material-icons {
+    font-size: 1.8rem;
+  }
 
   .editor-wrapper {
     width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     .text-editor-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
   }
 
@@ -74,24 +67,15 @@ const PosterNewForm = styled.form<PosterNewFormProps>`
     }
   } */
 
-  h1 {
-    font-size: 23px;
-  }
+
   label {
     display: flex;
     align-items: center;
     span {
       min-width: 80px;
     }
-    input {
-      background-color: ${(props) => props.$bgColor};
-      height: ${(props) => props.$height ?? "22px"};
-      width: ${(props) => props.$width ?? "150px"};
-      font-size: ${(props) => props.$fontSize ?? "13px"};
-    }
   }
-  button {
-  }
+
   & > .BottomContainer {
     display: flex;
     justify-content: space-between;

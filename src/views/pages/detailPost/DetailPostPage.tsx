@@ -28,7 +28,9 @@ function PosterPostPage(props: any) {
   return (
     <Styled>
       <DetailPosterForm>
-        <h1 className="title">{post?.title}</h1>
+        <div className="title">
+          <span>{post?.title}</span>
+        </div>
         <div className="content">
           <p>Detail Poster Content</p>
           <div dangerouslySetInnerHTML={{ __html: post?.content ?? "" }} />

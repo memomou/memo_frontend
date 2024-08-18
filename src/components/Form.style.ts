@@ -12,9 +12,7 @@ const CenterForm = styled.form<TextProps>`
   border-radius: 10px;
   background-color: white;
   width: ${(props) => props.$width ?? "300px"};
-  h1 {
-    font-size: 23px;
-  }
+
   label {
     display: flex;
     align-items: center;
