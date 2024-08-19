@@ -78,7 +78,7 @@ export const Action = styled.div``;
 
 export const HeaderContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   /* height: 60px; */
   background-color: ${(props) => props.theme.headerbgColor};
@@ -96,7 +96,7 @@ export const HeaderContainer = styled.div`
     justify-content: center;  /* 가로 중앙 정렬 */
     align-items: center;
     /* gap: 10px; */
-    margin-right: auto;
+    /* margin-right: auto; */
     font-size: 1.4rem;
     font-weight: bold;
     background-color: ${(props) => props.theme.headerbgColor};
@@ -110,7 +110,7 @@ export const HeaderContainer = styled.div`
   ${Action} {
     display: flex;
     gap: 10px;
-    margin-left: auto;
+    /* margin-left: auto; */
     position: relative;
     ${StyledBtn} {
     }

@@ -7,8 +7,30 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   .recentPosterWrapper {
-    .recentPosterTitle {
+    .topContainer {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 20px;
+      .recentPostText {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .searchInputWrapper {
+        min-width: 200px;
+        height: 40px;
+        border : 1px solid #ddd;
+        position: relative;
+        display: flex;
+        align-items: center;
+        svg {
+          margin-right: 10px;
+          margin-left: 10px;
+        }
+        .searchInput {
+          font-size: 1.3rem;
+          width: 100%;
+        }
+      }
     }
     .recentPosts {
       display: grid;
