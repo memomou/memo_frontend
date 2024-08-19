@@ -61,7 +61,7 @@ function PosterPostPage(props: any) {
     const jsonContent = JSON.stringify(editor.children);
     console.log("jsonContent", jsonContent);
     console.log("title", title);
-    const deserialzedContent = serialize(editor as Element);
+    const deserialzedContent = serialize(editor);
     console.log("deserializedContent", deserialzedContent);
     try {
       const response = await axiosInstance.post('/posts', {
@@ -107,8 +107,8 @@ function PosterPostPage(props: any) {
 
           <button onClick={() => navigate('/')}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" height="1em" width="1em">
-  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-</svg>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+          </svg>
             <span>나가기</span>
             </button>
           <button onClick={onButtonClick} type="submit">기록하기</button>

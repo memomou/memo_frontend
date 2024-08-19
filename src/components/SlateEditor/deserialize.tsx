@@ -8,7 +8,7 @@ export function Element({ attributes, children, element } : { attributes: any, c
     case "bulleted-list":
       return <ul {...attributes}>{children}</ul>;
 
-    case "heading-one":
+    case "heading":
       return <h1 {...attributes}>{children}</h1>;
 
     case "heading-two":
@@ -23,9 +23,6 @@ export function Element({ attributes, children, element } : { attributes: any, c
 
     case "list-item":
       return <li {...attributes}>{children}</li>;
-
-    case "numbered-list":
-      return <ol {...attributes}>{children}</ol>;
 
     default:
       return <p {...attributes}>{children}</p>;

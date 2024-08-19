@@ -1,5 +1,5 @@
 import escapeHtml from 'escape-html'
-import { Text, Element } from 'slate'
+import { Text, Element, Editor } from 'slate'
 
 function isLeaf(element: any): element is Text {
   return (element as Text).text !== undefined;
@@ -25,8 +25,15 @@ function serializeLeaf (node: Text) {
   return `<span>${string}</span>`
 }
 
-function serializeElement(node: Element) {
-  const children = node.children.map(n => serialize(n)).join('')
+function isCustomElement(node: any): node is Element {
+  return 'type' in node;
+}
+
+function serializeElement(node: Element | Editor) {
+  const children = node.children.map(n => serialize(n)).join('');
+  if (!isCustomElement(node) || !node.type) {
+    return children;
+  }
 
   switch (node.type) {
     case 'paragraph':
@@ -35,7 +42,7 @@ function serializeElement(node: Element) {
       return `<blockquote>${children}</blockquote>`
     case 'bulleted-list':
       return `<ul>${children}</ul>`
-    case 'heading-one':
+    case 'heading':
       return `<h1>${children}</h1>`
     case 'heading-two':
       return `<h2>${children}</h2>`
@@ -50,7 +57,7 @@ function serializeElement(node: Element) {
   }
 }
 
-export const serialize = (node: Element | Text) => {
+export const serialize = (node: Element | Text | Editor) => {
   if (isLeaf(node)) {
     const leaf = node as Text;
     return serializeLeaf(leaf);
