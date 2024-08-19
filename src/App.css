@@ -1,9 +1,10 @@
 /* https://github.com/hankchizljaw/modern-css-reset */
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+
 :root {
-  --font-size-base: 1.5rem;
-  --font-size-title: 2.3rem;
+  --font-size-base: 1.0rem;
+  --font-size-title: 1.3rem;
 }
 
 body {

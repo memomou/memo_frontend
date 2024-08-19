@@ -12,14 +12,15 @@ export const ContentContainer = styled.div`
     }
     .recentPosts {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;
       .post {
-        aspect-ratio: 8 / 5;
         background-color: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        min-height: 200px;
         .title {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;

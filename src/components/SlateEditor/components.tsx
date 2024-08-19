@@ -30,6 +30,8 @@ export const Button = React.forwardRef(
             : active
             ? "black"
             : "#ccc"};
+          display: flex;
+          align-items: center;
         `
       )}
     />
@@ -84,12 +86,15 @@ export const Toolbar = React.forwardRef(({ className, ...props }: any, ref) => (
         position: relative;
         padding: 10px;
         margin-bottom: 2px;
+        display: flex;
+        height: 2.5rem;
+        font-size: 1.6rem;
       `
     )}
   />
 ));
 
-export const BlockButton = ({ format, icon }) => {
+export const BlockButton = ({ format, icon, children }: any) => {
   const editor = useSlate();
   return (
     <Button
@@ -99,12 +104,12 @@ export const BlockButton = ({ format, icon }) => {
         toggleBlock(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      {children ?? ''}
     </Button>
   );
 };
 
-export const MarkButton = ({ format, icon }) => {
+export const MarkButton = ({ format, icon, children }: any) => {
   const editor = useSlate();
   return (
     <Button
@@ -114,7 +119,7 @@ export const MarkButton = ({ format, icon }) => {
         toggleMark(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      {children ?? ''}
     </Button>
   );
 };
