@@ -28,11 +28,11 @@ function Content() {
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="recentPosterTitle">
-          <h1>- 최근 게시글</h1>
+          <span>- 최근 게시글</span>
         </div>
         <div className="recentPosts">
           {posts.length && posts.map((post) => (
-            <Link to={`/post/${post.id}`}>
+            <Link to={`/post/${post.id}`} key={post.id}>
               <div className="post" key={post.id}>
                 <div className="title">
                   <div>{post.title}</div>

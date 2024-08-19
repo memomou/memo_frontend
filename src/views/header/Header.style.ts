@@ -20,14 +20,16 @@ export const DropdownMenu = styled.div<DropdownMenuProps>`
   border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  min-width: 100px;
+  min-width: 141px;
   z-index: 1000;
   color: black;
   display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
   flex-direction: column;
   ${MenuItem} {
+    width: 100%;
     font-size: 1.2rem;
     padding: 10px 25px;
+    text-align: center;
     cursor: pointer;
     &:hover {
       background-color: #f0f0f0;
@@ -46,10 +48,10 @@ export const Title = styled.div`
 `;
 
 export const StyledBase = css<StyledProps>`
-  height: 40px;
-  padding: 0px 5px;
+  height: 100%;
+  padding: 4px 10px;
   text-decoration: none;
-  font-size: 1.4rem;
+  font-size: 1.0rem;
   cursor: ${(props) => (props.selected ? "not-allowed" : "pointer")};
   pointer-events: ${(props) => (props.selected ? "none" : "auto")};
   display: flex;
@@ -85,10 +87,8 @@ export const HeaderContainer = styled.div`
   padding: 10px 10px;
 
 
-
   .profileBtn {
     min-width: 50px;
-    max-width: 100px;
   }
 
   ${HomeButton} {
@@ -97,11 +97,11 @@ export const HeaderContainer = styled.div`
     align-items: center;
     /* gap: 10px; */
     margin-right: auto;
-    font-size: 2.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     background-color: ${(props) => props.theme.headerbgColor};
     color: ${(props) => props.theme.headerTextColor};
-    height: 2.3rem;
+    height: 1.6rem;
     .logo {
       height: 100%;
     }
