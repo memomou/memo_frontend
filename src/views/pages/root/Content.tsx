@@ -9,6 +9,9 @@ function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [searchedPosts, setSearchedPosts] = useState<PostType[]>([]);
   const [searchInputValue, setSearchInputValue] = useState('');
+  const postToDisplay = searchInputValue ? searchedPosts : posts;
+  const isSearchedPostEmpty = searchInputValue && searchedPosts.length === 0;
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -53,7 +56,7 @@ function Content() {
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="topContainer">
-          <span className="recentPostText">- 최근 게시글</span>
+          <span className="recentPostText">{searchInputValue ? `- 검색 결과 (${searchedPosts.length})` : `- 최근 게시글`}</span>
           <span className="searchInputWrapper">
             <svg width="17" height="17" viewBox="0 0 17 17"><path fillRule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clipRule="evenodd" fill="currentColor"></path></svg>
             <input className="searchInput" type="text" placeholder="검색"       value={searchInputValue}
@@ -61,7 +64,8 @@ function Content() {
           </span>
         </div>
         <div className="recentPosts">
-        {(searchedPosts.length > 0 ? searchedPosts : posts)?.map((post) => (
+          {isSearchedPostEmpty ? (<div>검색 결과가 없습니다.</div>) : (<></>)}
+        {(postToDisplay)?.map((post) => (
           <Link to={`/post/${post.id}`} key={post.id}>
             <div className="post" key={post.id}>
               <div className="title">
