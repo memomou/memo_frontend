@@ -58,11 +58,6 @@ export const ContentContainer = styled.div`
             overflow: hidden;
             font-weight: bold;
           }
-          .date {
-            font-size: 0.7rem;
-            color: #999;
-
-          }
         }
         .content {
           margin-top: 5px;
@@ -86,6 +81,10 @@ export const ContentContainer = styled.div`
           .author {
             font-size: 0.8rem;
             color: #666;
+          }
+          .date {
+            font-size: 0.7rem;
+            color: #999;
           }
         }
       }

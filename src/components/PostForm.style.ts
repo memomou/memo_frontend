@@ -10,6 +10,7 @@ export const PostForm = css`
   background-color: white;
   flex: 1;
   max-width: 500px;
-  min-height: -webkit-fill-available;
+  min-height: 70%;
+  /* min-height: -webkit-fill-available; */
   font-size: var(--font-size-base);
 `;

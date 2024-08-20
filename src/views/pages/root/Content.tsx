@@ -71,13 +71,13 @@ function Content() {
             <div className="post" key={post.id}>
               <div className="top-wrapper">
                 <div className="title">{post.title}</div>
-                <div className="date">{changeDateFormat(post.createdAt)}</div>
               </div>
               <div className="content">
                 <p>{post.content}</p>
               </div>
               <div className="bottom-wrapper">
                 <div className="author">작성자: {post.author.nickname}</div>
+                <div className="date">{changeDateFormat(post.createdAt)}</div>
               </div>
             </div>
           </Link>

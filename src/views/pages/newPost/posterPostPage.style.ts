@@ -44,6 +44,7 @@ const PosterNewForm = styled.form`
     flex: 1;
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
     .text-editor-wrapper {
       flex: 1;
       display: flex;
@@ -91,7 +92,7 @@ const PosterNewForm = styled.form`
     & > button:nth-child(2) {
       font-size: 1.2rem;
       background-color: #12b886;
-      height: 50px;
+      height: 37px;
       aspect-ratio: 5 / 2;
       color: white;
       border-radius: 5px;

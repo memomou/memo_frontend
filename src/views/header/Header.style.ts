@@ -104,6 +104,7 @@ export const HeaderContainer = styled.div`
     height: 1.6rem;
     .logo {
       height: 100%;
+      margin-right: 5px;
     }
   }
 
