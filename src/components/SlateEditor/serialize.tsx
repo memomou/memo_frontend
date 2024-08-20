@@ -7,6 +7,9 @@ function isLeaf(element: any): element is Text {
 
 function serializeLeaf (node: Text) {
   let string = escapeHtml(node.text)
+  if (string === '') {
+    string = '<br />'
+  }
   if (node.bold) {
     string = `<strong>${string}</strong>`
   }
