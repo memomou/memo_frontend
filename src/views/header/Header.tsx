@@ -64,9 +64,9 @@ function Header() {
         {user ? (
           <>
         {
-          location.pathname !== "/post/new" && (
+          location.pathname !== "/post/write" && (
             <StyledBtn>
-              <Link to="/post/new">
+              <Link to="/post/write">
                 새 글 작성
               </Link>
             </StyledBtn>

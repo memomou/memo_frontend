@@ -2,7 +2,6 @@ import styled, {css} from "styled-components";
 export const PostForm = css`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   padding: 20px;
   margin: 20px;
   border-radius: 10px;

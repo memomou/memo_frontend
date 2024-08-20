@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PostType } from "../../../types/post";
-import { axiosInstance } from "../../../helpers/helper";
+import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link } from "react-router-dom";
 
@@ -41,6 +41,7 @@ function Content() {
     const response = await axiosInstance.get('/posts', {
       params: {
         where__content__i_like: e.target.value,
+        where__title__i_like: e.target.value,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];
@@ -68,11 +69,15 @@ function Content() {
         {(postToDisplay)?.map((post) => (
           <Link to={`/post/${post.id}`} key={post.id}>
             <div className="post" key={post.id}>
-              <div className="title">
-                <div>{post.title}</div>
+              <div className="top-wrapper">
+                <div className="title">{post.title}</div>
+                <div className="date">{changeDateFormat(post.createdAt)}</div>
               </div>
               <div className="content">
                 <p>{post.content}</p>
+              </div>
+              <div className="bottom-wrapper">
+                <div className="author">작성자: {post.author.nickname}</div>
               </div>
             </div>
           </Link>

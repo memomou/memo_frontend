@@ -4,10 +4,13 @@ import { Styled } from "../auth/authPage.style";
 import { useEffect, useMemo, useState } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import { Descendant, createEditor, Element } from "slate";
+import { Descendant, createEditor, Element, Transforms, Editor } from "slate";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
+import { useLocation } from 'react-router-dom';
+import { PostType } from "../../../types/post";
+
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -28,33 +31,44 @@ function renderPlaceholder(props: RenderPlaceholderProps) {
 function PosterPostPage(props: any) {
   const [title, setTitle] = useState('');
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
+  const [post, setPost] = useState<PostType>();
   const navigate = useNavigate();
-  const initialValue_ = useMemo(
-    () => {
-      const content = localStorage.getItem('content');
-      console.log("content", content);
-      if (content) {
-        try {
-          return JSON.parse(content)
-        } catch (error) {
-          console.error("Error parsing content:", error);
-          return defaultValue;
-        }
-      } else {
-        return defaultValue
-      }
-    },
-    []
-  )
+  const location = useLocation();
+
+  // URLSearchParams 객체를 사용하여 쿼리 파라미터 추출
+  const queryParams = new URLSearchParams(location.search);
+  const postId = queryParams.get('postId');
+  const isUpdate = postId ? true : false;
+  const [editor] = useState(() => withReact(withHistory(createEditor())));
+
   useEffect(() => {
-    console.log("initialValue", initialValue_);
+    const fetchPosts = async () => {
+      try {
+        const response = await axiosInstance.get(`/posts/${postId}`);
+        const post = response.data.post;
+        const deserializePost = { ...post, contentSlate: JSON.parse(post.contentSlate) } as PostType;
+        setTitle(deserializePost.title);
+        setPost(deserializePost);
+        console.log('Post:', post);
+        console.log('deserializePost:', deserializePost);
+          // 에디터의 값 설정
+        Transforms.deselect(editor); // 현재 선택 상태를 비우기
+        editor.children = deserializePost.contentSlate; // 에디터의 내용 전체 교체
+        editor.onChange(); // 에디터의 변경 사항 적용
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    if (isUpdate) {
+      fetchPosts();
+    }
   }, []);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
 
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
   const onButtonClick = async (event:React.FormEvent) => {
     event.preventDefault();
     console.log("editor.children", editor.children);
@@ -64,14 +78,24 @@ function PosterPostPage(props: any) {
     const deserialzedContent = serialize(editor);
     console.log("deserializedContent", deserialzedContent);
     try {
-      const response = await axiosInstance.post('/posts', {
+      const postData = {
         title: title,
         content: deserialzedContent,
         contentSlate: jsonContent,
-      });
-      console.log('게시글 저장 성공:', response);
-      localStorage.setItem('content', JSON.stringify(defaultValue));
-      navigate('/');
+      };
+
+      try {
+        const response = isUpdate
+          ? await axiosInstance.patch(`/posts/${postId}`, postData)
+          : await axiosInstance.post('/posts', postData);
+
+        console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
+        const {id: fetchedPostId} = response.data;
+        console.log('post:', post);
+        navigate(`/post/${fetchedPostId}`);
+      } catch (error) {
+        console.error('게시글 처리 중 오류 발생:', error);
+      }
     } catch (error) {
       console.error("게시글 저장 실패:", error);
     }
@@ -84,12 +108,12 @@ function PosterPostPage(props: any) {
             className="title-input"
             type="text"
             placeholder="제목을 입력하세요"
-            value={title}
+            value={post ? post.title : title}
             onChange={handleTitleChange}
           />
             <StyledSlateEditor
               editor={editor}
-              initialValue={initialValue_}
+              initialValue={defaultValue}
               renderEditable={
                 (editableProps) =>
                   <StyledEditable
@@ -111,7 +135,7 @@ function PosterPostPage(props: any) {
           </svg>
             <span>나가기</span>
             </button>
-          <button onClick={onButtonClick} type="submit">기록하기</button>
+          <button onClick={onButtonClick} type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
         </div>
       </PosterNewForm>
     </Styled>

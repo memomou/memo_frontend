@@ -1,3 +1,5 @@
+import { Element } from 'slate'
+
 export type UserType = {
   id: string;
   createdAt: string;
@@ -8,9 +10,9 @@ export type UserType = {
 
 export type PostType = {
   id: string;
-  createdAt: boolean;
+  createdAt: string;
   author: User;
   title: string;
   content: string;
-  contentSlate: string;
+  contentSlate: Element[];
 };

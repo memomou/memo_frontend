@@ -19,7 +19,7 @@ function Body() {
           <Route path="/" element={<Root/>} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignupPage/>} />
-          <Route path="/post/new" element={<PosterPostPage/>} />
+          <Route path="/post/write" element={<PosterPostPage/>} />
           <Route path="/post/:id" element={<DetailPostPage/>} />
         </Routes>
     </Container>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ContentContainer = styled.div`
-  font-size: 1.1rem;
+  // font-size: 1.1rem;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -38,22 +38,35 @@ export const ContentContainer = styled.div`
       gap: 20px;
       .post {
         background-color: white;
-        padding: 20px;
+        padding: 13px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         height: 100%;
-        min-height: 200px;
-        .title {
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-          display: -webkit-box;
-          line-height: 1.5rem;
-          overflow: hidden;
-          font-weight: bold;
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        .top-wrapper {
           height: 26px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .title {
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            display: -webkit-box;
+            line-height: 1.5rem;
+            overflow: hidden;
+            font-weight: bold;
+          }
+          .date {
+            font-size: 0.7rem;
+            color: #999;
+
+          }
         }
         .content {
           margin-top: 5px;
+          flex: 1;
           padding-top: 10px;
           border-top: 1px solid #eee;
           color: #666;
@@ -63,6 +76,17 @@ export const ContentContainer = styled.div`
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: normal;
+          font-size: 0.9rem;
+        }
+        .bottom-wrapper {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+          .author {
+            font-size: 0.8rem;
+            color: #666;
+          }
         }
       }
     }
