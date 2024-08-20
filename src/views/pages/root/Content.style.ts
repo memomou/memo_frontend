@@ -4,12 +4,28 @@ export const ContentContainer = styled.div`
   // font-size: 1.1rem;
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   padding: 20px;
+  .sidebarWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 53px;
+    margin-right: 10px;
+    padding: 10px;
+    a {
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+    }
+  }
+
   .recentPosterWrapper {
+    flex: 4;
     .topContainer {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
       .recentPostText {
         font-size: 1.5rem;
@@ -18,7 +34,7 @@ export const ContentContainer = styled.div`
       .searchInputWrapper {
         min-width: 200px;
         height: 40px;
-        border : 1px solid #ddd;
+        border: 1px solid #ddd;
         position: relative;
         display: flex;
         align-items: center;
