@@ -90,7 +90,7 @@ function PosterPostPage(props: any) {
           : await axiosInstance.post('/posts', postData);
 
         console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
-        const {id: fetchedPostId} = response.data;
+        const {id: fetchedPostId} = response.data.post;
         console.log('post:', post);
         navigate(`/post/${fetchedPostId}`);
       } catch (error) {
