@@ -3,7 +3,7 @@ const getEnv = (key: string, defaultValue: string): string => {
 };
 
 const config = {
-  backendUri: getEnv('REACT_APP_BACKEND_URI', 'http://localhost:3001'),
+  backendUri: getEnv('REACT_APP_BACKEND_URI', 'https://memoapi.entto.shop'),
 };
 
 export default config;
