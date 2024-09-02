@@ -21,6 +21,7 @@ const DetailPosterForm = styled.div`
   .wrapperTwo {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 3px solid #eee;
     padding: 10px;
     .author {

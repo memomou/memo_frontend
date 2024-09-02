@@ -54,7 +54,11 @@ function DetailPostPage(props: any) {
           <div className="modification">
             <Link to={`/post/write?postId=${postId}`}>수정</Link>
             <span> | </span>
-            <button onClick={handleDelete}>삭제</button>
+            <button onClick={handleDelete}>
+              <span>
+                삭제
+              </span>
+              </button>
           </div>) : (<></>)
         }
         </div>
