@@ -80,7 +80,7 @@ function Header() {
               <span>{user.nickname} 님</span>
             </StyledBtn>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
-              <MenuItem onClick={navigateToFn(`/user/${user.id}`)} >
+              <MenuItem onClick={navigateToFn(`/${user.nickname}`)} >
                 개인 블로그
               </MenuItem>
               <MenuItem onClick={navigateToFn(`/user/setting`)}>
