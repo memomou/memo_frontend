@@ -6,6 +6,7 @@ export const ContentContainer = styled.div`
   flex: 1;
   flex-direction: row;
   padding: 20px;
+  flex-grow: 5;
   .sidebarWrapper {
     flex: 1;
     display: flex;

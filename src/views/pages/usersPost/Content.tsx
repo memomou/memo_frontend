@@ -4,21 +4,27 @@ import { PostType } from "../../../types/post";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { authorAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 
-function Content() {
+export function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [searchedPosts, setSearchedPosts] = useState<PostType[]>([]);
   const [searchInputValue, setSearchInputValue] = useState('');
   const postToDisplay = searchInputValue ? searchedPosts : posts;
   const isSearchedPostEmpty = searchInputValue && searchedPosts.length === 0;
+  const [author, setAuthor] = useRecoilState(authorAtom);
   const { nickname } = useParams();
+  const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        console.log('selectedCategory:', selectedCategory);
         const response = await axiosInstance.get('/posts', {
           params: {
-            nickname,
+            where__and__author__id__equal: author?.id,
+            where__and__category__id__equal: selectedCategory?.id,
           }});
         console.log('Posts:', response);
         const posts = response.data.posts.data as PostType[];
@@ -32,7 +38,7 @@ function Content() {
       }
     };
     fetchPosts();
-  }, []);
+  }, [author?.id, selectedCategory]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
@@ -46,7 +52,7 @@ function Content() {
       params: {
         where__content__i_like: e.target.value,
         where__title__i_like: e.target.value,
-        nickname,
+        where__and__author__id__equal: author?.id,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];
@@ -62,7 +68,7 @@ function Content() {
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="topContainer">
-          <span className="recentPostText">{searchInputValue ? `- 검색 결과 (${searchedPosts.length})` : `- 전체 게시글`}</span>
+          <span className="recentPostText">{searchInputValue ? `- 검색 결과 (${searchedPosts.length})` : `- ${selectedCategory?.categoryName || "전체 게시글"}`}</span>
           <span className="searchInputWrapper">
             <svg width="17" height="17" viewBox="0 0 17 17"><path fillRule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clipRule="evenodd" fill="currentColor"></path></svg>
             <input className="searchInput" type="text" placeholder="검색"       value={searchInputValue}

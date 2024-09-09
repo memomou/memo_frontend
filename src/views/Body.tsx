@@ -5,7 +5,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignUpPage";
 import PosterPostPage from "./pages/newPost/PosterPostPage";
 import DetailPostPage from "./pages/detailPost/DetailPostPage";
-import UserPostPage from "./pages/usersPost/Content";
+import { UsersPostPage } from "./pages/usersPost/UsersPostPage";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ function Body() {
     <Container>
         <Routes>
           <Route path="/" element={<Root/>} />
-          <Route path="/:nickname" element={<UserPostPage />} />
+          <Route path="/:nickname" element={<UsersPostPage />} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignupPage/>} />
           <Route path="/post/write" element={<PosterPostPage/>} />
