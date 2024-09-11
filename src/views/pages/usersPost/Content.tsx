@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PostType } from "../../../types/post";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
+import axios from 'axios';
 import {ContentContainer} from './Content.style';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authorAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 
@@ -16,16 +17,25 @@ export function Content() {
   const [author, setAuthor] = useRecoilState(authorAtom);
   const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // 특정 쿼리 파라미터 값 가져오기
+  const selectedCategoryName = searchParams.get('category');
+  const source = axios.CancelToken.source();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log('selectedCategory:', selectedCategory);
+        if (!author?.id) return;
+        if (selectedCategoryName && selectedCategoryName !== selectedCategory?.categoryName) {
+          return;
+        }
         const response = await axiosInstance.get('/posts', {
           params: {
             where__and__author__id__equal: author?.id,
             where__and__category__id__equal: selectedCategory?.id,
-          }});
+          },
+          cancelToken: source.token
+        });
         console.log('Posts:', response);
         const posts = response.data.posts.data as PostType[];
         posts.map((post) => {
@@ -38,7 +48,7 @@ export function Content() {
       }
     };
     fetchPosts();
-  }, [author?.id, selectedCategory]);
+  }, [selectedCategory, author?.id]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
