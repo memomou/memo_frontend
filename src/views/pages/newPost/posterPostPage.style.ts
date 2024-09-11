@@ -20,7 +20,15 @@ export const StyledEditable = styled(Editable)`
 export const StyledSlateEditor = styled(SlateEditor)`
 `;
 
-const PosterNewForm = styled.form`
+export const PosterNewContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+`;
+
+export const PosterNewForm = styled.form`
   ${PostForm}
 
   .title-input {
@@ -99,5 +107,3 @@ const PosterNewForm = styled.form`
     }
   }
 `;
-
-export default PosterNewForm;

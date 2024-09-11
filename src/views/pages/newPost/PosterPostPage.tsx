@@ -1,4 +1,4 @@
-import PosterNewForm from "./posterPostPage.style";
+import {PosterNewForm, PosterNewContainer} from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
 import { Styled } from "../auth/authPage.style";
 import { useEffect, useMemo, useState } from "react";
@@ -107,7 +107,10 @@ function PosterPostPage(props: any) {
     }
   }
   return (
-    <Styled>
+    <PosterNewContainer>
+      <div className="options-bar">
+        dd
+      </div>
       <PosterNewForm onSubmit={onButtonClick}>
         <div className="editor-wrapper">
           <input
@@ -145,7 +148,7 @@ function PosterPostPage(props: any) {
           <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
         </div>
       </PosterNewForm>
-    </Styled>
+    </PosterNewContainer>
   );
 }
 
