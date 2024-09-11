@@ -69,6 +69,12 @@ function PosterPostPage(props: any) {
     setTitle(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // input에서 Enter 키 눌렀을 때 기본 동작 막음
+    }
+  };
+
   const onButtonClick = async (event:React.FormEvent) => {
     event.preventDefault();
     console.log("editor.children", editor.children);
@@ -102,7 +108,7 @@ function PosterPostPage(props: any) {
   }
   return (
     <Styled>
-      <PosterNewForm>
+      <PosterNewForm onSubmit={onButtonClick}>
         <div className="editor-wrapper">
           <input
             className="title-input"
@@ -110,6 +116,7 @@ function PosterPostPage(props: any) {
             placeholder="제목을 입력하세요"
             value={post ? post.title : title}
             onChange={handleTitleChange}
+            onKeyDown={handleKeyDown}
           />
             <StyledSlateEditor
               editor={editor}
@@ -135,7 +142,7 @@ function PosterPostPage(props: any) {
           </svg>
             <span>나가기</span>
             </button>
-          <button onClick={onButtonClick} type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
+          <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
         </div>
       </PosterNewForm>
     </Styled>
