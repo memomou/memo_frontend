@@ -23,9 +23,32 @@ export const StyledSlateEditor = styled(SlateEditor)`
 export const PosterNewContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
   flex: 1;
+
+  .options-bar {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+    margin-top: 38px;
+
+    select {
+      font-size: 1.14rem;
+      border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 2px 5px;
+      background-color: white;
+      border-radius: 5px;
+    }
+  }
+
+  .editor-container {
+    display: flex;
+    min-height: 567px;
+    flex-direction: row;
+    width: -webkit-fill-available;
+    justify-content: center;
+  }
 `;
 
 export const PosterNewForm = styled.form`

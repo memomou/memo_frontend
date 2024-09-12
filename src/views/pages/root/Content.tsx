@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PostType } from "../../../types/post";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link } from "react-router-dom";
+import { PostType } from "../../../components/atom/atoms";
 
 function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);

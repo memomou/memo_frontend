@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PostType } from "../../../types/post";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import axios from 'axios';
 import {ContentContainer} from './Content.style';
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { authorAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { PostType, authorAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 
 export function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -63,6 +62,7 @@ export function Content() {
         where__content__i_like: e.target.value,
         where__title__i_like: e.target.value,
         where__and__author__id__equal: author?.id,
+        where__and__category__id__equal: selectedCategory?.id,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];

@@ -7,12 +7,3 @@ export type UserType = {
   nickname: string;
   role: 'admin' | 'user'| null | undefined;
 };
-
-export type PostType = {
-  id: string;
-  createdAt: string;
-  author: User;
-  title: string;
-  content: string;
-  contentSlate: Element[];
-};

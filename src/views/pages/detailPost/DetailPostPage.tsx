@@ -1,11 +1,10 @@
-import DetailPosterForm from "./DetailPostPage.style";
+import DetailPosterForm, { PosterNewContainer } from "./DetailPostPage.style";
 import { Styled } from "../auth/authPage.style";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import { useEffect, useState } from "react";
-import { PostType } from "../../../types/post";
 import { useRecoilState } from "recoil";
-import { userAtom } from "../../../components/atom/atoms";
+import { PostType, userAtom } from "../../../components/atom/atoms";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
@@ -40,34 +39,42 @@ function DetailPostPage(props: any) {
 
   console.log("params", postId);
   return (
-    <Styled>
-      <DetailPosterForm>
-        <div className="wrapperOne">
-          <span className="title">{post?.title ?? "..."}</span>
-          <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt) : "..."}</span>
+    <PosterNewContainer>
+      <div className="options-bar">
+        <div className="category">
+          {post?.category?.categoryName ?? "전체 게시글"}
         </div>
-        <div className="wrapperTwo">
-          <div className="author">
-            <span>작성자: {post?.author?.nickname ?? "..."}</span>
+        <div></div>
+      </div>
+      <div className="editor-container">
+        <DetailPosterForm>
+          <div className="wrapperOne">
+            <span className="title">{post?.title ?? "..."}</span>
+            <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt) : "..."}</span>
           </div>
-        {isOwnerOrAdmin ? (
-          <div className="modification">
-            <Link to={`/post/write?postId=${postId}`}>수정</Link>
-            <span> | </span>
-            <button onClick={handleDelete}>
-              <span>
-                삭제
-              </span>
-              </button>
-          </div>) : (<></>)
-        }
-        </div>
-        <div className="content">
-          <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
-        </div>
+          <div className="wrapperTwo">
+            <div className="author">
+              <span>작성자: {post?.author?.nickname ?? "..."}</span>
+            </div>
+          {isOwnerOrAdmin ? (
+            <div className="modification">
+              <Link to={`/post/write?postId=${postId}`}>수정</Link>
+              <span> | </span>
+              <button onClick={handleDelete}>
+                <span>
+                  삭제
+                </span>
+                </button>
+            </div>) : (<></>)
+          }
+          </div>
+          <div className="content">
+            <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
+          </div>
 
-      </DetailPosterForm>
-    </Styled>
+        </DetailPosterForm>
+      </div>
+    </PosterNewContainer>
   );
 }
 

@@ -1,10 +1,12 @@
 import { atom } from "recoil";
+import { CustomElement } from "../../types/slate";
 
 interface UserState {
   id?: number;
+  createdAt?: string;
   email?: string;
   nickname?: string;
-  role?: string;
+  role?: 'admin' | 'user'| null | undefined;
 }
 
 export const userAtom = atom<UserState | undefined>({
@@ -17,12 +19,23 @@ export const authorAtom = atom<UserState | undefined>({
   default: undefined,
 });
 
-interface CategoriesState {
+export interface CategoriesState {
   id: number;
   categoryName: string;
   pos: number;
   user: UserState;
 }
+
+export interface PostType {
+  id: string;
+  createdAt: string;
+  author: UserState;
+  title: string;
+  content: string;
+  contentSlate: (CustomElement)[];
+  category: CategoriesState;
+};
+
 
 export const authorCategoriesAtom = atom<CategoriesState[]>({
   key: 'authorCategories',
