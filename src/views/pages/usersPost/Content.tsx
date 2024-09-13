@@ -1,25 +1,28 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import axios from 'axios';
 import {ContentContainer} from './Content.style';
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { PostType, authorAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom } from "../../../components/atom/atoms";
 
-export function Content() {
-  const [posts, setPosts] = useState<PostType[]>([]);
-  const [searchedPosts, setSearchedPosts] = useState<PostType[]>([]);
-  const [searchInputValue, setSearchInputValue] = useState('');
-  const postToDisplay = searchInputValue ? searchedPosts : posts;
-  const isSearchedPostEmpty = searchInputValue && searchedPosts.length === 0;
-  const [author, setAuthor] = useRecoilState(authorAtom);
-  const { nickname } = useParams();
+export const Content = () => {
+  const [author] = useRecoilState(authorAtom);
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
+  const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
+  const currentUser = useRecoilValue(userAtom);
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState("");
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [searchInputValue, setSearchInputValue] = useState('');
+  const { nickname } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   // 특정 쿼리 파라미터 값 가져오기
   const selectedCategoryName = searchParams.get('category');
   const source = axios.CancelToken.source();
+
+  const [isEditingText, setIsEditingText] = useState(false);
+  const [editText, setEditText] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -36,12 +39,12 @@ export function Content() {
           cancelToken: source.token
         });
         console.log('Posts:', response);
-        const posts = response.data.posts.data as PostType[];
-        posts.map((post) => {
+        const fetchedPosts = response.data.posts.data as PostType[];
+        fetchedPosts.map((post) => {
           post.content = post.content.replace(/<[^>]+>/g, '');
           return post;
         });
-        setPosts(posts);
+        setPosts(fetchedPosts);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
       }
@@ -53,7 +56,7 @@ export function Content() {
     setSearchInputValue(e.target.value);
     console.log(e.target.value);
     if (!e.target.value) {
-      setSearchedPosts([]);
+      setPosts([]);
       console.log('No search input');
       return;
     }
@@ -70,43 +73,165 @@ export function Content() {
       post.content = post.content.replace(/<[^>]+>/g, '');
       return post;
     });
-    setSearchedPosts(searchedPosts);
-    console.log('Posts:', response);
+    setPosts(searchedPosts);
+    console.log('Searched Posts:', response);
   }
+
+  const handleEditCategory = (categoryId: number, categoryName: string) => {
+    setEditingCategoryId(categoryId);
+    setEditCategoryName(categoryName);
+  };
+
+  const handleUpdateCategory = async (categoryId: number) => {
+    try {
+      const body = { categoryName: editCategoryName };
+      console.log('카테고리 업데이트 요청 body:', body);
+      console.log('카테고리 업데이트 요청 categoryId:', categoryId);
+
+      const response = await axiosInstance.patch(`/categories/${categoryId}`, body);
+      const updatedCategory = response.data;
+      setAuthorCategories(prevCategories =>
+        prevCategories.map(cat => cat.id === Number(categoryId) ? updatedCategory : cat)
+      );
+      setEditingCategoryId(null);
+
+      // URL 쿼리 파라미터 업데이트
+      if (selectedCategory?.id === Number(categoryId)) {
+        setSearchParams({ category: editCategoryName });
+      }
+    } catch (error) {
+      console.error('카테고리 수정 실패:', error);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId: number) => {
+    try {
+      // 카테고리에 속한 게시글 수 확인
+      const response = await axiosInstance.get('/posts', {
+        params: {
+          where__and__category__id__equal: categoryId,
+          take: 1
+        }
+      });
+
+      if (response.data.posts.data.length > 0) {
+        alert('이 카테고리에 게시글이 있어 삭제할 수 없습니다.');
+        return;
+      }
+
+      if (window.confirm('정말로 이 카테고리를 삭제하시겠습니까?')) {
+        await axiosInstance.delete(`/categories/${categoryId}`);
+        setAuthorCategories(prevCategories =>
+          prevCategories.filter(cat => cat.id !== Number(categoryId))
+        );
+        if (selectedCategory?.id === Number(categoryId)) {
+          setSelectedCategory(undefined);
+          // 쿼리 파라미터에서 카테고리 제거
+          searchParams.delete('category');
+          setSearchParams(searchParams);
+        }
+      }
+    } catch (error) {
+      console.error('카테고리 삭제 실패:', error);
+      alert('카테고리 삭제 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleEditText = () => {
+    if (selectedCategory) {
+      handleEditCategory(selectedCategory.id, selectedCategory.categoryName);
+    } else {
+      setIsEditingText(true);
+      setEditText("전체 게시글");
+    }
+  };
+
+  const handleUpdateText = async () => {
+    if (selectedCategory) {
+      try {
+        await handleUpdateCategory(selectedCategory.id);
+        setEditingCategoryId(null);
+      } catch (error) {
+        console.error('텍스트 수정 실패:', error);
+      }
+    } else {
+      setIsEditingText(false);
+    }
+  };
 
   return (
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="topContainer">
-          <span className="recentPostText">{searchInputValue ? `- 검색 결과 (${searchedPosts.length})` : `- ${selectedCategory?.categoryName || "전체 게시글"}`}</span>
+          <div>
+            <span className="recentPostText">
+              {searchInputValue ? `- 검색 결과 (${posts.length})` :
+                editingCategoryId === selectedCategory?.id ? (
+                  <input
+                    value={editCategoryName}
+                    onChange={(e) => {
+                      console.log('카테고리 이름 변경:', e.target.value);
+                      setEditCategoryName(e.target.value);
+                    }}
+                    onBlur={() => handleUpdateCategory(selectedCategory.id)}
+                  />
+                ) : (
+                  `- ${selectedCategory?.categoryName || "전체 게시글"}`
+                )
+              }
+            </span>
+            {currentUser?.id === author?.id && selectedCategory && (
+              <span className="mdf">
+                {editingCategoryId === selectedCategory.id ? (
+                  <>
+                    <button className="save-btn" onClick={() => handleUpdateCategory(selectedCategory.id)}>저장</button>
+                    <button className="cancel-btn" onClick={() => setEditingCategoryId(null)}>취소</button>
+                  </>
+                ) : (
+                  <>
+                    <button className="edit-btn" onClick={handleEditText}>변경</button>
+                    <span className="separator">/</span>
+                    <button className="delete-btn" onClick={() => handleDeleteCategory(selectedCategory.id)}>삭제</button>
+                  </>
+                )}
+              </span>
+            )}
+          </div>
           <span className="searchInputWrapper">
             <svg width="17" height="17" viewBox="0 0 17 17"><path fillRule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clipRule="evenodd" fill="currentColor"></path></svg>
             <input className="searchInput" type="text" placeholder="검색"       value={searchInputValue}
       onChange={handleInputChange} />
           </span>
         </div>
-        <div className="recentPosts">
-          {isSearchedPostEmpty ? (<div>검색 결과가 없습니다.</div>) : (<></>)}
-        {(postToDisplay)?.map((post) => (
-          <Link to={`/post/${post.id}`} key={post.id}>
-            <div className="post" key={post.id}>
-              <div className="top-wrapper">
-                <div className="title">{post.title}</div>
-              </div>
-              <div className="content">
-                <p>{post.content}</p>
-              </div>
-              <div className="bottom-wrapper">
-                <div className="author">작성자: {post.author.nickname}</div>
-                <div className="date">{changeDateFormat(post.createdAt)}</div>
-              </div>
-            </div>
-          </Link>
-        ))}
-        </div>
+        {posts.length > 0 ? (
+          <div className="recentPosts">
+            {posts.map((post) => (
+              <Link to={`/post/${post.id}`} key={post.id}>
+                <div className="post">
+                  <div className="top-wrapper">
+                    <div className="title">{post.title}</div>
+                  </div>
+                  <div className="content">
+                    <p>{post.content}</p>
+                  </div>
+                  <div className="bottom-wrapper">
+                    <div className="author">작성자: {post.author.nickname}</div>
+                    <div className="date">{changeDateFormat(post.createdAt)}</div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="no-posts-message">
+            {searchInputValue
+              ? "검색 결과가 없어요. 다른 키워드로 검색해보세요!"
+              : "아직 작성된 글이 없어요. 첫 글을 작성해보세요!"}
+          </div>
+        )}
       </div>
     </ContentContainer>
   );
-}
+};
 
 export default Content;

@@ -28,7 +28,7 @@ export const DropdownMenu = styled.div<DropdownMenuProps>`
   ${MenuItem} {
     width: 100%;
     font-size: 1.2rem;
-    padding: 10px 25px;
+    padding: 10px 20px;
     text-align: center;
     cursor: pointer;
     &:hover {

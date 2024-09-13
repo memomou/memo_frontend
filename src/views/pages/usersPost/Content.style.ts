@@ -7,19 +7,6 @@ export const ContentContainer = styled.div`
   flex-direction: row;
   padding: 20px;
   flex-grow: 5;
-  .sidebarWrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 53px;
-    margin-right: 10px;
-    padding: 10px;
-    a {
-      padding: 8px 10px;
-      border: 1px solid #ddd;
-    }
-  }
 
   .recentPosterWrapper {
     flex: 4;
@@ -31,6 +18,11 @@ export const ContentContainer = styled.div`
       .recentPostText {
         font-size: 1.5rem;
         font-weight: bold;
+        margin-right: 17px;
+      }
+      .mdf {
+        font-size: 0.8rem;
+        color: #999;
       }
       .searchInputWrapper {
         min-width: 200px;
@@ -62,6 +54,15 @@ export const ContentContainer = styled.div`
         min-height: 150px;
         display: flex;
         flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+
+        &:hover {
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          border-color: rgba(52, 152, 219, 0.35); // 더 옅은 파란색
+        }
+
         .top-wrapper {
           height: 26px;
           display: flex;
@@ -105,6 +106,21 @@ export const ContentContainer = styled.div`
           }
         }
       }
+      cursor: pointer;
+
     }
+  }
+
+  .no-posts-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    font-size: 1.5rem;
+    color: #666;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
   }
 `;

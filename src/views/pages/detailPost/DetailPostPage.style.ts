@@ -21,6 +21,7 @@ export const PosterNewContainer = styled.div`
       background-color: white;
       border-radius: 5px;
     }
+
   }
 
   .editor-container {
