@@ -28,10 +28,10 @@ export const SideBarContainer = styled.div`
     height: 31px;
     align-items: center;
     cursor: pointer;
-    transition: 0.3s;
+    /* transition: 0.3s; */
     border: 1px solid #ddd;
     &:hover {
-      background-color: #c7ffcc;
+      border: 1px solid rgba(52, 152, 219, 0.8);
     }
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
@@ -92,6 +92,6 @@ export const SideBarContainer = styled.div`
   }
 
   .selected {
-    background-color: ${(props) => props.theme.SideBarbgColor};
+    background-color: #e6f3ff;
   }
 `;

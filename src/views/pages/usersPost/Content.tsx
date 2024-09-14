@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import axios from 'axios';
@@ -17,9 +17,9 @@ export const Content = () => {
   const [searchInputValue, setSearchInputValue] = useState('');
   const { nickname } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  // 특정 쿼리 파라미터 값 가져오기
   const selectedCategoryName = searchParams.get('category');
   const source = axios.CancelToken.source();
+  const editInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditingText, setIsEditingText] = useState(false);
   const [editText, setEditText] = useState("");
@@ -51,6 +51,12 @@ export const Content = () => {
     };
     fetchPosts();
   }, [selectedCategory, author?.id]);
+
+  useEffect(() => {
+    if (editingCategoryId !== null) {
+      editInputRef.current?.focus();
+    }
+  }, [editingCategoryId]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
@@ -163,50 +169,44 @@ export const Content = () => {
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="topContainer">
-          <div>
             <span className="recentPostText">
               {searchInputValue ? `- 검색 결과 (${posts.length})` :
                 editingCategoryId === selectedCategory?.id ? (
-                  <input
-                    value={editCategoryName}
-                    onChange={(e) => {
-                      console.log('카테고리 이름 변경:', e.target.value);
-                      setEditCategoryName(e.target.value);
-                    }}
-                    onBlur={() => handleUpdateCategory(selectedCategory.id)}
-                  />
+                  <>
+                    <input
+                      ref={editInputRef}
+                      value={editCategoryName}
+                      onChange={(e) => setEditCategoryName(e.target.value)}
+                    />
+                    <div className="mdf">
+                      <button className="save-btn" onClick={() => handleUpdateCategory(selectedCategory.id)}>저장</button>
+                      <span className="separator">|</span>
+                      <button className="cancel-btn" onClick={() => setEditingCategoryId(null)}>취소</button>
+                    </div>
+                  </>
                 ) : (
-                  `- ${selectedCategory?.categoryName || "전체 게시글"}`
+                  <span className="categoryName">
+                    - {selectedCategory?.categoryName || "전체 게시글"}
+                  </span>
                 )
               }
-            </span>
-            {currentUser?.id === author?.id && selectedCategory && (
+            {currentUser?.id === author?.id && selectedCategory && !editingCategoryId && (
               <span className="mdf">
-                {editingCategoryId === selectedCategory.id ? (
-                  <>
-                    <button className="save-btn" onClick={() => handleUpdateCategory(selectedCategory.id)}>저장</button>
-                    <button className="cancel-btn" onClick={() => setEditingCategoryId(null)}>취소</button>
-                  </>
-                ) : (
-                  <>
-                    <button className="edit-btn" onClick={handleEditText}>변경</button>
-                    <span className="separator">/</span>
-                    <button className="delete-btn" onClick={() => handleDeleteCategory(selectedCategory.id)}>삭제</button>
-                  </>
-                )}
+                <button className="edit-btn" onClick={() => handleEditCategory(selectedCategory.id, selectedCategory.categoryName)}>변경</button>
+                <span className="separator">|</span>
+                <button className="delete-btn" onClick={() => handleDeleteCategory(selectedCategory.id)}>삭제</button>
               </span>
             )}
-          </div>
+            </span>
           <span className="searchInputWrapper">
             <svg width="17" height="17" viewBox="0 0 17 17"><path fillRule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clipRule="evenodd" fill="currentColor"></path></svg>
-            <input className="searchInput" type="text" placeholder="검색"       value={searchInputValue}
-      onChange={handleInputChange} />
+            <input className="searchInput" type="text" placeholder="검색" value={searchInputValue} onChange={handleInputChange} />
           </span>
         </div>
         {posts.length > 0 ? (
           <div className="recentPosts">
             {posts.map((post) => (
-              <Link to={`/post/${post.id}`} key={post.id}>
+              <Link to={`/${post.author.nickname}/post/${post.id}`} key={post.id}>
                 <div className="post">
                   <div className="top-wrapper">
                     <div className="title">{post.title}</div>

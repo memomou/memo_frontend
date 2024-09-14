@@ -5,11 +5,11 @@ import { useEffect, useMemo, useState } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { Descendant, createEditor, Element, Transforms, Editor } from "slate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
-import { useLocation } from 'react-router-dom';
 import { CategoriesState, PostType } from "../../../components/atom/atoms";
+import {  } from 'react-router-dom';
 
 const defaultValue : Element[] = [
   {
@@ -118,9 +118,10 @@ function PosterPostPage(props: any) {
           : await axiosInstance.post('/posts', postData);
 
         console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
-        const {id: fetchedPostId} = response.data.post;
+        const post = response.data.post as PostType;
+        const {id: fetchedPostId} = post;
         console.log('post:', post);
-        navigate(`/post/${fetchedPostId}`);
+        navigate(`/${post.author.nickname}/post/${fetchedPostId}`);
       } catch (error) {
         console.error('게시글 처리 중 오류 발생:', error);
       }
@@ -128,6 +129,12 @@ function PosterPostPage(props: any) {
       console.error("게시글 저장 실패:", error);
     }
   }
+
+  const goBack = (event: React.MouseEvent) => {
+    event.preventDefault();
+    navigate(-1);
+  };
+
   return (
     <PosterNewContainer>
       <div className="options-bar">
@@ -173,11 +180,11 @@ function PosterPostPage(props: any) {
           </div>
           <div className="BottomContainer">
 
-            <button onClick={() => navigate('/')}>
+            <button onClick={goBack}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" height="1em" width="1em">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
             </svg>
-              <span>나가기</span>
+              <span>뒤로가기</span>
               </button>
             <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
           </div>

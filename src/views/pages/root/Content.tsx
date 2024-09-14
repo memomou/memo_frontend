@@ -67,7 +67,7 @@ function Content() {
         <div className="recentPosts">
           {isSearchedPostEmpty ? (<div>검색 결과가 없습니다.</div>) : (<></>)}
         {(postToDisplay)?.map((post) => (
-          <Link to={`/post/${post.id}`} key={post.id}>
+          <Link to={`/${post.author.nickname}/post/${post.id}`} key={post.id}>
             <div className="post" key={post.id}>
               <div className="top-wrapper">
                 <div className="title">{post.title}</div>

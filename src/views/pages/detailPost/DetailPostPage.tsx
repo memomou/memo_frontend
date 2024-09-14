@@ -28,12 +28,14 @@ function DetailPostPage(props: any) {
   }, []);
 
   const handleDelete = async () => {
-    try {
-      const response = await axiosInstance.delete(`/posts/${postId}`);
-      console.log('Post Deleted:', response);
-      navigate('/');
-    } catch (error) {
-      console.error("Failed to delete post:", error);
+    if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+      try {
+        const response = await axiosInstance.delete(`/posts/${postId}`);
+        console.log('Post Deleted:', response);
+        navigate(-1); // 이전 페이지로 이동
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+      }
     }
   }
 
@@ -41,10 +43,9 @@ function DetailPostPage(props: any) {
   return (
     <PosterNewContainer>
       <div className="options-bar">
-        <div className="category">
+        <div className="category-tag">
           {post?.category?.categoryName ?? "전체 게시글"}
         </div>
-        <div></div>
       </div>
       <div className="editor-container">
         <DetailPosterForm>

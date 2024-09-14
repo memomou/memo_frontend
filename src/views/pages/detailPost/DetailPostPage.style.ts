@@ -13,13 +13,13 @@ export const PosterNewContainer = styled.div`
     justify-content: space-between;
     margin-top: 38px;
 
-    .category {
-      font-size: 1.14rem;
-      border: 1px solid #eee;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 2px 5px;
-      background-color: white;
-      border-radius: 5px;
+    .category-tag {
+      font-size: 1.3rem;
+      top: 10px;
+      left: 10px;
+      color: #333;
+      padding: 4px 8px;
+      font-weight: 600;
     }
 
   }

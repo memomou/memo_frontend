@@ -16,9 +16,35 @@ export const ContentContainer = styled.div`
       align-items: center;
       margin-bottom: 20px;
       .recentPostText {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-right: 17px;
+        font-size: 1.2rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex: 1;
+        justify-content: space-between;
+        margin-right: 20px;
+        .categoryName {
+          font-weight: bold;
+          margin-right: 10px;
+        }
+        input {
+          font-weight: bold;
+          margin-right: 10px;
+          padding: 5px;
+          width: 200px; // 적절한 너비 설정
+          max-width: 100%; // 반응형을 위한 최대 너비 설정
+        }
+        .save-btn {
+          font-size: 0.8rem;
+        }
+
+        .cancel-btn {
+          font-size: 0.8rem;
+        }
+        .separator {
+          margin: 0 5px;
+          font-weight: normal;
+        }
       }
       .mdf {
         font-size: 0.8rem;
@@ -106,8 +132,6 @@ export const ContentContainer = styled.div`
           }
         }
       }
-      cursor: pointer;
-
     }
   }
 
