@@ -25,12 +25,11 @@ export const PosterNewContainer = styled.div`
   align-items: center;
   flex-direction: column;
   flex: 1;
-
+  padding: 20px;
   .options-bar {
     display: flex;
     width: 500px;
     justify-content: space-between;
-    margin-top: 38px;
 
     select {
       font-size: 1.14rem;

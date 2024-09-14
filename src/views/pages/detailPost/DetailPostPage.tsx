@@ -6,56 +6,19 @@ import { axiosInstance, changeDateFormat } from '../../../helpers/helper';
 import { Link } from "react-router-dom";
 import { PostType, userAtom, authorAtom, authorCategoriesAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
-import { SideBar } from "../usersPost/SideBar";
+import { SideBar } from "../../../components/SideBar/SideBar";
+import { useAuthorInfo } from '../../../hooks/useAuthorInfo';
 
 function DetailPostPage(props: any) {
+  const { nickname } = useParams();
+  const { author, authorCategories } = useAuthorInfo(nickname);
   const [post, setPost] = useState<PostType>();
-  const { id: postId, nickname } = useParams();
+  const { id: postId } = useParams();
   const [user] = useRecoilState(userAtom);
-  const [author, setAuthor] = useRecoilState(authorAtom);
   const [, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
   const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
   const isOwnerOrAdmin = user?.id === post?.author?.id || user?.role === 'admin';
-
-  // 1. 저자 정보 Fetch 함수
-  const fetchAuthorInformation = useCallback(async () => {
-    if (!nickname) return;
-
-    try {
-      const response = await axiosInstance.get(`/users/nickname/${nickname}`);
-      if (author?.id !== response.data.user.id) {
-        setAuthor(response.data.user);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-    }
-  }, [nickname, author, setAuthor]);
-
-  // 2. 저자 카테고리 Fetch 함수
-  const fetchAuthorCategories = useCallback(async (userId) => {
-    if (!userId) return;
-
-    try {
-      const categoriesResponse = await axiosInstance.get(`/categories`, {
-        params: { userId }
-      });
-      console.log('Categories:', categoriesResponse);
-      setAuthorCategories(categoriesResponse.data.categories);
-    } catch (error) {
-      console.error("Failed to fetch categories:", error);
-    }
-  }, [setAuthorCategories]);
-
-  useEffect(() => {
-    fetchAuthorInformation();
-  }, [fetchAuthorInformation]);
-
-  useEffect(() => {
-    if (author?.id) {
-      fetchAuthorCategories(author.id);
-    }
-  }, [author?.id, fetchAuthorCategories]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -83,11 +46,9 @@ function DetailPostPage(props: any) {
       }
     }
   }
-
-  console.log("params", postId);
   return (
     <PageContainer>
-      <SideBar />
+      <SideBar showAddCategory={false} />
       <PosterNewContainer>
         <div className="options-bar">
           <div className="category-tag">

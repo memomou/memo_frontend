@@ -1,16 +1,20 @@
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { axiosInstance } from "../../helpers/helper";
+import { SideBarContainer } from "./SideBar.style";
 import {
   authorAtom,
   authorCategoriesAtom,
   selectedCategoriesAtom,
   userAtom,
-} from "../../../components/atom/atoms";
-import { SideBarContainer } from "./SideBar.style";
-import { useRecoilState } from "recoil";
-import { useEffect, useRef, useState } from "react";
-import { axiosInstance } from "../../../helpers/helper";
+} from "../../components/atom/atoms";
 
-export function SideBar() {
+interface SideBarProps {
+  showAddCategory?: boolean;
+}
+
+export function SideBar({ showAddCategory = true }: SideBarProps) {
   const { nickname } = useParams();
   const [author, setAuthor] = useRecoilState(authorAtom);
   const [authorCategories, setAuthorCategories] =
@@ -87,8 +91,7 @@ export function SideBar() {
       <h1 className="nickname">@{author?.nickname}</h1>
       <Link to={`/${author?.nickname}`}>
         <div className={`category ${!selectedCategory ? "selected" : ""}`}>
-          {" "}
-          전체 게시글{" "}
+          전체 게시글
         </div>
       </Link>
       {authorCategories?.map((category, index) => {
@@ -108,7 +111,7 @@ export function SideBar() {
         );
       })}
       {/* 카테고리 추가 버튼 */}
-      {isCurrentUserOwner && !isAddingCategory && (
+      {isCurrentUserOwner && showAddCategory && !isAddingCategory && (
         <div
           className="category plus"
           onClick={() => {
@@ -119,7 +122,7 @@ export function SideBar() {
         </div>
       )}
       {/* 카테고리 입력 필드 */}
-      {isCurrentUserOwner && (
+      {isCurrentUserOwner && showAddCategory && (
         <div
           className={`category categoryInsert ${
             !isAddingCategory && "invisible"

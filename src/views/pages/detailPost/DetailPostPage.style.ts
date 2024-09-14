@@ -2,21 +2,25 @@ import styled from "styled-components";
 import { PostForm } from "../../../components/PostForm.style";
 
 export const PageContainer = styled.div`
+  // font-size: 1.1rem;
   display: flex;
   flex: 1;
+  flex-direction: row;
+  padding: 20px;
+  flex-grow: 5;
+
 `;
 
 export const PosterNewContainer = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
+  flex: 5;
   flex-direction: column;
-
+  padding: 20px;
   .options-bar {
     display: flex;
     width: 500px;
     justify-content: space-between;
-    margin-top: 38px;
 
     .category-tag {
       font-size: 1.3rem;
