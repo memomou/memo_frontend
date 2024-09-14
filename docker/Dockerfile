@@ -1,0 +1,29 @@
+# build environment
+FROM node:20-alpine as build
+WORKDIR /app
+
+ARG REACT_APP_BACKEND_URI
+ENV REACT_APP_BACKEND_URI=$REACT_APP_BACKEND_URI
+
+COPY package.json yarn.lock ./
+
+RUN apk add --no-cache yarn && \
+    yarn install --frozen-lockfile
+
+COPY . .
+
+RUN yarn build
+
+# production environment
+FROM nginx:stable-alpine
+
+COPY --from=build /app/build /usr/share/nginx/html
+
+# 기본 nginx 설정 파일을 삭제한다. (custom 설정과 충돌 방지)
+RUN rm /etc/nginx/conf.d/default.conf
+
+# custom 설정파일을 컨테이너 내부로 복사한다.
+COPY docker/nginx/nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

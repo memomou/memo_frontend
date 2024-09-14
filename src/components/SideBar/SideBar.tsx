@@ -88,7 +88,7 @@ export function SideBar({ showAddCategory = true }: SideBarProps) {
 
   return (
     <SideBarContainer>
-      <h1 className="nickname">@{author?.nickname}</h1>
+      <h1 className="nickname">@{nickname}</h1>
       <Link to={`/${author?.nickname}`}>
         <div className={`category ${!selectedCategory ? "selected" : ""}`}>
           전체 게시글

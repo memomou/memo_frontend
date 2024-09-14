@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  release:
+    image: sororiri/memo-front:0.0.1
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - REACT_APP_BACKEND_URI=https://memoapi.entto.shop
+    env_file:
+      - ./.env
+    ports:
+      - 2000:80
