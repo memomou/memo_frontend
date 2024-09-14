@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { PostForm } from "../../../components/PostForm.style";
 
+export const PageContainer = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
 export const PosterNewContainer = styled.div`
   display: flex;
   align-items: center;
@@ -21,7 +26,6 @@ export const PosterNewContainer = styled.div`
       padding: 4px 8px;
       font-weight: 600;
     }
-
   }
 
   .editor-container {
@@ -31,8 +35,9 @@ export const PosterNewContainer = styled.div`
     justify-content: center;
     min-height: 70%;
   }
-`
-const DetailPosterForm = styled.div`
+`;
+
+export const DetailPosterForm = styled.div`
   ${PostForm}
   min-height: 70%;
 

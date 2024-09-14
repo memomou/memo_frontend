@@ -1,31 +1,76 @@
-import DetailPosterForm, { PosterNewContainer } from "./DetailPostPage.style";
-import { Styled } from "../auth/authPage.style";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
-import { useEffect, useState } from "react";
+import { PosterNewContainer, PageContainer } from "./DetailPostPage.style";
+import DetailPosterForm from "./DetailPostPage.style";
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { axiosInstance, changeDateFormat } from '../../../helpers/helper';
+import { Link } from "react-router-dom";
+import { PostType, userAtom, authorAtom, authorCategoriesAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
-import { PostType, userAtom } from "../../../components/atom/atoms";
+import { SideBar } from "../usersPost/SideBar";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
-  const {id: postId} = useParams();
+  const { id: postId, nickname } = useParams();
   const [user] = useRecoilState(userAtom);
+  const [author, setAuthor] = useRecoilState(authorAtom);
+  const [, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
+  const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
   const isOwnerOrAdmin = user?.id === post?.author?.id || user?.role === 'admin';
 
+  // 1. 저자 정보 Fetch 함수
+  const fetchAuthorInformation = useCallback(async () => {
+    if (!nickname) return;
+
+    try {
+      const response = await axiosInstance.get(`/users/nickname/${nickname}`);
+      if (author?.id !== response.data.user.id) {
+        setAuthor(response.data.user);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    }
+  }, [nickname, author, setAuthor]);
+
+  // 2. 저자 카테고리 Fetch 함수
+  const fetchAuthorCategories = useCallback(async (userId) => {
+    if (!userId) return;
+
+    try {
+      const categoriesResponse = await axiosInstance.get(`/categories`, {
+        params: { userId }
+      });
+      console.log('Categories:', categoriesResponse);
+      setAuthorCategories(categoriesResponse.data.categories);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  }, [setAuthorCategories]);
+
   useEffect(() => {
-    const fetchPosts = async () => {
+    fetchAuthorInformation();
+  }, [fetchAuthorInformation]);
+
+  useEffect(() => {
+    if (author?.id) {
+      fetchAuthorCategories(author.id);
+    }
+  }, [author?.id, fetchAuthorCategories]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
       try {
         const response = await axiosInstance.get(`/posts/${postId}`);
-        const post = response.data.post as PostType;
-        console.log('Post:', post);
-        setPost(post);
+        const fetchedPost = response.data.post as PostType;
+        console.log('Post:', fetchedPost);
+        setPost(fetchedPost);
+        setSelectedCategory(fetchedPost.category);
       } catch (error) {
-        console.error("Failed to fetch posts:", error);
+        console.error("Failed to fetch post:", error);
       }
     };
-    fetchPosts();
-  }, []);
+    fetchPost();
+  }, [postId, setSelectedCategory]);
 
   const handleDelete = async () => {
     if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
@@ -41,41 +86,43 @@ function DetailPostPage(props: any) {
 
   console.log("params", postId);
   return (
-    <PosterNewContainer>
-      <div className="options-bar">
-        <div className="category-tag">
-          {post?.category?.categoryName ?? "전체 게시글"}
+    <PageContainer>
+      <SideBar />
+      <PosterNewContainer>
+        <div className="options-bar">
+          <div className="category-tag">
+            {post?.category?.categoryName ?? "전체 게시글"}
+          </div>
         </div>
-      </div>
-      <div className="editor-container">
-        <DetailPosterForm>
-          <div className="wrapperOne">
-            <span className="title">{post?.title ?? "..."}</span>
-            <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt) : "..."}</span>
-          </div>
-          <div className="wrapperTwo">
-            <div className="author">
-              <span>작성자: {post?.author?.nickname ?? "..."}</span>
+        <div className="editor-container">
+          <DetailPosterForm>
+            <div className="wrapperOne">
+              <span className="title">{post?.title ?? "..."}</span>
+              <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt) : "..."}</span>
             </div>
-          {isOwnerOrAdmin ? (
-            <div className="modification">
-              <Link to={`/post/write?postId=${postId}`}>수정</Link>
-              <span> | </span>
-              <button onClick={handleDelete}>
-                <span>
-                  삭제
-                </span>
-                </button>
-            </div>) : (<></>)
-          }
-          </div>
-          <div className="content">
-            <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
-          </div>
-
-        </DetailPosterForm>
-      </div>
-    </PosterNewContainer>
+            <div className="wrapperTwo">
+              <div className="author">
+                <span>작성자: {post?.author?.nickname ?? "..."}</span>
+              </div>
+            {isOwnerOrAdmin ? (
+              <div className="modification">
+                <Link to={`/post/write?postId=${postId}`}>수정</Link>
+                <span> | </span>
+                <button onClick={handleDelete}>
+                  <span>
+                    삭제
+                  </span>
+                  </button>
+              </div>) : (<></>)
+            }
+            </div>
+            <div className="content">
+              <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
+            </div>
+          </DetailPosterForm>
+        </div>
+      </PosterNewContainer>
+    </PageContainer>
   );
 }
 

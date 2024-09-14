@@ -3,6 +3,7 @@ import {
   authorAtom,
   authorCategoriesAtom,
   selectedCategoriesAtom,
+  userAtom,
 } from "../../../components/atom/atoms";
 import { SideBarContainer } from "./SideBar.style";
 import { useRecoilState } from "recoil";
@@ -17,6 +18,7 @@ export function SideBar() {
   const [selectedCategory, setSelectedCategory] = useRecoilState(
     selectedCategoriesAtom
   );
+  const [currentUser] = useRecoilState(userAtom);
 
   // 카테고리 추가 상태 관리
   const [isAddingCategory, setIsAddingCategory] = useState(false);
@@ -26,6 +28,9 @@ export function SideBar() {
   const inputBtnRef = useRef<HTMLButtonElement>(null);
   const newCategoryRef = useRef<HTMLDivElement>(null);
   const isShakingRef = useRef(false);
+
+  // 현재 사용자가 카테고리 소유자인지 확인
+  const isCurrentUserOwner = currentUser?.id === author?.id;
 
   // 카테고리 추가 함수
   const handleAddCategory = async () => {
@@ -103,7 +108,7 @@ export function SideBar() {
         );
       })}
       {/* 카테고리 추가 버튼 */}
-      {!isAddingCategory && (
+      {isCurrentUserOwner && !isAddingCategory && (
         <div
           className="category plus"
           onClick={() => {
@@ -114,22 +119,24 @@ export function SideBar() {
         </div>
       )}
       {/* 카테고리 입력 필드 */}
-      <div
-        className={`category categoryInsert ${
-          !isAddingCategory && "invisible"
-        }`}
-        ref={newCategoryRef}
-      >
-        <input
-          className="categoryInput"
-          type="text"
-          ref={inputRef}
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="카테고리 추가"
-        />
-        <button ref={inputBtnRef} onClick={handleAddCategory} className="">V</button>
-      </div>
+      {isCurrentUserOwner && (
+        <div
+          className={`category categoryInsert ${
+            !isAddingCategory && "invisible"
+          }`}
+          ref={newCategoryRef}
+        >
+          <input
+            className="categoryInput"
+            type="text"
+            ref={inputRef}
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            placeholder="카테고리 추가"
+          />
+          <button ref={inputBtnRef} onClick={handleAddCategory} className="">V</button>
+        </div>
+      )}
     </SideBarContainer>
   );
 }
