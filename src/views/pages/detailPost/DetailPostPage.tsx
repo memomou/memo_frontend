@@ -7,10 +7,13 @@ import { Link } from "react-router-dom";
 import { PostType, userAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
+import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
   const { id: postId } = useParams();
+  const { nickname } = useParams();
+  useAuthorInfo(nickname);
   const [user] = useRecoilState(userAtom);
   const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
