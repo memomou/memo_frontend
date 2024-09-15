@@ -5,6 +5,7 @@ import { userAtom } from "../../../components/atom/atoms";
 import { useNavigate } from "react-router-dom";
 import { Styled } from "./authPage.style";
 import { axiosInstance } from '../../../helpers/helper';
+
 function LoginPage(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,26 +34,33 @@ function LoginPage(props: any) {
   return (
     <Styled>
       <CenterForm onSubmit={handleSubmit}>
-        <h1>로그인</h1>
-        <label>
-          <span>아이디</span>
+        <h1 className="login-title">로그인</h1>
+        <div className="input-group">
+          <label htmlFor="email">이메일</label>
           <input
             type="email"
             id="email"
+            placeholder="이메일 주소를 입력하세요"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
-        </label>
-        <label>
-          <span>패스워드</span>
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">비밀번호</label>
           <input
             type="password"
             id="password"
+            placeholder="비밀번호를 입력하세요"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
-        </label>
-        <button type="submit">로그인</button>
+        </div>
+        <button type="submit" className="login-button">로그인</button>
+        <div className="additional-options">
+          <a href="/signup">계정이 없으신가요? 회원가입</a>
+        </div>
       </CenterForm>
     </Styled>
   );
