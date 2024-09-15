@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Root from "./pages/root/Root";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignUpPage";

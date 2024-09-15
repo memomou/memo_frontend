@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { axiosInstance } from "../../helpers/helper";
@@ -16,10 +16,10 @@ interface SideBarProps {
 
 export function SideBar({ showAddCategory = true }: SideBarProps) {
   const { nickname } = useParams();
-  const [author, setAuthor] = useRecoilState(authorAtom);
+  const [author] = useRecoilState(authorAtom);
   const [authorCategories, setAuthorCategories] =
     useRecoilState(authorCategoriesAtom);
-  const [selectedCategory, setSelectedCategory] = useRecoilState(
+  const [selectedCategory] = useRecoilState(
     selectedCategoriesAtom
   );
   const [currentUser] = useRecoilState(userAtom);

@@ -1,4 +1,4 @@
-import { Transforms, createEditor, Descendant } from 'slate'
+import { Transforms } from 'slate'
 import isUrl from 'is-url'
 import imageExtensions from 'image-extensions'
 import { ImageElement } from '../../types/slate'

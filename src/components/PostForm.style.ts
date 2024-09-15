@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import {css} from "styled-components";
 export const PostForm = css`
   display: flex;
   flex-direction: column;

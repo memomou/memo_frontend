@@ -1,9 +1,9 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import Body from "./views/Body";
 import Footer from "./views/Footer";
 import Header from "./views/header/Header";
 import Wrapper from "./views/Wrapper";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { userAtom } from "./components/atom/atoms";
 import "./App.css";
 import { axiosInstance } from './helpers/helper';

@@ -1,8 +1,6 @@
-import styled from "styled-components";
 import { useState } from "react";
-import config from "../../../config";
 import CenterForm from "../../../components/Form.style";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userAtom } from "../../../components/atom/atoms";
 import { useNavigate } from "react-router-dom";
 import { Styled } from "./authPage.style";

@@ -1,22 +1,14 @@
 // https://codesandbox.io/s/slateeditor-with-types-6zpfi?file=/src/components/SlateEditor/toolbarElements.tsx
 
-import { useCallback, useMemo, useState } from "react";
-import { Descendant, Editor, createEditor, Transforms, Element as SlateElement } from "slate";
-import { Editable, Slate, withReact } from "slate-react";
-import { resetNodes } from "./helper";
+import { useCallback } from "react";
+import { Descendant, Editor } from "slate";
+import { Editable, Slate } from "slate-react";
 import { Leaf, Element } from "./deserialize";
 import { Toolbar, MarkButton, BlockButton} from "./components";
 import {toggleKeyboardShortcut} from "./keyboardShortcut";
 
 // TODO Link Plugin 설치해보기
 // https://codesandbox.io/p/sandbox/slateeditor-with-types-forked-4yl2tz?file=%2Fsrc%2Fcomponents%2FSlateEditor%2Fplugins.tsx%3A21%2C1
-
-const defaultValue : SlateElement[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  }
-]
 
 function SlateEditor({
       editor,
