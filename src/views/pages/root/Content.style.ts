@@ -61,6 +61,11 @@ export const ContentContainer = styled.div`
         min-height: 150px;
         display: flex;
         flex-direction: column;
+        border: 2px solid transparent;
+        &:hover {
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          border-color: rgba(52, 152, 219, 0.35); // 더 옅은 파란색
+        }
         .top-wrapper {
           height: 26px;
           display: flex;

@@ -1,21 +1,17 @@
 import { PosterNewContainer, PageContainer } from "./DetailPostPage.style";
 import DetailPosterForm from "./DetailPostPage.style";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance, changeDateFormat } from '../../../helpers/helper';
 import { Link } from "react-router-dom";
-import { PostType, userAtom, authorAtom, authorCategoriesAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { PostType, userAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
-import { useAuthorInfo } from '../../../hooks/useAuthorInfo';
 
 function DetailPostPage(props: any) {
-  const { nickname } = useParams();
-  const { author, authorCategories } = useAuthorInfo(nickname);
   const [post, setPost] = useState<PostType>();
   const { id: postId } = useParams();
   const [user] = useRecoilState(userAtom);
-  const [, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
   const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
   const isOwnerOrAdmin = user?.id === post?.author?.id || user?.role === 'admin';

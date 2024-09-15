@@ -9,7 +9,7 @@ export const PostForm = css`
   border-radius: 10px;
   background-color: white;
   flex: 1;
-  max-width: 500px;
+  max-width: 700px;
   min-height: 70%;
   /* min-height: -webkit-fill-available; */
   font-size: var(--font-size-base);
