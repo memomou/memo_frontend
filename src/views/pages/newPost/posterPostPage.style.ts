@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SlateEditor from "../../../components/SlateEditor/SlateEditor";
-import { Editable, Slate, withReact } from "slate-react";
+import { Editable } from "slate-react";
 import { PostForm } from "../../../components/PostForm.style";
 export const StyledEditable = styled(Editable)`
   background-color: white;
@@ -20,15 +20,23 @@ export const StyledEditable = styled(Editable)`
 export const StyledSlateEditor = styled(SlateEditor)`
 `;
 
+export const PosterNewPageContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+`
+
 export const PosterNewContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   flex: 1;
   padding: 20px;
   .options-bar {
+    width: -webkit-fill-available;
+    max-width: 700px;
     display: flex;
-    width: 500px;
     justify-content: space-between;
 
     select {

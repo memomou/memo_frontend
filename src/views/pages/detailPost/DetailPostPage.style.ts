@@ -18,8 +18,9 @@ export const PosterNewContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   .options-bar {
+    width: -webkit-fill-available;
+    max-width: 700px;
     display: flex;
-    width: 500px;
     justify-content: space-between;
 
     .category-tag {

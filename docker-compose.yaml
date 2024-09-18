@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   release:
-    image: sororiri/memo-front:0.0.3
+    image: sororiri/memo-front:0.0.6
     build:
       context: .
       dockerfile: docker/Dockerfile

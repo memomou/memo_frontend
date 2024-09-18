@@ -1,4 +1,4 @@
-import {PosterNewForm, PosterNewContainer} from "./posterPostPage.style";
+import {PosterNewForm, PosterNewContainer, PosterNewPageContainer} from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
 import { Styled } from "../auth/authPage.style";
 import { useEffect, useMemo, useState } from "react";
@@ -136,61 +136,63 @@ function PosterPostPage(props: any) {
   };
 
   return (
-    <PosterNewContainer>
-      <div className="options-bar">
-        <div>
-          <select id="category" name="category" onChange={handleSeletectCategoryChange} value={selectedCategoryId}>
-            <option value={0}>전체 게시글</option>
-            {categories?.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.categoryName} {/* 카테고리 이름을 보여줌 */}
-              </option>
-            ))}
-          </select>
+    <PosterNewPageContainer>
+      <PosterNewContainer>
+        <div className="options-bar">
+          <div>
+            <select id="category" name="category" onChange={handleSeletectCategoryChange} value={selectedCategoryId}>
+              <option value={0}>전체 게시글</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.categoryName} {/* 카테고리 이름을 보여줌 */}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+          </div>
         </div>
-        <div>
-        </div>
-      </div>
-      <div className="editor-container">
-        <PosterNewForm onSubmit={onButtonClick}>
-          <div className="editor-wrapper">
-            <input
-              className="title-input"
-              type="text"
-              placeholder="제목을 입력하세요"
-              value={post ? post.title : title}
-              onChange={handleTitleChange}
-              onKeyDown={handleKeyDown}
-            />
-              <StyledSlateEditor
-                editor={editor}
-                initialValue={defaultValue}
-                renderEditable={
-                  (editableProps) =>
-                    <StyledEditable
-                      {...editableProps}
-                      placeholder={placeholder}
-                      renderPlaceholder={renderPlaceholder} // 커스텀 플레이스홀더 추가
-                      // disableDefaultStyles={true}
-                      onFocus={() => setPlaceHolder('')}
-                      onBlur={() => setPlaceHolder('내용을 입력하세요')}
-                    />
-                }
+        <div className="editor-container">
+          <PosterNewForm onSubmit={onButtonClick}>
+            <div className="editor-wrapper">
+              <input
+                className="title-input"
+                type="text"
+                placeholder="제목을 입력하세요"
+                value={post ? post.title : title}
+                onChange={handleTitleChange}
+                onKeyDown={handleKeyDown}
               />
-          </div>
-          <div className="BottomContainer">
+                <StyledSlateEditor
+                  editor={editor}
+                  initialValue={defaultValue}
+                  renderEditable={
+                    (editableProps) =>
+                      <StyledEditable
+                        {...editableProps}
+                        placeholder={placeholder}
+                        renderPlaceholder={renderPlaceholder} // 커스텀 플레이스홀더 추가
+                        // disableDefaultStyles={true}
+                        onFocus={() => setPlaceHolder('')}
+                        onBlur={() => setPlaceHolder('내용을 입력하세요')}
+                      />
+                  }
+                />
+            </div>
+            <div className="BottomContainer">
 
-            <button onClick={goBack}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" height="1em" width="1em">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-            </svg>
-              <span>뒤로가기</span>
-              </button>
-            <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
-          </div>
-        </PosterNewForm>
-      </div>
-    </PosterNewContainer>
+              <button onClick={goBack}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" height="1em" width="1em">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+              </svg>
+                <span>뒤로가기</span>
+                </button>
+              <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
+            </div>
+          </PosterNewForm>
+        </div>
+      </PosterNewContainer>
+    </PosterNewPageContainer>
   );
 }
 
