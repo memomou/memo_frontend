@@ -4,7 +4,7 @@ import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import axios from 'axios';
 import {ContentContainer} from './Content.style';
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom } from "../../../components/atom/atoms";
+import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom } from "../../../components/atom/atoms";
 
 export const Content = () => {
   const [author] = useRecoilState(authorAtom);
@@ -13,44 +13,17 @@ export const Content = () => {
   const currentUser = useRecoilValue(userAtom);
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
-  const [posts, setPosts] = useState<PostType[]>([]);
   const [searchInputValue, setSearchInputValue] = useState('');
   const { nickname } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategoryName = searchParams.get('category');
   const source = axios.CancelToken.source();
   const editInputRef = useRef<HTMLInputElement>(null);
+  const [posts, setPosts] = useRecoilState(postsAtom);
 
   const [isEditingText, setIsEditingText] = useState(false);
   const [editText, setEditText] = useState("");
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        if (!author?.id) return;
-        if (selectedCategoryName && selectedCategoryName !== selectedCategory?.categoryName) {
-          return;
-        }
-        const response = await axiosInstance.get('/posts', {
-          params: {
-            where__and__author__id__equal: author?.id,
-            where__and__category__id__equal: selectedCategory?.id,
-          },
-          cancelToken: source.token
-        });
-        console.log('Posts:', response);
-        const fetchedPosts = response.data.posts.data as PostType[];
-        fetchedPosts.map((post) => {
-          post.content = post.content.replace(/<[^>]+>/g, '');
-          return post;
-        });
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    };
-    fetchPosts();
-  }, [selectedCategory, author?.id]);
 
   useEffect(() => {
     if (editingCategoryId !== null) {
@@ -140,28 +113,6 @@ export const Content = () => {
     } catch (error) {
       console.error('카테고리 삭제 실패:', error);
       alert('카테고리 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
-  const handleEditText = () => {
-    if (selectedCategory) {
-      handleEditCategory(selectedCategory.id, selectedCategory.categoryName);
-    } else {
-      setIsEditingText(true);
-      setEditText("전체 게시글");
-    }
-  };
-
-  const handleUpdateText = async () => {
-    if (selectedCategory) {
-      try {
-        await handleUpdateCategory(selectedCategory.id);
-        setEditingCategoryId(null);
-      } catch (error) {
-        console.error('텍스트 수정 실패:', error);
-      }
-    } else {
-      setIsEditingText(false);
     }
   };
 

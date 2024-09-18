@@ -46,3 +46,8 @@ export const selectedCategoriesAtom = atom<CategoriesState | undefined>({
   key: 'selectedCategory',
   default: undefined,
 });
+
+export const postsAtom = atom<PostType[]>({
+  key: 'posts',
+  default: [],
+});
