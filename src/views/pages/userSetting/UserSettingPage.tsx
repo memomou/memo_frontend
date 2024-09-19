@@ -13,8 +13,9 @@ function UserSettingPage() {
   const fetchUserProfile = async () => {
     try {
       const response = await axiosInstance.get('/users/me');
-      setUser(response.data);
-      setNickname(response.data.nickname || '');
+      console.log('프로필 정보:', response.data);
+      setUser(response.data.user);
+      setNickname(response.data.user.nickname || '');
     } catch (error) {
       console.error('프로필 정보를 가져오는데 실패했습니다:', error);
     }
@@ -32,33 +33,42 @@ function UserSettingPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleNicknameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // 닉네임 업데이트
       await axiosInstance.patch('/users/me/profile', { nickname });
-
-      // 프로필 이미지 업데이트
-      if (profileImage) {
-        const formData = new FormData();
-        formData.append('image', profileImage);
-        await axiosInstance.put('/users/me/profile/images', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-      }
-
-      alert('프로필이 성공적으로 업데이트되었습니다.');
-      fetchUserProfile(); // 업데이트된 정보 다시 불러오기
+      alert('닉네임이 성공적으로 업데이트되었습니다.');
+      fetchUserProfile();
     } catch (error) {
-      console.error('프로필 업데이트에 실패했습니다:', error);
-      alert('프로필 업데이트에 실패했습니다. 다시 시도해주세요.');
+      console.error('닉네임 업데이트에 실패했습니다:', error);
+      alert('닉네임 업데이트에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleImageSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profileImage) {
+      alert('업로드할 이미지를 선택해주세요.');
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('image', profileImage);
+      await axiosInstance.put('/users/me/profile/images', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      alert('프로필 이미지가 성공적으로 업데이트되었습니다.');
+      fetchUserProfile();
+    } catch (error) {
+      console.error('프로필 이미지 업데이트에 실패했습니다:', error);
+      alert('프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
   return (
     <UserSettingContainer>
       <h1>사용자 설정</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleNicknameSubmit}>
         <div>
           <label htmlFor="nickname">닉네임:</label>
           <input
@@ -68,6 +78,9 @@ function UserSettingPage() {
             onChange={handleNicknameChange}
           />
         </div>
+        <button type="submit">닉네임 저장</button>
+      </form>
+      <form onSubmit={handleImageSubmit}>
         <div>
           <label htmlFor="profileImage">프로필 이미지:</label>
           <input
@@ -82,7 +95,7 @@ function UserSettingPage() {
             <img src={previewImage} alt="프로필 미리보기" style={{ width: '100px', height: '100px' }} />
           </div>
         )}
-        <button type="submit">저장</button>
+        <button type="submit">이미지 저장</button>
       </form>
     </UserSettingContainer>
   );

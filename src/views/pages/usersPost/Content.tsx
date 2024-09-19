@@ -9,20 +9,15 @@ import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, use
 export const Content = () => {
   const [author] = useRecoilState(authorAtom);
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
-  const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
+  const [,setAuthorCategories] = useRecoilState(authorCategoriesAtom);
   const currentUser = useRecoilValue(userAtom);
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
   const [searchInputValue, setSearchInputValue] = useState('');
-  const { nickname } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedCategoryName = searchParams.get('category');
-  const source = axios.CancelToken.source();
+
   const editInputRef = useRef<HTMLInputElement>(null);
   const [posts, setPosts] = useRecoilState(postsAtom);
-
-  const [isEditingText, setIsEditingText] = useState(false);
-  const [editText, setEditText] = useState("");
 
 
   useEffect(() => {
@@ -34,11 +29,6 @@ export const Content = () => {
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
     console.log(e.target.value);
-    if (!e.target.value) {
-      setPosts([]);
-      console.log('No search input');
-      return;
-    }
     const response = await axiosInstance.get('/posts', {
       params: {
         where__content__i_like: e.target.value,
