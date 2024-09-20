@@ -7,6 +7,13 @@ interface UserState {
   email?: string;
   nickname?: string;
   role?: 'admin' | 'user'| null | undefined;
+  profileImage?: PostImageType;
+  profileDescription?: string;
+}
+
+export interface PostImageType {
+  id: number;
+  url: string;
 }
 
 export const userAtom = atom<UserState | undefined>({
