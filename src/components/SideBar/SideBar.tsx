@@ -88,7 +88,14 @@ export function SideBar({ showAddCategory = true }: SideBarProps) {
 
   return (
     <SideBarContainer>
-      <h1 className="nickname">@{nickname}</h1>
+      <div className="nicknameWrapper">
+          <img
+            src={author?.profileImage?.url || '/defaultAvatar.png'}
+            alt={`${nickname}의 프로필`}
+            className="profileImage"
+          />
+        <h1 className="nickname">@{nickname}</h1>
+      </div>
       <Link to={`/${author?.nickname}`}>
         <div className={`category ${!selectedCategory ? "selected" : ""}`}>
           전체 게시글

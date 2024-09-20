@@ -100,8 +100,17 @@ export const ContentContainer = styled.div`
           align-items: center;
           margin-top: 10px;
           .author {
+            display: flex;
+            align-items: center;
             font-size: 0.8rem;
             color: #666;
+            .profile-image {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              margin-right: 5px;
+              object-fit: cover;
+            }
           }
           .date {
             font-size: 0.7rem;

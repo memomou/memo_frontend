@@ -9,12 +9,23 @@ export const SideBarContainer = styled.div`
   max-width: 250px;
   min-width: 220px;
 
-  .nickname {
-    height: 40px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
+  .nicknameWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    .nickname {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    .profileImage {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   }
+
 
   .category {
     display: flex;

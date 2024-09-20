@@ -75,7 +75,14 @@ function Content() {
                 <p>{post.content}</p>
               </div>
               <div className="bottom-wrapper">
-                <div className="author">작성자: {post.author.nickname}</div>
+                <div className="author">
+                  <img
+                    src={post.author.profileImage?.url || '/defaultAvatar.png'}
+                    alt={`${post.author.nickname}의 프로필`}
+                    className="profile-image"
+                  />
+                  {post.author.nickname}
+                </div>
                 <div className="date">{changeDateFormat(post.createdAt)}</div>
               </div>
             </div>

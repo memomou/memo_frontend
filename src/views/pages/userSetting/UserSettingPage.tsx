@@ -74,7 +74,7 @@ function UserSettingPage() {
         <form onSubmit={handleSubmit}>
           <div className="profile-section">
             <div className="profile-image">
-              <img src={previewImage || user?.profileImage?.url || '/default-profile.png'} alt="프로필 이미지" />
+              <img src={previewImage || user?.profileImage?.url || '/defaultAvatar.png'} alt="프로필 이미지" />
               <label htmlFor="profile-image-input" className="edit-button">
                 변경
               </label>
