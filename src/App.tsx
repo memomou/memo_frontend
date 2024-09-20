@@ -9,25 +9,29 @@ import "./App.css";
 import { axiosInstance } from './helpers/helper';
 import { useEffect } from "react";
 function App() {
-  const [, setUser] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axiosInstance.get('/users/me');
-        console.log('Login Successful:', response);
-        setUser({...response.data.user});
+        if (response.data.user && response.data.user.id !== user?.id) {
+          console.log('set user data Successful:', response);
+          setUser({...response.data.user});
+        }
+        console.log('already setted same user data');
       } catch (error) {
-        console.error("Login Failed:", error);
+        console.error("failed to get user data:", error);
       }
     };
     if (!localStorage.getItem('accessToken')) {
       console.log('No access token');
       return;
     }
-
-    fetchUserData();
-  }, [setUser]); // 빈 배열로 설정
+    if (user?.id) {
+      fetchUserData();
+    }
+  }, [setUser, user?.id]); // 빈 배열로 설정
 
   return (
       <div className="App">

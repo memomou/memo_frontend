@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userAtom } from '../../../components/atom/atoms';
 import { axiosInstance } from '../../../helpers/helper';
@@ -6,19 +6,15 @@ import { UserSettingContainer, SettingWindow } from './UserSettingPage.style';
 
 function UserSettingPage() {
   const [user, setUser] = useRecoilState(userAtom);
-  console.log('user: ', user);
   const [nickname, setNickname] = useState(user?.nickname || '');
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [profileDescription, setProfileDescription] = useState(user?.profileDescription || '');
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
 
   const fetchUserProfile = async () => {
     try {
       const response = await axiosInstance.get('/users/me');
+      console.log('response: ', response);
       setUser(response.data.user);
     } catch (error) {
       console.error('프로필 정보를 가져오는데 실패했습니다:', error);

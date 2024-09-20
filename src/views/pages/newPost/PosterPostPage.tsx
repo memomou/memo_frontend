@@ -1,10 +1,9 @@
 import {PosterNewForm, PosterNewContainer, PosterNewPageContainer} from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
-import { Styled } from "../auth/authPage.style";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import { Descendant, createEditor, Element, Transforms, Editor } from "slate";
+import { createEditor, Element, Transforms, } from "slate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
@@ -28,7 +27,7 @@ function renderPlaceholder(props: RenderPlaceholderProps) {
   );
 }
 
-function PosterPostPage(props: any) {
+function PosterPostPage() {
   const [title, setTitle] = useState('');
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
   const [post, setPost] = useState<PostType>();
@@ -69,7 +68,7 @@ function PosterPostPage(props: any) {
     if (isUpdate) {
       fetchPosts();
     }
-  }, []);
+  }, [isUpdate, postId, editor]);
 
   useEffect(() => {
     const fetchCategories = async () => {

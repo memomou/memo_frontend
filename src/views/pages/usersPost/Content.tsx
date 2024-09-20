@@ -1,9 +1,8 @@
 import React, { useState, useEffect,useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
-import axios from 'axios';
 import {ContentContainer} from './Content.style';
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom } from "../../../components/atom/atoms";
 
 export const Content = () => {

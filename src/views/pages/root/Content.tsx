@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link } from "react-router-dom";

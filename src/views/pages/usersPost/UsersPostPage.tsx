@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
-import { authorAtom, postsAtom, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { postsAtom, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 import { axiosInstance } from "../../../helpers/helper";
 
@@ -12,7 +12,7 @@ export function UsersPostPage() {
   const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const {author, authorCategories } = useAuthorInfo(nickname);
-  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [, setPosts] = useRecoilState(postsAtom);
   const [searchParams] = useSearchParams();
 
   // 특정 쿼리 파라미터 값 가져오기
@@ -38,7 +38,7 @@ export function UsersPostPage() {
           return;
         }
         // 카테고리가 선택되어 있고, 선택된 카테고리가 변경되지 않았을 때만 해당 카테고리의 게시글을 가져옴
-        if (selectedCategory && selectedCategory.categoryName != selectedCategoryName) {
+        if (selectedCategory && selectedCategory.categoryName !== selectedCategoryName) {
           console.log('카테고리 업데이트중이라 미요청함');
           console.log('Selected category:', selectedCategory);
           return;
@@ -62,7 +62,7 @@ export function UsersPostPage() {
       }
     };
     fetchPosts();
-  }, [selectedCategory, author?.id]);
+  }, [selectedCategory, author?.id, setPosts, selectedCategoryName]);
 
   return (
     <PageContainer>
