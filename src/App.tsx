@@ -10,7 +10,6 @@ import { axiosInstance } from './helpers/helper';
 import { useEffect } from "react";
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -18,8 +17,9 @@ function App() {
         if (response.data.user && response.data.user.id !== user?.id) {
           console.log('set user data Successful:', response);
           setUser({...response.data.user});
+        } else {
+          console.log('already setted same user data');
         }
-        console.log('already setted same user data');
       } catch (error) {
         console.error("failed to get user data:", error);
       }
@@ -28,10 +28,8 @@ function App() {
       console.log('No access token');
       return;
     }
-    if (user?.id) {
-      fetchUserData();
-    }
-  }, [setUser, user?.id]); // 빈 배열로 설정
+    fetchUserData();
+  }, [user?.id, setUser]); // 빈 배열로 설정
 
   return (
       <div className="App">
