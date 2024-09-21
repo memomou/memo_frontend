@@ -35,6 +35,7 @@ export const PosterNewContainer = styled.div`
 
   .editor-container {
     display: flex;
+    flex: 1;
     flex-direction: row;
     width: -webkit-fill-available;
     justify-content: center;

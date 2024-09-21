@@ -23,15 +23,14 @@ export const StyledSlateEditor = styled(SlateEditor)`
 export const PosterNewPageContainer = styled.div`
   flex: 1;
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
 `
 
 export const PosterNewContainer = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: center;
   flex: 1;
+  max-width: 700px;
   padding: 20px;
   .options-bar {
     width: -webkit-fill-available;
@@ -51,6 +50,7 @@ export const PosterNewContainer = styled.div`
 
   .editor-container {
     display: flex;
+    flex: 1;
     min-height: 567px;
     flex-direction: row;
     width: -webkit-fill-available;
@@ -88,6 +88,12 @@ export const PosterNewForm = styled.form`
       display: flex;
       flex-direction: column;
     }
+  }
+
+  // 파일 업로드 영역을 위한 새로운 스타일
+  .file-upload-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
   }
 
   .placeholder {
@@ -135,5 +141,21 @@ export const PosterNewForm = styled.form`
       color: white;
       border-radius: 5px;
     }
+  }
+`;
+
+export const FileUploadArea = styled.div.attrs<{ isDragging: boolean }>({ isDragging: false })`
+  border: 2px dashed ${props => props.isDragging ? '#12b886' : '#ccc'};
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.9em;
+  background-color: ${props => props.isDragging ? '#e6f8f3' : 'transparent'};
+  color: ${props => props.isDragging ? '#12b886' : 'inherit'};
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
