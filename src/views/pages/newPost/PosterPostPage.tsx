@@ -1,17 +1,18 @@
 import {PosterNewForm, PosterNewContainer, PosterNewPageContainer} from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { RenderPlaceholderProps, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { createEditor, Element, Transforms, } from "slate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
-import { CategoriesState, PostType } from "../../../components/atom/atoms";
-import {  } from 'react-router-dom';
-import { FileUploadArea } from "./posterPostPage.style";
+import { CategoriesState, defaultPostValue, PostType } from "../../../components/atom/atoms";
+import { PostFile } from "../../../components/atom/atoms";
 import React, { useCallback } from 'react';
-
+import { useFileUpload } from '../../../hooks/useFileUpload';
+import { FileUploadArea } from './component/FileUploadArea';
+import { formatFileSize, formatDate } from '../../../utils/formatters';
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -30,36 +31,31 @@ function renderPlaceholder(props: RenderPlaceholderProps) {
 }
 
 function PosterPostPage() {
-  const [title, setTitle] = useState('');
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
-  const [post, setPost] = useState<PostType>();
+  const [post, setPost] = useState<PostType>(defaultPostValue);
   const [categories, setCategories] = useState<CategoriesState[]>();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number|undefined>(undefined);
+  const selectedCategoryId = post.category?.id;
   const navigate = useNavigate();
   const location = useLocation();
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
 
-  // URLSearchParams 객체를 사용하여 쿼리 파라미터 추출
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const postId = queryParams.get('postId');
   const isUpdate = postId ? true : false;
   const [editor] = useState(() => withReact(withHistory(createEditor())));
 
-  const handleSeletectCategoryChange = (event) => {
-    setSelectedCategoryId(Number(event.target.value));
-  };
+  const selectedCategoryIdRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const responsePost = await axiosInstance.get(`/posts/${postId}`);
         const post = responsePost.data.post;
-        const deserializePost = { ...post, contentSlate: JSON.parse(post.contentSlate) } as PostType;
-        setTitle(deserializePost.title);
+        const deserializePost = { ...post, contentSlate: post?.contentSlate ? JSON.parse(post.contentSlate) : defaultValue } as PostType;
         setPost(deserializePost);
-        console.log('Post:', post);
-        console.log('deserializePost:', deserializePost);
-        setSelectedCategoryId(deserializePost?.category?.id);
-          // 에디터의 값 설정
+        setUploadedFiles(post.postFiles);
+        // 에디터의 값 설정
         Transforms.deselect(editor); // 현재 선택 상태를 비우기
         editor.children = deserializePost.contentSlate; // 에디터의 내용 전체 교체
         editor.onChange(); // 에디터의 변경 사항 적용
@@ -70,7 +66,7 @@ function PosterPostPage() {
     if (isUpdate) {
       fetchPosts();
     }
-  }, [isUpdate, postId, editor]);
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -85,10 +81,6 @@ function PosterPostPage() {
     fetchCategories();
   }, []);
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();  // input에서 Enter 키 눌렀을 때 기본 동작 막음
@@ -97,22 +89,17 @@ function PosterPostPage() {
 
   const onButtonClick = async (event:React.FormEvent) => {
     event.preventDefault();
-    console.log("editor.children", editor.children);
     const jsonContent = JSON.stringify(editor.children);
-    console.log("jsonContent", jsonContent);
-    console.log("title", title);
     const deserialzedContent = serialize(editor);
-    console.log("deserializedContent", deserialzedContent);
-    console.log("selectedCategoryId", selectedCategoryId);
-
     try {
+      const categoryId = selectedCategoryIdRef?.current?.value;
       const postData = {
-        title: title,
+        title: titleInputRef.current?.value,
         content: deserialzedContent,
         contentSlate: jsonContent,
-        categoryId: selectedCategoryId !== 0 ? selectedCategoryId : null,
+        categoryId: categoryId !== "0" ? categoryId : null,
       };
-
+      console.log("postData: ", postData);
       try {
         const response = isUpdate
           ? await axiosInstance.patch(`/posts/${postId}`, postData)
@@ -136,41 +123,45 @@ function PosterPostPage() {
     navigate(-1);
   };
 
-  const [isDragging, setIsDragging] = useState(false);
+  const handleFileUploaded = useCallback((file: any) => {
+    setUploadedFiles(prevFiles => [...prevFiles, file]);
+  }, []);
 
-  const handleFileUpload = useCallback((files: FileList | null) => {
-    if (files) {
-      // 파일 업로드 로직 구현
-      console.log("업로드된 파일:", Array.from(files));
+  const {
+    uploadStatus,
+    uploadProgress,
+    isDragging,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleFileUpload
+  } = useFileUpload(handleFileUploaded);
+
+  const onFileUpload = useCallback((files: FileList | null) => {
+    if (postId) {
+      handleFileUpload(files, postId);
     }
-  }, []);
+  }, [postId, handleFileUpload]);
 
-  const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(false);
-    const files = event.dataTransfer.files;
-    handleFileUpload(files);
-  }, [handleFileUpload]);
+  const handleFileDelete = async (event: React.MouseEvent, fileId: number) => {
+    try {
+      event.preventDefault();
+      // 삭제 확인 대화상자 추가
+      if (window.confirm('정말로 이 파일을 삭제하시겠습니까?')) {
+        await axiosInstance.delete(`/posts/${postId}/files/${fileId}`);
+        setUploadedFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
+      }
+    } catch (error) {
+      console.error("파일 삭제 실패:", error);
+    }
+  };
 
   return (
     <PosterNewPageContainer>
       <PosterNewContainer>
         <div className="options-bar">
           <div>
-            <select id="category" name="category" onChange={handleSeletectCategoryChange} value={selectedCategoryId}>
+            <select id="category" name="category" ref={selectedCategoryIdRef} defaultValue={selectedCategoryId}>
               <option value={0}>전체 게시글</option>
               {categories?.map((category) => (
                 <option key={category.id} value={category.id}>
@@ -188,9 +179,10 @@ function PosterPostPage() {
               <input
                 className="title-input"
                 type="text"
+                name="title"
+                ref={titleInputRef}
                 placeholder="제목을 입력하세요"
-                value={post ? post.title : title}
-                onChange={handleTitleChange}
+                defaultValue={post.title}
                 onKeyDown={handleKeyDown}
               />
                 <StyledSlateEditor
@@ -209,24 +201,30 @@ function PosterPostPage() {
                   }
                 />
             </div>
-            <div className="file-upload-wrapper">
-              <FileUploadArea
-                onClick={() => document.getElementById('fileInput')?.click()}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                isDragging={isDragging}
-              >
-                {isDragging ? '파일을 여기에 놓으세요' : '파일을 추가하려면 여기에 드래그하거나 클릭하세요'}
-              </FileUploadArea>
-              <input
-                id="fileInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileUpload(e.target.files)}
-                multiple
-              />
+            {/* 업로드된 파일 목록 (위치 변경) */}
+            <div className="uploaded-files">
+              {uploadedFiles?.map((file) => (
+                <div key={file.id} className="file-item">
+                  <a href={file.url} download={file.originalFilename} className="file-name">{file.originalFilename}</a>
+                  <span className="file-info">
+                    {formatFileSize(file.fileSize)} | {formatDate(file.createdAt)}
+                  </span>
+                  <button onClick={(e) => handleFileDelete(e, file.id)} className="delete-button">
+                    &#10005; {/* X 표시 */}
+                  </button>
+                </div>
+              ))}
             </div>
+
+            <FileUploadArea
+              onFileUpload={onFileUpload}
+              uploadStatus={uploadStatus}
+              uploadProgress={uploadProgress}
+              isDragging={isDragging}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, postId!)}
+            />
             <div className="BottomContainer">
               <button onClick={goBack}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" height="1em" width="1em">

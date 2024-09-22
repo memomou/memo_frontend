@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   useLocation,
 } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../../components/atom/atoms";
 import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Action } from "./Header.style";
 import { useEffect, useRef, useState } from "react";
@@ -12,9 +12,7 @@ function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileBtnRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
-  const user = useRecoilValue(userAtom);
-  const setUser = useSetRecoilState(userAtom);
-
+  const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
   const navigateToFn = (path: string) => {
     return () => {

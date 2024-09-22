@@ -8,6 +8,7 @@ import { PostType, userAtom, selectedCategoriesAtom } from "../../../components/
 import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
+import { formatFileSize, formatDate } from '../../../utils/formatters';
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
@@ -45,6 +46,7 @@ function DetailPostPage(props: any) {
       }
     }
   }
+
   return (
     <PageContainer>
       <SideBar showAddCategory={false} />
@@ -64,21 +66,40 @@ function DetailPostPage(props: any) {
               <div className="author">
                 <span>작성자: {post?.author?.nickname ?? "..."}</span>
               </div>
-            {isOwnerOrAdmin ? (
-              <div className="modification">
-                <Link to={`/post/write?postId=${postId}`}>수정</Link>
-                <span> | </span>
-                <button onClick={handleDelete}>
-                  <span>
-                    삭제
-                  </span>
+              {isOwnerOrAdmin ? (
+                <div className="modification">
+                  <Link to={`/post/write?postId=${postId}`}>수정</Link>
+                  <span> | </span>
+                  <button onClick={handleDelete}>
+                    <span>삭제</span>
                   </button>
-              </div>) : (<></>)
-            }
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="content">
               <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
             </div>
+
+            {/* 첨부 파일 섹션 */}
+            {post?.postFiles && post.postFiles.length > 0 && (
+              <div className="attachment-section">
+                <h4>첨부 파일</h4>
+                <div className="uploaded-files">
+                  {post.postFiles.map((file) => (
+                    <div key={file.id} className="file-item">
+                      <a href={file.url} download={file.originalFilename} className="file-name">
+                        {file.originalFilename}
+                      </a>
+                      <span className="file-info">
+                        {formatFileSize(file.fileSize)} | {formatDate(file.createdAt)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </DetailPosterForm>
         </div>
       </PosterNewContainer>

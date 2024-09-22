@@ -9,7 +9,7 @@ export function useAuthorInfo(nickname: string | undefined) {
 
   const fetchAuthorInformation = useCallback(async () => {
     if (!nickname) return;
-
+    if (author?.nickname === nickname) return;
     try {
       const response = await axiosInstance.get(`/users/nickname/${nickname}`);
       if (author?.id !== response.data.user.id) {
