@@ -13,12 +13,6 @@ export const PageContainer = styled.div`
     margin-top: 20px;
   }
 
-  .uploaded-files {
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px;
-  }
-
   .file-item {
     display: flex;
     justify-content: space-between;
@@ -136,7 +130,7 @@ export const DetailPosterForm = styled.div`
     width: 100%;
     border: 1px solid #eee;
     border-radius: 5px;
-    padding: 10px;
+    padding: 1px 10px;
     background-color: #f9f9f9;
 
     .file-item {

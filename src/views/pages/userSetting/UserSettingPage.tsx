@@ -41,7 +41,10 @@ function UserSettingPage() {
   const uploadImage = async (file: File) => {
     try {
       const formData = new FormData();
-      formData.append('image', file);
+      const encodedFilename = encodeURIComponent(file.name);
+      const encodedFile = new File([file], encodedFilename, { type: file.type });
+      formData.append('image', encodedFile);
+
       await axiosInstance.put('/users/me/profile/images', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });

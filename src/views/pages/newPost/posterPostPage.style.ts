@@ -24,12 +24,6 @@ export const PosterNewPageContainer = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
-  .uploaded-files {
-    margin-top: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px;
-  }
 
   .file-item {
     display: flex;

@@ -13,7 +13,9 @@ export const useFileUpload = (onFileUploaded: (file: any) => void) => {
 
       try {
         const formData = new FormData();
-        formData.append('file', files[0]);
+        const encodedFilename = encodeURIComponent(files[0].name);
+        const encodedFile = new File([files[0]], encodedFilename, { type: files[0].type });
+        formData.append('file', encodedFile);
 
         const response = await axiosInstance.post(`/posts/${postId}/files`, formData, {
           headers: {
