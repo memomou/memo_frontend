@@ -16,6 +16,7 @@ export const FileUploadArea = styled.div<{ $isDragging: boolean; $uploadProgress
     props.$uploadStatus === 'complete' ? '#28a745' : 'inherit'};
   position: relative;
   overflow: hidden;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: #f0f0f0;
