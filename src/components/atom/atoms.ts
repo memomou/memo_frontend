@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import { CustomElement } from "../../types/slate";
 import { Element} from "slate";
 
-interface UserState {
+export interface UserState {
   id?: number;
   createdAt?: string;
   email?: string;
