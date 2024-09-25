@@ -4,6 +4,7 @@ import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom, Use
 import CategoryList from './CategoryList';
 import AddCategory from './AddCategory';
 import { SideBarContainer } from './SideBar.style';
+import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
 export function SideBar({ showAddCategory = true }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);
@@ -17,6 +18,10 @@ export function SideBar({ showAddCategory = true }) {
     setAuthorCategories([...authorCategories, newCategory]);
   };
 
+  function handleDragEnd(event: DragEndEvent): void {
+    console.log(event);
+  }
+
   return (
     <SideBarContainer>
       <div className="nicknameWrapper">
@@ -27,16 +32,11 @@ export function SideBar({ showAddCategory = true }) {
         />
         <h1 className="nickname">@{nickname}</h1>
       </div>
-      <Link to={`/${author?.nickname}`}>
-        <div className={`category ${!selectedCategory ? "selected" : ""}`}>
-          전체 게시글
-        </div>
-      </Link>
-      <CategoryList
-        categories={authorCategories}
-        selectedCategory={selectedCategory}
-        author={author as UserState}
-      />
+        <CategoryList
+          categories={authorCategories}
+          selectedCategory={selectedCategory}
+          author={author as UserState}
+        />
       {isCurrentUserOwner && showAddCategory && (
         <AddCategory onAddCategory={handleAddCategory} />
       )}

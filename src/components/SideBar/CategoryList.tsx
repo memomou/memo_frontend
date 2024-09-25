@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
 import { CategoriesState, UserState } from '../atom/atoms';
+import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import CategoryItem from './CategoryItem';
+import { CategoryItemStyle } from './CategoryItem.style';
 
 interface CategoryListProps {
   categories: CategoriesState[];
@@ -8,19 +12,32 @@ interface CategoryListProps {
 }
 
 const CategoryList: React.FC<CategoryListProps> = ({ categories, selectedCategory, author }) => {
+  function handleDragEnd(event: DragEndEvent): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
-    <>
-      {categories.map((category, index) => (
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <CategoryItemStyle className={`category ${!selectedCategory ? "selected" : ""}`}>
         <Link
-          to={`/${author.nickname}?category=${category.categoryName}`}
-          key={category.id || `category-${index}`}
+          className="categoryName"
+          to={`/${author.nickname}`}
         >
-          <div className={`category${category.id === selectedCategory?.id ? " selected" : ""}`}>
-            <span className="categoryName">{category.categoryName}</span>
-          </div>
+          전체 게시글
         </Link>
-      ))}
-    </>
+      </CategoryItemStyle>
+      <SortableContext
+        items={categories}
+        strategy={verticalListSortingStrategy}
+      >
+      {categories.map((category, index) => (
+        <CategoryItem key={category.id || `category-${index}`} category={category} author={author} isSelected={category.id === selectedCategory?.id} index={index} />
+        ))}
+        </SortableContext>
+    </DndContext>
   );
 };
 
