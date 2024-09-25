@@ -16,6 +16,9 @@ export const CategoryItemStyle = styled.div`
     border: 1px solid #ddd;
     &:hover {
       border: 1px solid rgba(52, 152, 219, 0.8);
+      .dragButton {
+        opacity: 0.5;
+      }
     }
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     .categoryName {
@@ -28,4 +31,17 @@ export const CategoryItemStyle = styled.div`
   .selected {
     background-color: #000;
   }
+  .dragButton {
+    opacity: 0.2;
+    padding: 4px 0px;
+    border-radius: 4px;
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+    &:hover {
+      background-color: #cecece;
+    }
+  }
+
 `;

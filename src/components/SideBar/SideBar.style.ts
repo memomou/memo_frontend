@@ -14,6 +14,11 @@ export const SideBarContainer = styled.div`
     align-items: center;
     gap: 8px;
     margin-bottom: 14px;
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .nickname {
       margin: 0;
       font-size: 1.3rem;

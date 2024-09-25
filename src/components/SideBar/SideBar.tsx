@@ -21,12 +21,14 @@ export function SideBar({ showAddCategory = true }) {
   return (
     <SideBarContainer>
       <div className="nicknameWrapper">
+        <Link to={`/${nickname}`}>
         <img
           src={author?.profileImage?.url || '/defaultAvatar.png'}
           alt={`${nickname}의 프로필`}
           className="profileImage"
         />
         <h1 className="nickname">@{nickname}</h1>
+        </Link>
       </div>
       {author && (
         <CategoryList

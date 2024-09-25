@@ -4,6 +4,7 @@ import { CategoriesState, UserState } from '../atom/atoms'
 import { CategoryItemStyle } from './CategoryItem.style'
 import { useSortable } from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities';
+import { RiDraggable } from "react-icons/ri";
 
 interface CategoryItemProps {
   category: CategoriesState
@@ -38,7 +39,10 @@ export default function CategoryItem({ category, author, index, isSelected, isMy
         >
           {category.categoryName}
         </Link>
-        {isMyCategory && <button {...attributes} {...listeners}>DRAG</button>}
+        {isMyCategory &&
+        <button {...attributes} {...listeners} className='dragButton'>
+          <RiDraggable />
+        </button>}
       </CategoryItemStyle>
   )
 }
