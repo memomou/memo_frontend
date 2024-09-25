@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { CategoriesState } from '../atom/atoms';
 import { axiosInstance } from '../../helpers/helper';
+import { CategoryItemStyle } from './CategoryItem.style';
 
 interface AddCategoryProps {
   onAddCategory: (newCategory: CategoriesState) => void;
@@ -60,12 +61,12 @@ const AddCategory: React.FC<AddCategoryProps> = ({ onAddCategory }) => {
   return (
     <>
       {!isAddingCategory && (
-        <div className="category plus" onClick={() => setIsAddingCategory(true)}>
+        <CategoryItemStyle className="category plus" onClick={() => setIsAddingCategory(true)}>
           +
-        </div>
+        </CategoryItemStyle>
       )}
       {isAddingCategory && (
-        <div className="category categoryInsert" ref={newCategoryRef}>
+        <CategoryItemStyle className="category categoryInsert" ref={newCategoryRef}>
           <input
             className="categoryInput"
             type="text"
@@ -74,8 +75,10 @@ const AddCategory: React.FC<AddCategoryProps> = ({ onAddCategory }) => {
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="카테고리 추가"
           />
-          <button ref={inputBtnRef} onClick={handleAddCategory}>V</button>
-        </div>
+          <button ref={inputBtnRef} onClick={handleAddCategory}>
+            V
+          </button>
+        </CategoryItemStyle>
       )}
     </>
   );

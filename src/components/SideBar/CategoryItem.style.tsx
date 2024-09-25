@@ -28,4 +28,10 @@ export const CategoryItemStyle = styled.div`
   .selected {
     background-color: #000;
   }
+  .dragButton {
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+  }
 `;
