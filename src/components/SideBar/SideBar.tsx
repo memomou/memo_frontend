@@ -18,10 +18,6 @@ export function SideBar({ showAddCategory = true }) {
     setAuthorCategories([...authorCategories, newCategory]);
   };
 
-  function handleDragEnd(event: DragEndEvent): void {
-    console.log(event);
-  }
-
   return (
     <SideBarContainer>
       <div className="nicknameWrapper">
@@ -32,11 +28,15 @@ export function SideBar({ showAddCategory = true }) {
         />
         <h1 className="nickname">@{nickname}</h1>
       </div>
+      {author && (
         <CategoryList
           categories={authorCategories}
           selectedCategory={selectedCategory}
           author={author as UserState}
+          setCategories={setAuthorCategories}
+          isMyCategory={isCurrentUserOwner}
         />
+      )}
       {isCurrentUserOwner && showAddCategory && (
         <AddCategory onAddCategory={handleAddCategory} />
       )}
