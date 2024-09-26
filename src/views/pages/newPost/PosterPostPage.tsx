@@ -35,6 +35,8 @@ function PosterPostPage() {
   const [post, setPost] = useState<PostType>(defaultPostValue);
   const [categories, setCategories] = useState<CategoriesState[]>();
   const selectedCategoryId = post.category?.id;
+  const visibilityId = post.visibilityId ?? 1;
+  console.log(visibilityId);
   const navigate = useNavigate();
   const location = useLocation();
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -46,7 +48,7 @@ function PosterPostPage() {
   const [editor] = useState(() => withReact(withHistory(createEditor())));
 
   const selectedCategoryIdRef = useRef<HTMLSelectElement>(null);
-
+  const visibilityIdRef = useRef<HTMLSelectElement>(null);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -56,6 +58,7 @@ function PosterPostPage() {
         setPost(deserializePost);
         setUploadedFiles(post.postFiles);
         // 에디터의 값 설정
+        console.log(deserializePost.visibilityId);
         Transforms.deselect(editor); // 현재 선택 상태를 비우기
         editor.children = deserializePost.contentSlate; // 에디터의 내용 전체 교체
         editor.onChange(); // 에디터의 변경 사항 적용
@@ -98,6 +101,7 @@ function PosterPostPage() {
         content: deserialzedContent,
         contentSlate: jsonContent,
         categoryId: categoryId !== "0" ? categoryId : null,
+        visibilityId: visibilityIdRef?.current?.value,
       };
       console.log("postData: ", postData);
       try {
@@ -161,8 +165,12 @@ function PosterPostPage() {
       <PosterNewContainer>
         <div className="options-bar">
           <div>
-            <select id="category" name="category" ref={selectedCategoryIdRef} defaultValue={selectedCategoryId}>
-              <option value={0}>전체 게시글</option>
+            <select name="category" ref={selectedCategoryIdRef} value={selectedCategoryId}
+            onChange={(e) => {
+              setPost(prevPost => ({ ...prevPost, categoryId: Number(e.target.value) }));
+            }}
+            >
+              <option value={0}>카테고리 선택</option>
               {categories?.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.categoryName} {/* 카테고리 이름을 보여줌 */}
@@ -170,7 +178,15 @@ function PosterPostPage() {
               ))}
             </select>
           </div>
-          <div>
+          <div className="visibility-toggle">
+          <select name="visibility" ref={visibilityIdRef} value={post.visibilityId}
+          onChange={(e) => {
+            setPost(prevPost => ({ ...prevPost, visibilityId: Number(e.target.value) }));
+          }}
+          >
+              <option value={1}>전체 공개</option>
+              <option value={2}>비공개</option>
+            </select>
           </div>
         </div>
         <div className="editor-container">
