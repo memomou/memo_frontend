@@ -87,6 +87,9 @@ export const PosterNewContainer = styled.div`
     max-width: 700px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 20px;
 
     select {
       font-size: 0.9rem; // 셀렉트 박스 폰트 크기 축소
@@ -95,6 +98,20 @@ export const PosterNewContainer = styled.div`
       padding: 2px 5px;
       background-color: white;
       border-radius: 5px;
+    }
+
+    .visibility-toggle {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+
+      label {
+        margin-right: 10px;
+      }
+
+      input[type="checkbox"] {
+        margin-right: 5px;
+      }
     }
   }
 

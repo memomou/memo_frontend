@@ -2,6 +2,11 @@ import { atom } from "recoil";
 import { CustomElement } from "../../types/slate";
 import { Element} from "slate";
 
+enum Visibility {
+  PUBLIC = 1,
+  PRIVATE = 2,
+}
+
 export interface UserState {
   id?: number;
   createdAt?: string;
@@ -45,6 +50,7 @@ export interface PostType {
   postFiles: PostFile[];
   statusId: number;
   updatedAt: string;
+  visibilityId: Visibility;
 };
 
 const defaultValue : Element[] = [
@@ -67,7 +73,8 @@ export const defaultPostValue: PostType = {
   createdAt: '',
   id: '',
   statusId: 0,
-  updatedAt: ''
+  updatedAt: '',
+  visibilityId: 1,
 }
 
 
