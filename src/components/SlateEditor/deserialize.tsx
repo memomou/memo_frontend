@@ -1,4 +1,5 @@
 import { Element as slateElement } from 'slate'
+import { Image } from './SlateEditor';
 
 export function Element({ attributes, children, element } : { attributes: any, children: any, element: slateElement }) {
   switch (element.type) {
@@ -23,6 +24,9 @@ export function Element({ attributes, children, element } : { attributes: any, c
 
     case "list-item":
       return <li {...attributes}>{children}</li>;
+    
+    case "image":
+      return <Image {...attributes} element={element} />;
 
     default:
       return <p {...attributes}>{children}</p>;
