@@ -7,6 +7,7 @@ export const PageContainer = styled.div`
   flex: 1;
   flex-direction: row;
   padding: 20px;
+  padding-top: 0px;
   flex-grow: 5;
 
   .attachment-section {
@@ -76,6 +77,7 @@ export const PosterNewContainer = styled.div`
     width: -webkit-fill-available;
     justify-content: center;
     min-height: 70%;
+    margin-top: 10px;
   }
 `;
 
