@@ -28,7 +28,6 @@ export const PosterNewPageContainer = styled.div`
   .file-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #e0e0e0;
 
@@ -88,8 +87,6 @@ export const PosterNewContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 0 20px;
 
     select {
       font-size: 0.9rem; // 셀렉트 박스 폰트 크기 축소
@@ -122,6 +119,7 @@ export const PosterNewContainer = styled.div`
     flex-direction: row;
     width: -webkit-fill-available;
     justify-content: center;
+    margin-top: 10px;
   }
 `;
 

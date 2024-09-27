@@ -14,7 +14,6 @@ export const ContentContainer = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
       .recentPostText {
         font-size: 1.2rem;
         display: flex;
@@ -52,7 +51,6 @@ export const ContentContainer = styled.div`
       }
       .searchInputWrapper {
         min-width: 200px;
-        height: 40px;
         border: 1px solid #ddd;
         position: relative;
         display: flex;
@@ -68,6 +66,7 @@ export const ContentContainer = styled.div`
       }
     }
     .recentPosts {
+      margin: 15px 0px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;

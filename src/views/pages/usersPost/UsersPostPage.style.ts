@@ -6,4 +6,5 @@ export const PageContainer = styled.div`
   flex: 1;
   flex-direction: row;
   padding: 20px;
+  padding-top: 0px;
 `;

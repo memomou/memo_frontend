@@ -26,14 +26,13 @@ export const ContentContainer = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
       .recentPostText {
         font-size: 1.5rem;
         font-weight: bold;
       }
       .searchInputWrapper {
         min-width: 200px;
-        height: 40px;
+        margin: 5px 0px;
         border: 1px solid #ddd;
         position: relative;
         display: flex;
@@ -49,6 +48,7 @@ export const ContentContainer = styled.div`
       }
     }
     .recentPosts {
+      margin: 15px 0px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;
