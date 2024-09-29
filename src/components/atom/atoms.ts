@@ -2,9 +2,15 @@ import { atom } from "recoil";
 import { CustomElement } from "../../types/slate";
 import { Element} from "slate";
 
-enum Visibility {
+export enum Visibility {
   PUBLIC = 1,
   PRIVATE = 2,
+}
+
+export enum PostStatus {
+  DRAFT = 1,
+  PUBLISHED = 2,
+  UNREGISTERED = 3,
 }
 
 export interface UserState {

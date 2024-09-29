@@ -7,7 +7,7 @@ import { createEditor, Element, Transforms, } from "slate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
-import { CategoriesState, defaultPostValue, PostType } from "../../../components/atom/atoms";
+import { CategoriesState, defaultPostValue, PostStatus, PostType, Visibility } from "../../../components/atom/atoms";
 import { PostFile } from "../../../components/atom/atoms";
 import React, { useCallback } from 'react';
 import { useFileUpload } from '../../../hooks/useFileUpload';
@@ -35,8 +35,6 @@ function PosterPostPage() {
   const [post, setPost] = useState<PostType>(defaultPostValue);
   const [categories, setCategories] = useState<CategoriesState[]>();
   const selectedCategoryId = post.category?.id;
-  const visibilityId = post.visibilityId ?? 1;
-  console.log(visibilityId);
   const navigate = useNavigate();
   const location = useLocation();
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -58,7 +56,6 @@ function PosterPostPage() {
         setPost(deserializePost);
         setUploadedFiles(post.postFiles);
         // 에디터의 값 설정
-        console.log(deserializePost.visibilityId);
         Transforms.deselect(editor); // 현재 선택 상태를 비우기
         editor.children = deserializePost.contentSlate; // 에디터의 내용 전체 교체
         editor.onChange(); // 에디터의 변경 사항 적용
@@ -84,6 +81,31 @@ function PosterPostPage() {
     fetchCategories();
   }, []);
 
+  const handlePostSubmission = async (postStatus: PostStatus) => {
+    const jsonContent = JSON.stringify(editor.children);
+    const deserializedContent = serialize(editor);
+    const categoryId = selectedCategoryIdRef?.current?.value;
+
+    const postData = {
+      title: titleInputRef.current?.value,
+      content: deserializedContent,
+      contentSlate: jsonContent,
+      categoryId: categoryId !== "0" ? categoryId : null,
+      visibilityId: visibilityIdRef?.current?.value,
+      statusId: postStatus,
+    };
+    const response = isUpdate
+      ? await axiosInstance.patch(`/posts/${postId}`, postData)
+      : await axiosInstance.post('/posts', postData);
+
+    console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
+    const post = response.data.post as PostType;
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    return post;
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();  // input에서 Enter 키 눌렀을 때 기본 동작 막음
@@ -92,34 +114,9 @@ function PosterPostPage() {
 
   const onButtonClick = async (event:React.FormEvent) => {
     event.preventDefault();
-    const jsonContent = JSON.stringify(editor.children);
-    const deserialzedContent = serialize(editor);
-    try {
-      const categoryId = selectedCategoryIdRef?.current?.value;
-      const postData = {
-        title: titleInputRef.current?.value,
-        content: deserialzedContent,
-        contentSlate: jsonContent,
-        categoryId: categoryId !== "0" ? categoryId : null,
-        visibilityId: visibilityIdRef?.current?.value,
-      };
-      console.log("postData: ", postData);
-      try {
-        const response = isUpdate
-          ? await axiosInstance.patch(`/posts/${postId}`, postData)
-          : await axiosInstance.post('/posts', postData);
-
-        console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
-        const post = response.data.post as PostType;
-        const {id: fetchedPostId} = post;
-        console.log('post:', post);
-        navigate(`/${post.author.nickname}/post/${fetchedPostId}`);
-      } catch (error) {
-        console.error('게시글 처리 중 오류 발생:', error);
-      }
-    } catch (error) {
-      console.error("게시글 저장 실패:", error);
-    }
+    const post = await handlePostSubmission(PostStatus.PUBLISHED);
+    const {id: fetchedPostId} = post;
+    navigate(`/${post.author.nickname}/post/${fetchedPostId}`);
   }
 
   const goBack = (event: React.MouseEvent) => {
@@ -141,7 +138,13 @@ function PosterPostPage() {
     handleFileUpload
   } = useFileUpload(handleFileUploaded);
 
-  const onFileUpload = useCallback((files: FileList | null) => {
+  const onFileUpload = useCallback(async(files: FileList | null) => {
+    if (!postId) {
+      const post = await handlePostSubmission(PostStatus.UNREGISTERED);
+      const {id: fetchedPostId} = post;
+      navigate(`/post/write?postId=${fetchedPostId}`);
+      handleFileUpload(files, fetchedPostId);
+    }
     if (postId) {
       handleFileUpload(files, postId);
     }
