@@ -39,8 +39,7 @@ function Content() {
     }
     const response = await axiosInstance.get('/posts', {
       params: {
-        where__content__i_like: e.target.value,
-        where__title__i_like: e.target.value,
+        content_or_title_include: e.target.value,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];

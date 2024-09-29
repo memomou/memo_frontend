@@ -16,7 +16,7 @@ export function useAuthorInfo(nickname: string | undefined) {
         setAuthor(response.data.user);
 
         const categoriesResponse = await axiosInstance.get(`/categories`, {
-          params: { userId: response.data.user.id }
+          params: { authorId: response.data.user.id }
         });
         setAuthorCategories(categoriesResponse.data.categories);
       }

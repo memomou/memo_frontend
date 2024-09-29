@@ -46,8 +46,8 @@ export function UsersPostPage() {
 
         const response = await axiosInstance.get('/posts', {
           params: {
-            where__and__author__id__equal: author?.id,
-            where__and__category__id__equal: selectedCategory?.id,
+            author_id: author?.id,
+            category_id: selectedCategory?.id,
           },
         });
         console.log('Posts:', response);

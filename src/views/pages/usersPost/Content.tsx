@@ -30,10 +30,9 @@ export const Content = () => {
     console.log(e.target.value);
     const response = await axiosInstance.get('/posts', {
       params: {
-        where__content__i_like: e.target.value,
-        where__title__i_like: e.target.value,
-        where__and__author__id__equal: author?.id,
-        where__and__category__id__equal: selectedCategory?.id,
+        content_or_title_include: e.target.value,
+        author_id: author?.id,
+        category_id: selectedCategory?.id,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];
@@ -77,7 +76,7 @@ export const Content = () => {
       // 카테고리에 속한 게시글 수 확인
       const response = await axiosInstance.get('/posts', {
         params: {
-          where__and__category__id__equal: categoryId,
+          category_id: categoryId,
           take: 1
         }
       });
