@@ -13,9 +13,11 @@ interface CategoryListProps {
   setCategories: React.Dispatch<React.SetStateAction<CategoriesState[]
   >>;
   isMyCategory: boolean;
+  isTempPostPage: boolean;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, selectedCategory, author, isMyCategory }) => {
+const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, selectedCategory, author, isMyCategory, isTempPostPage }) => {
+  const navigateToBase = isTempPostPage ? `/${author.nickname}/posts/saves` : `/${author.nickname}`;
   async function handleDragEnd(event: DragEndEvent) {
     const {active, over} = event;
     if (over && active.id !== over.id) {
@@ -43,7 +45,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
       <CategoryItemStyle className={`category ${!selectedCategory ? "selected" : ""}`}>
         <Link
           className="categoryName"
-          to={`/${author.nickname}`}
+          to={navigateToBase}
         >
           전체 게시글
         </Link>
@@ -53,7 +55,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
         strategy={verticalListSortingStrategy}
       >
       {categories.map((category, index) => (
-        <CategoryItem key={category.id || `category-${index}`} category={category} author={author} isSelected={category.id === selectedCategory?.id} index={index} isMyCategory={isMyCategory} />
+        <CategoryItem key={category.id || `category-${index}`} category={category} author={author} isSelected={category.id === selectedCategory?.id} index={index} isMyCategory={isMyCategory} navigateToBase={navigateToBase} />
         ))}
         </SortableContext>
     </DndContext>

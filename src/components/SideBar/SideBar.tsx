@@ -5,7 +5,7 @@ import CategoryList from './CategoryList';
 import AddCategory from './AddCategory';
 import { SideBarContainer } from './SideBar.style';
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
-export function SideBar({ showAddCategory = true }) {
+export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);
   const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
@@ -37,6 +37,7 @@ export function SideBar({ showAddCategory = true }) {
           author={author as UserState}
           setCategories={setAuthorCategories}
           isMyCategory={isCurrentUserOwner}
+          isTempPostPage={isTempPostPage}
         />
       )}
       {isCurrentUserOwner && showAddCategory && (

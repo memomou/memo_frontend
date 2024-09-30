@@ -3,9 +3,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link, useSearchParams } from "react-router-dom";
-import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom } from "../../../components/atom/atoms";
+import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom, PostStatus } from "../../../components/atom/atoms";
 
-export const Content = () => {
+export const Content = ({isTempPostPage = false}: {isTempPostPage?: boolean}) => {
   const [author] = useRecoilState(authorAtom);
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [,setAuthorCategories] = useRecoilState(authorCategoriesAtom);
@@ -33,6 +33,7 @@ export const Content = () => {
         content_or_title_include: e.target.value,
         author_id: author?.id,
         category_id: selectedCategory?.id,
+        status_id: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];

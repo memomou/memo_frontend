@@ -7,12 +7,14 @@ import { createEditor, Element, Transforms, } from "slate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { serialize } from "../../../components/SlateEditor/serialize";
-import { CategoriesState, defaultPostValue, PostStatus, PostType, Visibility } from "../../../components/atom/atoms";
+import { defaultPostValue, PostStatus, PostType, Visibility } from "../../../components/atom/atoms";
 import { PostFile } from "../../../components/atom/atoms";
-import React, { useCallback } from 'react';
+import React, { useCallback, ChangeEvent } from 'react';
 import { useFileUpload } from '../../../hooks/useFileUpload';
 import { FileUploadArea } from './component/FileUploadArea';
 import { formatFileSize, formatDate } from '../../../utils/formatters';
+import OptionsBar from "./component/OptionBar";
+import { useCategories } from "./useCategories";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -33,96 +35,53 @@ function renderPlaceholder(props: RenderPlaceholderProps) {
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
   const [post, setPost] = useState<PostType>(defaultPostValue);
-  const [categories, setCategories] = useState<CategoriesState[]>();
-  const selectedCategoryId = post.category?.id;
+  const categories = useCategories();
   const navigate = useNavigate();
   const location = useLocation();
   const titleInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
-
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const postId = queryParams.get('postId');
   const isUpdate = postId ? true : false;
   const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const [categoryId, setCategoryId] = useState<Number>(0);
+  const [visibilityId, setVisibilityId] = useState<Visibility | undefined>(post.visibilityId);
+  const historyRef = useRef<string[]>([]);
 
-  const selectedCategoryIdRef = useRef<HTMLSelectElement>(null);
-  const visibilityIdRef = useRef<HTMLSelectElement>(null);
+  useEffect(() => {
+    historyRef.current.push(location.search);
+    if (historyRef.current.length >= 3) {
+      historyRef.current.shift(); // 배열의 첫 번째 요소 제거
+    }
+  }, [location]);
+
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
         const responsePost = await axiosInstance.get(`/posts/${postId}`);
         const post = responsePost.data.post;
-        const deserializePost = { ...post, contentSlate: post?.contentSlate ? JSON.parse(post.contentSlate) : defaultValue } as PostType;
+        const deserializePost = {
+          ...post,
+          tempPost: post.tempPost ? {
+            ...post.tempPost,
+            contentSlate: post?.tempPost?.contentSlate ? JSON.parse(post.tempPost.contentSlate) : defaultValue,
+          } : null,
+          contentSlate: post?.contentSlate ? JSON.parse(post.contentSlate) : defaultValue,
+        } as PostType;
         setPost(deserializePost);
+        setCategoryId(post.category?.id ?? 0);
+        setVisibilityId(post.visibilityId);
         setUploadedFiles(post.postFiles);
         // 에디터의 값 설정
-        Transforms.deselect(editor); // 현재 선택 상태를 비우기
-        editor.children = deserializePost.contentSlate; // 에디터의 내용 전체 교체
-        editor.onChange(); // 에디터의 변경 사항 적용
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
+        Transforms.deselect(editor);
+        editor.children = deserializePost.contentSlate;
+        editor.onChange();
+        return deserializePost;
     };
     if (isUpdate) {
-      fetchPosts();
+      const post = fetchPosts();
+      performTempPostToast(post);
     }
   }, []);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const responseCategories = await axiosInstance.get(`/categories/me`);
-        console.log('Categories:', responseCategories);
-        setCategories(responseCategories.data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    }
-    fetchCategories();
-  }, []);
-
-  const handlePostSubmission = async (postStatus: PostStatus) => {
-    const jsonContent = JSON.stringify(editor.children);
-    const deserializedContent = serialize(editor);
-    const categoryId = selectedCategoryIdRef?.current?.value;
-
-    const postData = {
-      title: titleInputRef.current?.value,
-      content: deserializedContent,
-      contentSlate: jsonContent,
-      categoryId: categoryId !== "0" ? categoryId : null,
-      visibilityId: visibilityIdRef?.current?.value,
-      statusId: postStatus,
-    };
-    const response = isUpdate
-      ? await axiosInstance.patch(`/posts/${postId}`, postData)
-      : await axiosInstance.post('/posts', postData);
-
-    console.log(isUpdate ? '게시글 변경 성공:' : '게시글 저장 성공:', response);
-    const post = response.data.post as PostType;
-    if (!post) {
-      throw new Error('Post not found');
-    }
-    return post;
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();  // input에서 Enter 키 눌렀을 때 기본 동작 막음
-    }
-  };
-
-  const onButtonClick = async (event:React.FormEvent) => {
-    event.preventDefault();
-    const post = await handlePostSubmission(PostStatus.PUBLISHED);
-    const {id: fetchedPostId} = post;
-    navigate(`/${post.author.nickname}/post/${fetchedPostId}`);
-  }
-
-  const goBack = (event: React.MouseEvent) => {
-    event.preventDefault();
-    navigate(-1);
-  };
 
   const handleFileUploaded = useCallback((file: any) => {
     setUploadedFiles(prevFiles => [...prevFiles, file]);
@@ -137,6 +96,81 @@ function PosterPostPage() {
     handleDrop,
     handleFileUpload
   } = useFileUpload(handleFileUploaded);
+
+  const getSendPostData = () => {
+    const jsonContent = JSON.stringify(editor.children);
+    const deserializedContent = serialize(editor);
+    return {
+      title: titleInputRef.current?.value,
+      content: deserializedContent,
+      contentSlate: jsonContent,
+    }
+  }
+
+  const handlePostSubmission = async (postStatus: PostStatus) => {
+    try {
+      const postData = {
+        ...getSendPostData(),
+        categoryId: categoryId !== 0 ? categoryId : null,
+        visibilityId: visibilityId,
+        statusId: postStatus,
+      };
+
+      console.log(post);
+
+      const response = isUpdate
+        ? await axiosInstance.patch(`/posts/${postId}`, postData)
+        : await axiosInstance.post('/posts', postData);
+
+      const updatedPost = response.data.post as PostType;
+      if (!updatedPost) {
+        throw new Error('Post not found');
+      }
+      return updatedPost;
+    } catch (error) {
+      console.error('게시글 저장 실패:', error);
+      throw error;
+    }
+  };
+
+  const onButtonClick = async (event:React.FormEvent) => {
+    event.preventDefault();
+    const post = await handlePostSubmission(PostStatus.PUBLISHED);
+    const {id: fetchedPostId} = post;
+    navigate(`/${post.author.nickname}/post/${fetchedPostId}`);
+  }
+
+  const performTempPostToast = async (post: Promise<PostType>) => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    post.then((post) => {
+      if (!post.tempPost) {
+        return;
+      }
+      const userConfirmed = window.confirm("임시 저장된 게시글을 불러오시겠습니까?");
+      if (!userConfirmed) {
+        return;
+      }
+      const tempPost = post.tempPost;
+      if (tempPost) {
+        setPost((prev)=> ({...prev, title: tempPost.title}));
+        Transforms.deselect(editor);
+        editor.children = tempPost.contentSlate;
+        editor.onChange();
+      }
+    });
+  };
+
+  const goBack = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    const currentHistory = historyRef.current;
+    if (currentHistory.length >= 2 && currentHistory[0] !== currentHistory[1]) {
+      navigate(-2);
+    } else {
+      navigate(-1);
+    }
+    // 현재 경로를 히스토리에서 제거
+    historyRef.current = currentHistory.slice(0, -1);
+  }, [navigate]);
 
   const onFileUpload = useCallback(async(files: FileList | null) => {
     if (!postId) {
@@ -163,35 +197,44 @@ function PosterPostPage() {
     }
   };
 
+  const handleTempSave = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    // 아예 게시글이 없는 상태라면
+    if (!isUpdate) {
+      // 게시글을 임시 상태로 저장
+      const post = await handlePostSubmission(PostStatus.DRAFT);
+      const {id: fetchedPostId} = post;
+      setPost((prev) => ({...prev, statusId: PostStatus.DRAFT}));
+      navigate(`/post/write?postId=${fetchedPostId}`);
+    }
+    // 게시글이 있는 상태이고
+    else {
+      // 게시글 상태가 published 가 아니었다면
+      if (post.statusId !== PostStatus.PUBLISHED) {
+        // 게시글 상태를 임시 상태로 저장
+        await handlePostSubmission(PostStatus.DRAFT);
+        setPost((prev) => ({...prev, statusId: PostStatus.DRAFT}));
+      }
+      // 게시글 상태가 published 일 때
+      else {
+        // 게시글의 임시 게시글 테이블에 저장
+        await axiosInstance.put(`/posts/${postId}/temp`, getSendPostData());
+      }
+    }
+    alert('임시 저장되었습니다.');
+  };
+
+  // 별도의 컴포넌트로 분리
   return (
     <PosterNewPageContainer>
       <PosterNewContainer>
-        <div className="options-bar">
-          <div>
-            <select name="category" ref={selectedCategoryIdRef} value={selectedCategoryId}
-            onChange={(e) => {
-              setPost(prevPost => ({ ...prevPost, categoryId: Number(e.target.value) }));
-            }}
-            >
-              <option value={0}>카테고리 선택</option>
-              {categories?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.categoryName} {/* 카테고리 이름을 보여줌 */}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="visibility-toggle">
-          <select name="visibility" ref={visibilityIdRef} value={post.visibilityId}
-          onChange={(e) => {
-            setPost(prevPost => ({ ...prevPost, visibilityId: Number(e.target.value) }));
-          }}
-          >
-              <option value={1}>전체 공개</option>
-              <option value={2}>비공개</option>
-            </select>
-          </div>
-        </div>
+        <OptionsBar
+          categories={categories}
+          selectedCategoryId={categoryId}
+          visibilityId={visibilityId}
+          onCategoryChange={(e: ChangeEvent<HTMLSelectElement>) => setCategoryId(Number(e.target.value))}
+          onVisibilityChange={(e: ChangeEvent<HTMLSelectElement>) => setVisibilityId(Number(e.target.value))}
+        />
         <div className="editor-container">
           <PosterNewForm onSubmit={onButtonClick}>
             <div className="editor-wrapper">
@@ -202,7 +245,11 @@ function PosterPostPage() {
                 ref={titleInputRef}
                 placeholder="제목을 입력하세요"
                 defaultValue={post.title}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                  }
+                }}
               />
                 <StyledSlateEditor
                   editor={editor}
@@ -256,7 +303,10 @@ function PosterPostPage() {
               </svg>
                 <span>뒤로가기</span>
                 </button>
-              <button type="submit">{isUpdate ? '변경하기' : '기록하기'}</button>
+              <div>
+                <button onClick={handleTempSave}>임시 저장</button>
+                <button type="submit">{isUpdate ? (post.statusId === PostStatus.DRAFT ?'등록하기' : '변경하기') : '등록하기'}</button>
+              </div>
             </div>
           </PosterNewForm>
         </div>

@@ -4,11 +4,11 @@ import { useRecoilState } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
-import { postsAtom, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { postsAtom, PostStatus, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 import { axiosInstance } from "../../../helpers/helper";
 
-export function UsersPostPage() {
+export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolean}) {
   const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const {author, authorCategories } = useAuthorInfo(nickname);
@@ -48,6 +48,7 @@ export function UsersPostPage() {
           params: {
             author_id: author?.id,
             category_id: selectedCategory?.id,
+            status_id: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED,
           },
         });
         console.log('Posts:', response);
@@ -62,12 +63,12 @@ export function UsersPostPage() {
       }
     };
     fetchPosts();
-  }, [selectedCategory, author?.id, setPosts, selectedCategoryName]);
+  }, [selectedCategory, author?.id, setPosts, selectedCategoryName, isTempPostPage]);
 
   return (
     <PageContainer>
-      <SideBar />
-      <Content />
+      <SideBar isTempPostPage={isTempPostPage} />
+      <Content isTempPostPage={isTempPostPage} />
     </PageContainer>
   );
 }

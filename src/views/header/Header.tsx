@@ -80,6 +80,9 @@ function Header() {
               <MenuItem onClick={navigateToFn(`/user/setting`)}>
                 개인 설정
               </MenuItem>
+              <MenuItem onClick={navigateToFn(`/${user.nickname}/posts/saves`)}>
+                임시글
+              </MenuItem>
               <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
             </DropdownMenu>
           </>
