@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SlateEditor from "../../../components/SlateEditor/SlateEditor";
-import { Editable, Slate, withReact } from "slate-react";
+import { Editable } from "slate-react";
 import { PostForm } from "../../../components/PostForm.style";
 export const StyledEditable = styled(Editable)`
   background-color: white;
@@ -20,7 +20,110 @@ export const StyledEditable = styled(Editable)`
 export const StyledSlateEditor = styled(SlateEditor)`
 `;
 
-const PosterNewForm = styled.form`
+export const PosterNewPageContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .file-name {
+    flex: 1;
+    color: #1a73e8;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .file-info {
+    color: #9e9e9e;
+    font-size: 0.8em;
+    margin-right: 10px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.9em;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+`;
+
+export const PosterNewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 700px;
+  padding: 20px;
+  font-size: 0.9rem; // 기본 폰트 크기 축소
+
+  .options-bar {
+    width: -webkit-fill-available;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    select {
+      font-size: 0.9rem; // 셀렉트 박스 폰트 크기 축소
+      border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 2px 5px;
+      background-color: white;
+      border-radius: 5px;
+    }
+
+    .visibility-toggle {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+
+      label {
+        margin-right: 10px;
+      }
+
+      input[type="checkbox"] {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .editor-container {
+    display: flex;
+    flex: 1;
+    min-height: 567px;
+    flex-direction: row;
+    width: -webkit-fill-available;
+    justify-content: center;
+    margin-top: 10px;
+  }
+`;
+
+export const PosterNewForm = styled.form`
   ${PostForm}
 
   .title-input {
@@ -50,6 +153,58 @@ const PosterNewForm = styled.form`
       display: flex;
       flex-direction: column;
     }
+  }
+
+  // 업로드된 파일 목록을 위한 새로운 스타일
+  .uploaded-files {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 1px 10px;
+    background-color: #f9f9f9;
+    /* font-size: 0.7rem; // 파일 목록 폰트 크기 축소 */
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.8rem;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      a {
+        color: #12b886;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      button {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 0px 2px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.8rem; // 삭제 버튼 폰트 크기 축소
+        &:hover {
+          background-color: #ff5252;
+        }
+      }
+    }
+  }
+
+  // 파일 업로드 영역 스타일 개선
+  .file-upload-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 0.5rem; // 파일 업로드 영역 폰트 크기 축소
   }
 
   .placeholder {
@@ -100,4 +255,11 @@ const PosterNewForm = styled.form`
   }
 `;
 
-export default PosterNewForm;
+export const UploadProgressText = styled.div`
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #12b886;
+`;

@@ -6,19 +6,7 @@ export const ContentContainer = styled.div`
   flex: 1;
   flex-direction: row;
   padding: 20px;
-  .sidebarWrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 53px;
-    margin-right: 10px;
-    padding: 10px;
-    a {
-      padding: 8px 10px;
-      border: 1px solid #ddd;
-    }
-  }
+  flex-grow: 5;
 
   .recentPosterWrapper {
     flex: 4;
@@ -27,12 +15,42 @@ export const ContentContainer = styled.div`
       justify-content: space-between;
       align-items: center;
       .recentPostText {
-        font-size: 1.5rem;
-        font-weight: bold;
+        font-size: 1.2rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex: 1;
+        justify-content: space-between;
+        margin-right: 20px;
+        .categoryName {
+          font-weight: bold;
+          margin-right: 10px;
+        }
+        input {
+          font-weight: bold;
+          margin-right: 10px;
+          padding: 5px;
+          width: 200px; // 적절한 너비 설정
+          max-width: 100%; // 반응형을 위한 최대 너비 설정
+        }
+        .save-btn {
+          font-size: 0.8rem;
+        }
+
+        .cancel-btn {
+          font-size: 0.8rem;
+        }
+        .separator {
+          margin: 0 5px;
+          font-weight: normal;
+        }
+      }
+      .mdf {
+        font-size: 0.8rem;
+        color: #999;
       }
       .searchInputWrapper {
         min-width: 200px;
-        margin: 5px 0px;
         border: 1px solid #ddd;
         position: relative;
         display: flex;
@@ -61,11 +79,15 @@ export const ContentContainer = styled.div`
         min-height: 150px;
         display: flex;
         flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
         border: 2px solid transparent;
+
         &:hover {
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
           border-color: rgba(52, 152, 219, 0.35); // 더 옅은 파란색
         }
+
         .top-wrapper {
           height: 26px;
           display: flex;
@@ -100,17 +122,8 @@ export const ContentContainer = styled.div`
           align-items: center;
           margin-top: 10px;
           .author {
-            display: flex;
-            align-items: center;
             font-size: 0.8rem;
             color: #666;
-            .profile-image {
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              margin-right: 5px;
-              object-fit: cover;
-            }
           }
           .date {
             font-size: 0.7rem;
@@ -119,5 +132,18 @@ export const ContentContainer = styled.div`
         }
       }
     }
+  }
+
+  .no-posts-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    font-size: 1.5rem;
+    color: #666;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
   }
 `;

@@ -125,7 +125,7 @@ export const insertLink = (editor, url) => {
 export const resetNodes  = <T extends Node> (
   editor: Editor,
   options: {
-    nodes?: Node | Node[],
+    nodes?: T | T[],
     at?: Location
   } = {}
 ): void => {

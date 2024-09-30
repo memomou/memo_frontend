@@ -1,13 +1,108 @@
 import { atom } from "recoil";
+import { CustomElement } from "../../types/slate";
+import { Element} from "slate";
 
-interface UserState {
+export enum Visibility {
+  PUBLIC = 1,
+  PRIVATE = 2,
+}
+
+export enum PostStatus {
+  DRAFT = 1,
+  PUBLISHED = 2,
+  UNREGISTERED = 3,
+}
+
+export interface UserState {
   id?: number;
+  createdAt?: string;
   email?: string;
   nickname?: string;
-  role?: string;
+  role?: 'admin' | 'user'| null | undefined;
+  profileImage?: PostImageType;
+  profileDescription?: string;
+}
+
+export interface PostImageType {
+  id: number;
+  url: string;
 }
 
 export const userAtom = atom<UserState | undefined>({
   key: 'user',
   default: undefined,
+});
+
+export const authorAtom = atom<UserState | undefined>({
+  key: 'author',
+  default: undefined,
+});
+
+export interface CategoriesState {
+  id: number;
+  categoryName: string;
+  pos: number;
+  user: UserState;
+}
+
+export interface PostType {
+  id: string;
+  createdAt: string;
+  author: UserState;
+  title: string;
+  content: string;
+  contentSlate: (CustomElement)[];
+  category?: CategoriesState;
+  postFiles: PostFile[];
+  statusId: number;
+  updatedAt: string;
+  visibilityId: Visibility;
+};
+
+const defaultValue : Element[] = [
+  {
+    type: 'paragraph',
+    children: [{ text: '' }],
+  }
+]
+
+export const defaultPostValue: PostType = {
+  title: '',
+  contentSlate: defaultValue,
+  postFiles: [],
+  category: undefined,
+  author: {
+    nickname: '',
+    id: 0
+  },
+  content: '',
+  createdAt: '',
+  id: '',
+  statusId: 0,
+  updatedAt: '',
+  visibilityId: 1,
+}
+
+
+export interface PostFile {
+  id: number;
+  originalFilename: string;
+  fileSize: number;
+  createdAt: string;
+  url: string;
+};
+
+export const authorCategoriesAtom = atom<CategoriesState[]>({
+  key: 'authorCategories',
+  default: [],
+});
+
+export const selectedCategoriesAtom = atom<CategoriesState | undefined>({
+  key: 'selectedCategory',
+  default: undefined,
+});
+
+export const postsAtom = atom<PostType[]>({
+  key: 'posts',
+  default: [],
 });

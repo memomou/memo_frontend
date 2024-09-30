@@ -1,24 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
   useLocation,
 } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../../components/atom/atoms";
-import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Title, Action } from "./Header.style";
-import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
+import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Action } from "./Header.style";
+import { useEffect, useRef, useState } from "react";
 
 function Header() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileBtnRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
-  const user = useRecoilValue(userAtom);
-  const setUser = useSetRecoilState(userAtom);
-
+  const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
   const navigateToFn = (path: string) => {
     return () => {
@@ -80,7 +74,7 @@ function Header() {
               <span>{user.nickname} 님</span>
             </StyledBtn>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
-              <MenuItem onClick={navigateToFn(`/user/${user.id}`)} >
+              <MenuItem onClick={navigateToFn(`/${user.nickname}`)} >
                 개인 블로그
               </MenuItem>
               <MenuItem onClick={navigateToFn(`/user/setting`)}>
