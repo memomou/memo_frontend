@@ -58,24 +58,16 @@ function PosterPostPage() {
   useEffect(() => {
     const fetchPosts = async () => {
         const responsePost = await axiosInstance.get(`/posts/${postId}`);
-        const post = responsePost.data.post;
-        const deserializePost = {
-          ...post,
-          tempPost: post.tempPost ? {
-            ...post.tempPost,
-            contentSlate: post?.tempPost?.contentSlate ? JSON.parse(post.tempPost.contentSlate) : defaultValue,
-          } : null,
-          contentSlate: post?.contentSlate ? JSON.parse(post.contentSlate) : defaultValue,
-        } as PostType;
-        setPost(deserializePost);
+        const post = responsePost.data.post as PostType;
+        setPost(post);
         setCategoryId(post.category?.id ?? 0);
         setVisibilityId(post.visibilityId);
         setUploadedFiles(post.postFiles);
         // 에디터의 값 설정
         Transforms.deselect(editor);
-        editor.children = deserializePost.contentSlate;
+        editor.children = post.contentSlate;
         editor.onChange();
-        return deserializePost;
+        return post;
     };
     if (isUpdate) {
       const post = fetchPosts();
