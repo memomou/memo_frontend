@@ -68,7 +68,7 @@ function PosterPostPage() {
           contentSlate: post?.contentSlate ? JSON.parse(post.contentSlate) : defaultValue,
         } as PostType;
         setPost(deserializePost);
-        setCategoryId(post.category.id);
+        setCategoryId(post.category?.id ?? 0);
         setVisibilityId(post.visibilityId);
         setUploadedFiles(post.postFiles);
         // 에디터의 값 설정
