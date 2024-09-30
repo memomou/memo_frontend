@@ -244,13 +244,24 @@ export const PosterNewForm = styled.form`
       width: auto;
     }
 
-    & > button:nth-child(2) {
+    & > div {
+      display: flex;
+      gap: 10px;
+    }
+
+    & > div > button {
       font-size: 1.2rem;
-      background-color: #12b886;
-      height: 37px;
-      aspect-ratio: 5 / 2;
+      padding: 3px 4px;
       color: white;
       border-radius: 5px;
+    }
+
+    & > div >button:nth-child(1) {
+      color: #12b886;
+      font-weight: 600;
+    }
+    & > div >button:nth-child(2) {
+      background-color: #12b886;
     }
   }
 `;

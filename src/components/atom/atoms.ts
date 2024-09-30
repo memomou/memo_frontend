@@ -45,6 +45,12 @@ export interface CategoriesState {
   user: UserState;
 }
 
+export interface tempPostType {
+  title: string;
+  content: string;
+  contentSlate: (CustomElement)[];
+}
+
 export interface PostType {
   id: string;
   createdAt: string;
@@ -54,9 +60,10 @@ export interface PostType {
   contentSlate: (CustomElement)[];
   category?: CategoriesState;
   postFiles: PostFile[];
-  statusId: number;
+  statusId: PostStatus;
   updatedAt: string;
   visibilityId: Visibility;
+  tempPost?: tempPostType;
 };
 
 const defaultValue : Element[] = [
@@ -78,9 +85,9 @@ export const defaultPostValue: PostType = {
   content: '',
   createdAt: '',
   id: '',
-  statusId: 0,
+  statusId: PostStatus.PUBLISHED,
   updatedAt: '',
-  visibilityId: 1,
+  visibilityId: Visibility.PUBLIC,
 }
 
 

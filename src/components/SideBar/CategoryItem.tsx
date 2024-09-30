@@ -12,9 +12,10 @@ interface CategoryItemProps {
   index: number
   isSelected: boolean
   isMyCategory: boolean
+  navigateToBase: string
 }
 
-export default function CategoryItem({ category, author, index, isSelected, isMyCategory }: CategoryItemProps) {
+export default function CategoryItem({ category, author, index, isSelected, isMyCategory, navigateToBase }: CategoryItemProps) {
   const {
     attributes,
     listeners,
@@ -34,7 +35,7 @@ export default function CategoryItem({ category, author, index, isSelected, isMy
       >
         <Link
           className="categoryName"
-          to={`/${author.nickname}?category=${category.categoryName}`}
+          to={`${navigateToBase}?category=${category.categoryName}`}
           key={category.id || `category-${index}`}
         >
           {category.categoryName}
