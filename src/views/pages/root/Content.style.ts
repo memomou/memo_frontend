@@ -80,14 +80,13 @@ export const ContentContainer = styled.div`
           }
         }
         .content {
-          margin-top: 5px;
           flex: 1;
-          padding-top: 10px;
+          padding-top: 6px;
           border-top: 1px solid #eee;
           color: #666;
           display: -webkit-box;
           -webkit-box-orient: vertical;
-          -webkit-line-clamp: 5;
+          -webkit-line-clamp: 6;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: normal;
