@@ -4,7 +4,6 @@ import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom, Use
 import CategoryList from './CategoryList';
 import AddCategory from './AddCategory';
 import { SideBarContainer } from './SideBar.style';
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
 export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);

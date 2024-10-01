@@ -5,7 +5,7 @@ export const SideBarContainer = styled.div`
   flex: 1;
   flex-grow: 1;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 5px;
   max-width: 250px;
   min-width: 220px;
 
