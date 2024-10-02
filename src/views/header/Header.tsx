@@ -60,7 +60,7 @@ function Header() {
         {
           location.pathname !== "/post/write" && (
             <StyledBtn>
-              <Link to="/post/write">
+              <Link to="/post/write" >
                 새 글 작성
               </Link>
             </StyledBtn>
@@ -88,10 +88,20 @@ function Header() {
           </>
         ) : (
           <>
-            <StyledLink to="/login" selected={location.pathname === "/login"}>
+            <StyledLink
+              to="/login"
+              selected={location.pathname === "/login"}
+              state={{ from: { pathname: location.pathname, search: location.search }}}
+              replace
+            >
               로그인
             </StyledLink>
-            <StyledLink to="/signup" selected={location.pathname === "/signup"}>
+            <StyledLink
+              to="/signup"
+              selected={location.pathname === "/signup"}
+              state={{ from: { pathname: location.pathname, search: location.search }}}
+              replace
+            >
               회원가입
             </StyledLink>
           </>
