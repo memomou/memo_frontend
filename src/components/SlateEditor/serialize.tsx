@@ -45,10 +45,14 @@ function serializeElement(node: Element | Editor) {
       return `<blockquote>${children}</blockquote>`
     case 'bulleted-list':
       return `<ul>${children}</ul>`
-    case 'heading':
+    case 'heading-one':
       return `<h1>${children}</h1>`
     case 'heading-two':
       return `<h2>${children}</h2>`
+    case 'heading-three':
+      return `<h3>${children}</h3>`
+    case 'heading-four':
+      return `<h4>${children}</h4>`
     case 'link':
       return `<a href="${escapeHtml(node.url)}">${children}</a>`
     case 'list-item':
