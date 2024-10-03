@@ -29,7 +29,7 @@ const UploadedFileArea: React.FC<UploadedFileAreaProps> = ({ uploadedFiles, post
 
   return (
     <StyledUploadedFileArea>
-      <h4>업로드된 파일</h4>
+      <h4>첨부 파일</h4>
       <div className="uploaded-files">
         {uploadedFiles.map((file) => (
           <div key={file.id} className="file-item">
