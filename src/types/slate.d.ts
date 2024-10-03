@@ -133,6 +133,7 @@ export type CustomText = {
   code?: boolean
   underline?: boolean
   text: string
+  decoration?: string
 }
 
 export type CustomEditor = BaseEditor &

@@ -4,7 +4,6 @@ import { Editable } from "slate-react";
 import { PostForm } from "../../../components/PostForm.style";
 export const StyledEditable = styled(Editable)`
   background-color: white;
-  border-bottom: 1px solid #eee; /* 아래쪽 border */
   /* border-top: none;             위쪽 border 제거 */
   /* min-height: 600px; */
   flex: 1;

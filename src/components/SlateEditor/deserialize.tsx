@@ -1,5 +1,6 @@
 import { Element as slateElement } from 'slate'
-
+import { CustomText } from '../../types/slate';
+import { Node, Text } from 'slate';
 export function Element({ attributes, children, element } : { attributes: any, children: any, element: slateElement }) {
   switch (element.type) {
     case "block-quote":
@@ -35,7 +36,7 @@ export function Element({ attributes, children, element } : { attributes: any, c
   }
 }
 
-export function Leaf({ attributes, children, leaf }) {
+export function Leaf({ attributes, children, leaf } : { attributes: any, children: any, leaf: Text }) {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
@@ -50,6 +51,16 @@ export function Leaf({ attributes, children, leaf }) {
 
   if (leaf.underline) {
     children = <u>{children}</u>;
+  }
+
+  if (leaf.decoration === "link") {
+    children = (
+      <a
+        href={leaf.text.startsWith("http") ? leaf.text : `https://${leaf.text}`}
+      >
+        {children}
+      </a>
+    );
   }
 
   return <span {...attributes}>{children}</span>;

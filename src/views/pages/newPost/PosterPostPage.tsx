@@ -17,6 +17,8 @@ import { useTempPostLoader, useTempSave } from "./component/useTempPostLoader";
 import { updateEditorContent, useNavigationHistory, usePublishPost } from "./PosterPostPage.fn";
 import { defaultValue, renderPlaceholder } from "./component/Editor";
 import { ReactComponent as BackIcon } from "./assets/BackIcon.svg";
+import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
+import ToolbarImplement from "../../../components/SlateEditor/Components/ToolbarImplement";
 
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
@@ -106,9 +108,12 @@ function PosterPostPage() {
                         renderPlaceholder={renderPlaceholder}
                         onFocus={() => setPlaceHolder('')}
                         onBlur={() => setPlaceHolder('내용을 입력하세요')}
+                        decorate={linkDecorator}
                       />
                   }
-                />
+                >
+                  <ToolbarImplement />
+                </StyledSlateEditor>
             </div>
             <UploadedFileArea
               uploadedFiles={uploadedFiles}

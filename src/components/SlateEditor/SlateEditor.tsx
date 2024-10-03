@@ -13,10 +13,12 @@ function SlateEditor({
       editor,
       initialValue,
       renderEditable = (props) => <Editable {...props} />,
+      children
     } : {
       editor: Editor,
       initialValue: Descendant[],
       renderEditable?: (props: any) => JSX.Element,
+      children?: React.ReactNode,
     })
 {
   const renderElement = useCallback((props: any) => {
@@ -32,17 +34,16 @@ function SlateEditor({
       editor={editor}
       initialValue={initialValue}
       onChange={value => {
-        const isAstChange = editor.operations.some(
-          op => 'set_selection' !== op.type
-        )
-        if (isAstChange) {
-          // 현재 상태 저장
-          // const content = JSON.stringify(value)
-          // localStorage.setItem('content', content)
-        }
+        console.log(editor.children);
+        // 변경점이 있을 경우에 대한 처리
+        // const isAstChange = editor.operations.some(
+        //   op => 'set_selection' !== op.type
+        // )
+        // if (isAstChange) {
+        // }
       }}
     >
-      <ToolbarImplement />
+      {children}
       {renderEditable({
         className: "slate-editable",
         renderElement,
