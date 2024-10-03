@@ -23,6 +23,7 @@ export const PosterNewPageContainer = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
+  padding: 10px 0px;
 
   .file-item {
     display: flex;
@@ -70,6 +71,48 @@ export const PosterNewPageContainer = styled.div`
       background-color: #d32f2f;
     }
   }
+
+  .editor-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 567px;
+    width: -webkit-fill-available;
+    justify-content: center;
+    margin-top: 10px;
+    max-width: 700px;
+
+    .options-bar {
+      width: -webkit-fill-available;
+      max-width: 700px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      select {
+        font-size: 1.2rem;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2px 5px;
+        background-color: white;
+        border-radius: 5px;
+      }
+
+      .visibility-toggle {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+
+        label {
+          margin-right: 10px;
+        }
+
+        input[type="checkbox"] {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
 `;
 
 export const PosterNewContainer = styled.div`
@@ -80,46 +123,9 @@ export const PosterNewContainer = styled.div`
   padding: 20px;
   font-size: 0.9rem; // 기본 폰트 크기 축소
 
-  .options-bar {
-    width: -webkit-fill-available;
-    max-width: 700px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    select {
-      font-size: 0.9rem; // 셀렉트 박스 폰트 크기 축소
-      border: 1px solid #eee;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 2px 5px;
-      background-color: white;
-      border-radius: 5px;
-    }
 
-    .visibility-toggle {
-      display: flex;
-      align-items: center;
-      font-size: 0.9rem;
 
-      label {
-        margin-right: 10px;
-      }
-
-      input[type="checkbox"] {
-        margin-right: 5px;
-      }
-    }
-  }
-
-  .editor-container {
-    display: flex;
-    flex: 1;
-    min-height: 567px;
-    flex-direction: row;
-    width: -webkit-fill-available;
-    justify-content: center;
-    margin-top: 10px;
-  }
 `;
 
 export const PosterNewForm = styled.form`

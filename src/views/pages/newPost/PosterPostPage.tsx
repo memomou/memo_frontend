@@ -70,18 +70,21 @@ function PosterPostPage() {
   // 별도의 컴포넌트로 분리
   return (
     <PosterNewPageContainer>
-      <PosterNewContainer>
-        <OptionsBar
-          categories={categories}
-          selectedCategoryId={post.category?.id}
-          visibilityId={post.visibilityId}
-          onCategoryChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            const selectedCategory = categories.find(category => category.id === Number(e.target.value));
-            setPost( prev => ({...prev, category: selectedCategory}))}
-          }
-          onVisibilityChange={(e: ChangeEvent<HTMLSelectElement>) => setPost( prev => ({...prev, visibilityId: Number(e.target.value)}))}
-        />
         <div className="editor-container">
+          <OptionsBar
+            categories={categories}
+            selectedCategoryId={post.category?.id}
+            visibilityId={post.visibilityId}
+            onCategoryChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              const selectedCategory = categories.find(category => category.id === Number(e.target.value));
+              setPost( prev => ({...prev, category: selectedCategory}))}
+            }
+            onVisibilityChange=
+            {
+              (e: ChangeEvent<HTMLSelectElement>) =>
+                setPost(prev => ({...prev, visibilityId: Number(e.target.value)}))
+            }
+          />
           <PosterNewForm onSubmit={onSubmitButtonClick}>
             <div className="editor-wrapper">
               <input
@@ -138,7 +141,6 @@ function PosterPostPage() {
             </div>
           </PosterNewForm>
         </div>
-      </PosterNewContainer>
     </PosterNewPageContainer>
   );
 }
