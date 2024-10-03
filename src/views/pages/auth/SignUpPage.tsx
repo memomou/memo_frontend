@@ -46,18 +46,18 @@ function SignUpPage() {
           <input
             type="email"
             id="email"
-            placeholder="이메일 주소를 입력하세요"
+            placeholder="example@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="username">사용자 이름</label>
+          <label htmlFor="username">닉네임</label>
           <input
             type="text"
             id="username"
-            placeholder="사용자 이름을 입력하세요"
+            placeholder="닉네임을 입력해주세요"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required

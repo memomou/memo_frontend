@@ -69,10 +69,10 @@ export const ContentContainer = styled.div`
       margin: 15px 0px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
+      gap: 0.7rem;
       .post {
         background-color: white;
-        padding: 13px;
+        padding: 5px 10px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         height: 100%;
@@ -103,14 +103,13 @@ export const ContentContainer = styled.div`
           }
         }
         .content {
-          margin-top: 5px;
           flex: 1;
-          padding-top: 10px;
+          padding-top: 6px;
           border-top: 1px solid #eee;
           color: #666;
           display: -webkit-box;
           -webkit-box-orient: vertical;
-          -webkit-line-clamp: 5;
+          -webkit-line-clamp: 6;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: normal;

@@ -5,12 +5,14 @@ import { userAtom } from "../../../components/atom/atoms";
 import { useNavigate } from "react-router-dom";
 import { Styled } from "./authPage.style";
 import { axiosInstance } from '../../../helpers/helper';
+import { useLocation } from 'react-router-dom';
 
 function LoginPage(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
+  const location = useLocation();
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -25,9 +27,12 @@ function LoginPage(props: any) {
       setUser({...response.data.user});
       localStorage.setItem('accessToken', response.data.token.accessToken);
       localStorage.setItem('refreshToken', response.data.token.refreshToken);
-      navigate('/');
+      const from = location.state?.from?.pathname || '/';
+      const search = location.state?.from?.search || '';
+      navigate(`${from}${search}`);
     } catch (error) {
-      console.error("Login Failed:", error);
+      alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+      console.error("Login Failed1ddd:", error);
     }
   };
 
@@ -40,7 +45,7 @@ function LoginPage(props: any) {
           <input
             type="email"
             id="email"
-            placeholder="이메일 주소를 입력하세요"
+            placeholder="example@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

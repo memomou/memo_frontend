@@ -60,7 +60,7 @@ export const StyledBase = css<StyledProps>`
   color: ${(props) => (props.selected ? "gray" : "black")};
   background-color: ${(props) => (props.selected ? "#f1f1f1" : "white")};
   position: relative;
-  border-radius: 20px;
+  border-radius: 0.9rem;
   border: 1px solid #ababab;
 `;
 

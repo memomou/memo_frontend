@@ -5,6 +5,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import CategoryItem from './CategoryItem';
 import { CategoryItemStyle } from './CategoryItem.style';
 import { axiosInstance } from '../../helpers/helper';
+import { CategoryListItem } from './CategoryListItem';
 
 interface CategoryListProps {
   categories: CategoriesState[];
@@ -42,14 +43,13 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <CategoryItemStyle className={`category ${!selectedCategory ? "selected" : ""}`}>
-        <Link
-          className="categoryName"
-          to={navigateToBase}
-        >
-          전체 게시글
-        </Link>
-      </CategoryItemStyle>
+      <CategoryListItem
+        to={navigateToBase}
+        isSelected={!selectedCategory}
+        categoryName="전체 게시글"
+        isMyCategory={false}
+      />
+
       <SortableContext
         items={categories}
         strategy={verticalListSortingStrategy}

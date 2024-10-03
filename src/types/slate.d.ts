@@ -32,13 +32,25 @@ export type EditableVoidElement = {
 }
 
 export type HeadingElement = {
-  type: 'heading'
+  type: 'heading-one'
   align?: string
   children: Descendant[]
 }
 
 export type HeadingTwoElement = {
   type: 'heading-two'
+  align?: string
+  children: Descendant[]
+}
+
+export type HeadingThreeElement = {
+  type: 'heading-three'
+  align?: string
+  children: Descendant[]
+}
+
+export type HeadingFourElement = {
+  type: 'heading-four'
   align?: string
   children: Descendant[]
 }
@@ -97,6 +109,8 @@ type CustomElement =
   | EditableVoidElement
   | HeadingElement
   | HeadingTwoElement
+  | HeadingThreeElement
+  | HeadingFourElement
   | ImageElement
   | LinkElement
   | ButtonElement

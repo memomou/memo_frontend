@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { CategoriesState } from '../atom/atoms';
 import { axiosInstance } from '../../helpers/helper';
+import { RiDraggable } from 'react-icons/ri';
 import { CategoryItemStyle } from './CategoryItem.style';
-
 interface AddCategoryProps {
   onAddCategory: (newCategory: CategoriesState) => void;
 }
@@ -59,14 +59,14 @@ const AddCategory: React.FC<AddCategoryProps> = ({ onAddCategory }) => {
   }, [isAddingCategory]);
 
   return (
-    <>
+    <CategoryItemStyle>
       {!isAddingCategory && (
-        <CategoryItemStyle className="category plus" onClick={() => setIsAddingCategory(true)}>
+        <div className="buttonWrapper category plus" onClick={() => setIsAddingCategory(true)}>
           +
-        </CategoryItemStyle>
+        </div>
       )}
       {isAddingCategory && (
-        <CategoryItemStyle className="category categoryInsert" ref={newCategoryRef}>
+        <div className="buttonWrapper category categoryInsert" ref={newCategoryRef}>
           <input
             className="categoryInput"
             type="text"
@@ -78,9 +78,12 @@ const AddCategory: React.FC<AddCategoryProps> = ({ onAddCategory }) => {
           <button ref={inputBtnRef} onClick={handleAddCategory}>
             V
           </button>
-        </CategoryItemStyle>
+        </div>
       )}
-    </>
+      <button className='hidden'>
+        <RiDraggable />
+      </button>
+    </CategoryItemStyle>
   );
 };
 

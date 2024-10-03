@@ -5,6 +5,7 @@ import { CategoryItemStyle } from './CategoryItem.style'
 import { useSortable } from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities';
 import { RiDraggable } from "react-icons/ri";
+import { CategoryListItem } from './CategoryListItem'
 
 interface CategoryItemProps {
   category: CategoriesState
@@ -30,20 +31,16 @@ export default function CategoryItem({ category, author, index, isSelected, isMy
   };
 
   return (
-      <CategoryItemStyle className={`${isSelected ? " selected" : ""}`}
-        ref={setNodeRef} style={style}
-      >
-        <Link
-          className="categoryName"
-          to={`${navigateToBase}?category=${category.categoryName}`}
-          key={category.id || `category-${index}`}
-        >
-          {category.categoryName}
-        </Link>
-        {isMyCategory &&
-        <button {...attributes} {...listeners} className='dragButton'>
-          <RiDraggable />
-        </button>}
-      </CategoryItemStyle>
+    <CategoryListItem
+      key={category.id || `category-${index}`}
+      ref={setNodeRef}
+      style={style}
+      to={`${navigateToBase}?category=${category.categoryName}`}
+      isSelected={isSelected}
+      categoryName={category.categoryName}
+      isMyCategory={isMyCategory}
+      dragAttributes={attributes}
+      dragListeners={listeners}
+    />
   )
 }
