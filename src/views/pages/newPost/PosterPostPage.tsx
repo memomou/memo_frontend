@@ -12,9 +12,9 @@ import { PostFile } from "../../../components/atom/atoms";
 import React, { useCallback, ChangeEvent } from 'react';
 import { useFileUpload } from '../../../hooks/useFileUpload';
 import { FileUploadArea } from './component/FileUploadArea';
-import { formatFileSize, formatDate } from '../../../utils/formatters';
 import OptionsBar from "./component/OptionBar";
 import { useCategories } from "./useCategories";
+import UploadedFileArea from "./component/UploadedFileArea";
 const defaultValue : Element[] = [
   {
     type: 'paragraph',
@@ -259,25 +259,10 @@ function PosterPostPage() {
                   }
                 />
             </div>
-            {/* 업로드된 파일 목록 (위치 변경) */}
-            {uploadedFiles && uploadedFiles.length > 0 && (
-            <div className="attachment-section">
-              <h4>업로드된 파일</h4>
-              <div className="uploaded-files">
-                {uploadedFiles?.map((file) => (
-                <div key={file.id} className="file-item">
-                  <a href={file.url} download={file.originalFilename} className="file-name">{file.originalFilename}</a>
-                  <span className="file-info">
-                    {formatFileSize(file.fileSize)} | {formatDate(file.createdAt)}
-                  </span>
-                  <button onClick={(e) => handleFileDelete(e, file.id)} className="delete-button">
-                    &#10005; {/* X 표시 */}
-                  </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-            )}
+            <UploadedFileArea
+              uploadedFiles={uploadedFiles}
+              onFileDelete={handleFileDelete}
+            />
 
             <FileUploadArea
               onFileUpload={onFileUpload}
