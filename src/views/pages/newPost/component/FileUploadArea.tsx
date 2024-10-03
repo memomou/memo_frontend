@@ -1,25 +1,47 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FileUploadArea as StyledFileUploadArea } from './FileUploadArea.style';
+import { PostFile, PostStatus, PostType } from '../../../../components/atom/atoms';
+import { useFileUpload } from '../../../../hooks/useFileUpload';
+import { Editor } from 'slate';
+import { handlePostSubmission } from '../PosterPostPage.fn';
+import { useNavigate } from 'react-router-dom';
 
 interface FileUploadAreaProps {
-  onFileUpload: (files: FileList | null) => void;
-  uploadStatus: 'idle' | 'uploading' | 'complete';
-  uploadProgress: number;
-  isDragging: boolean;
-  onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDragLeave: () => void;
-  onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
+  post: PostType;
+  editor: Editor;
+  setUploadedFiles: React.Dispatch<React.SetStateAction<PostFile[]>>;
 }
 
 export const FileUploadArea: React.FC<FileUploadAreaProps> = ({
-  onFileUpload,
-  uploadStatus,
-  uploadProgress,
-  isDragging,
-  onDragOver,
-  onDragLeave,
-  onDrop,
+  post,
+  editor,
+  setUploadedFiles,
 }) => {
+
+  const {
+    uploadStatus,
+    uploadProgress,
+    isDragging,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleFileUpload,
+  } = useFileUpload(setUploadedFiles);
+
+  const navigate = useNavigate();
+
+    // 파일 업로드 관련 처리
+  const onFileUpload = useCallback(async(files: FileList | null) => {
+    if (!post.id) {
+      const UpdatedPost = await handlePostSubmission(post, editor, PostStatus.UNREGISTERED);
+      const {id: fetchedPostId} = UpdatedPost;
+      navigate(`/post/write?postId=${fetchedPostId}`);
+      handleFileUpload(files, fetchedPostId);
+    } else {
+      handleFileUpload(files, post.id);
+    }
+  }, [post.id, handleFileUpload, navigate]);
+
   const renderContent = () => {
     switch (uploadStatus) {
       case 'uploading':
@@ -36,9 +58,9 @@ export const FileUploadArea: React.FC<FileUploadAreaProps> = ({
   return (
     <StyledFileUploadArea
       onClick={() => document.getElementById('fileInput')?.click()}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={(e) => handleDrop(e, post.id)}
       $isDragging={isDragging}
       $uploadProgress={uploadProgress}
       $uploadStatus={uploadStatus}
