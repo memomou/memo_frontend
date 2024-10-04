@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
 import { axiosInstance } from '../helpers/helper';
+import { PostFile } from '../components/atom/atoms';
 
-export const useFileUpload = (onFileUploaded: (file: any) => void) => {
+export const useFileUpload = (setUploadedFiles: React.Dispatch<React.SetStateAction<PostFile[]>>) => {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'complete'>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -29,7 +30,7 @@ export const useFileUpload = (onFileUploaded: (file: any) => void) => {
           }
         });
 
-        onFileUploaded(response.data);
+        setUploadedFiles(prevFiles => [...prevFiles, response.data]);
         setUploadStatus('complete');
 
         setTimeout(() => {
@@ -41,7 +42,7 @@ export const useFileUpload = (onFileUploaded: (file: any) => void) => {
         setUploadStatus('idle');
       }
     }
-  }, [onFileUploaded]);
+  }, [setUploadedFiles]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

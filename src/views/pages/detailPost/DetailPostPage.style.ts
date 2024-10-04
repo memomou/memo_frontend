@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { PostForm } from "../../../components/PostForm.style";
+import SlateEditor from "../../../components/SlateEditor";
 
 export const PageContainer = styled.div`
   // font-size: 1.1rem;
@@ -171,6 +172,8 @@ export const DetailPosterForm = styled.div`
     margin-bottom: 20px;
     font-size: 0.85rem;
   }
+`;
+export const StyledSlateEditor = styled(SlateEditor)`
 `;
 
 export default DetailPosterForm;

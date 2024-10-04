@@ -1,4 +1,4 @@
-import { PosterNewContainer, PageContainer } from "./DetailPostPage.style";
+import { PosterNewContainer, PageContainer, StyledSlateEditor } from "./DetailPostPage.style";
 import DetailPosterForm from "./DetailPostPage.style";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,12 @@ import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 import { formatFileSize, formatDate } from '../../../utils/formatters';
+import { StyledEditable } from "../newPost/posterPostPage.style";
+import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
+import { defaultValue } from "../newPost/component/Editor";
+import { createEditor } from "slate";
+import { withReact } from "slate-react";
+import { updateEditorContent } from "../newPost/PosterPostPage.fn";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
@@ -18,6 +24,7 @@ function DetailPostPage(props: any) {
   const [user] = useRecoilState(userAtom);
   const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
+  const [editor] = useState(() => withReact(createEditor()));
   const isOwnerOrAdmin = user?.id === post?.author?.id || user?.role === 'admin';
 
   useEffect(() => {
@@ -28,6 +35,7 @@ function DetailPostPage(props: any) {
         console.log('Post:', fetchedPost);
         setPost(fetchedPost);
         setSelectedCategory(fetchedPost.category);
+        updateEditorContent(editor, fetchedPost.contentSlate);
       } catch (error) {
         console.error("Failed to fetch post:", error);
       }
@@ -78,10 +86,18 @@ function DetailPostPage(props: any) {
                 <></>
               )}
             </div>
-            <div className="content">
-              <div dangerouslySetInnerHTML={{ __html: post?.content ?? "..." }} />
-            </div>
-
+            <StyledSlateEditor
+              editor={editor}
+              initialValue={post?.contentSlate ?? defaultValue}
+              renderEditable={
+                (editableProps) =>
+                  <StyledEditable
+                    {...editableProps}
+                    readOnly={true}
+                    decorate={linkDecorator}
+                  />
+              }
+            />
             {/* 첨부 파일 섹션 */}
             {post?.postFiles && post.postFiles.length > 0 && (
               <div className="attachment-section">

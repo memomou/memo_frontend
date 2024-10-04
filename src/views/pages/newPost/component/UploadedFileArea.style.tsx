@@ -2,12 +2,18 @@ import styled from 'styled-components';
 
 export const UploadedFileArea = styled.div`
   width: 100%;
-  margin-bottom: 20px;
-  border: 1px solid #eee;
-  border-radius: 5px;
-  padding: 1px 10px;
-  background-color: #f9f9f9;
   /* font-size: 0.7rem; // 파일 목록 폰트 크기 축소 */
+
+  & > h4 {
+    margin-bottom: 4px;
+  }
+
+  .uploaded-files {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 1px 10px;
+    background-color: #f9f9f9;
+  }
 
   .file-item {
     display: flex;
