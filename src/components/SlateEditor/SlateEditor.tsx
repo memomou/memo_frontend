@@ -34,7 +34,6 @@ function SlateEditor({
       editor={editor}
       initialValue={initialValue}
       onChange={value => {
-        console.log(editor.children);
         // 변경점이 있을 경우에 대한 처리
         // const isAstChange = editor.operations.some(
         //   op => 'set_selection' !== op.type

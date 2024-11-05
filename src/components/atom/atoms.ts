@@ -43,6 +43,8 @@ export interface CategoriesState {
   categoryName: string;
   pos: number;
   user: UserState;
+  tempPostCount: number;
+  postCount: number;
 }
 
 export interface tempPostType {

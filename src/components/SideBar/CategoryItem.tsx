@@ -38,6 +38,7 @@ export default function CategoryItem({ category, author, index, isSelected, isMy
       to={`${navigateToBase}?category=${category.categoryName}`}
       isSelected={isSelected}
       categoryName={category.categoryName}
+      postCount={category.postCount}
       isMyCategory={isMyCategory}
       dragAttributes={attributes}
       dragListeners={listeners}

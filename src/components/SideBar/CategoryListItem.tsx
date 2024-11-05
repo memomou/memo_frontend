@@ -7,6 +7,7 @@ interface CategoryListItemProps {
   to: string;
   isSelected: boolean;
   categoryName: string;
+  postCount?: number;
   isMyCategory?: boolean;
   dragAttributes?: any;
   dragListeners?: any;
@@ -17,19 +18,21 @@ export const CategoryListItem = forwardRef<HTMLDivElement, CategoryListItemProps
   to,
   isSelected,
   categoryName,
+  postCount,
   isMyCategory,
   dragAttributes,
   dragListeners,
-  style
+  style,
 }, ref) => {
   return (
     <CategoryItemStyle ref={ref} style={style}>
       <div className={`buttonWrapper ${isSelected ? "selected" : ""}`}>
         <Link
-          className="categoryName"
+          className="categoryContent"
           to={to}
         >
-          {categoryName}
+          <span className='categoryName'>{categoryName}</span>
+          <span className='postCount'>{postCount}</span>
         </Link>
       </div>
       <div className={`dragButtonWrapper ${isMyCategory || 'hidden'}`}>

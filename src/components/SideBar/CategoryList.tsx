@@ -55,7 +55,15 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
         strategy={verticalListSortingStrategy}
       >
       {categories.map((category, index) => (
-        <CategoryItem key={category.id || `category-${index}`} category={category} author={author} isSelected={category.id === selectedCategory?.id} index={index} isMyCategory={isMyCategory} navigateToBase={navigateToBase} />
+        <CategoryItem
+          key={category.id || `category-${index}`}
+          category={category}
+          author={author}
+          isSelected={category.id === selectedCategory?.id}
+          index={index}
+          isMyCategory={isMyCategory}
+          navigateToBase={navigateToBase}
+        />
         ))}
         </SortableContext>
     </DndContext>

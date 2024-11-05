@@ -37,12 +37,20 @@ export const CategoryItemStyle = styled.div`
     visibility: hidden;
   }
 
-  .categoryName {
-    padding: 2px 2px 2px 10px;
+  .categoryContent {
+    padding: 2px 7px 2px 10px;
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     height: 100%;
     flex: 1;
+    .postCount {
+      width: 15px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #636363;
+    }
   }
 
   .dragButton {
