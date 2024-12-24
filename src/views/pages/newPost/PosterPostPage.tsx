@@ -6,7 +6,7 @@ import { withHistory } from "slate-history";
 import { createEditor} from "slate";
 import { useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
-import { defaultPostValue, PostStatus, PostType } from "../../../components/atom/atoms";
+import { defaultPostValue, PostStatus, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { PostFile } from "../../../components/atom/atoms";
 import React, { useCallback, ChangeEvent } from 'react';
 import { FileUploadArea } from './component/FileUploadArea';
@@ -19,6 +19,7 @@ import { defaultValue, renderPlaceholder } from "./component/Editor";
 import { ReactComponent as BackIcon } from "./assets/BackIcon.svg";
 import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
 import ToolbarImplement from "../../../components/SlateEditor/Components/ToolbarImplement";
+import { useRecoilState } from "recoil";
 
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
@@ -27,6 +28,9 @@ function PosterPostPage() {
   const { performTempPostToast } = useTempPostLoader(editor);
   const categories = useCategories();
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
+  const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
+
+  console.log("selectedCategory", selectedCategory);
 
   const location = useLocation();
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -73,7 +77,7 @@ function PosterPostPage() {
         <div className="editor-container">
           <OptionsBar
             categories={categories}
-            selectedCategoryId={post.category?.id}
+            selectedCategoryId={post.category?.id || selectedCategory?.id}
             visibilityId={post.visibilityId}
             onCategoryChange={(e: ChangeEvent<HTMLSelectElement>) => {
               const selectedCategory = categories.find(category => category.id === Number(e.target.value));
