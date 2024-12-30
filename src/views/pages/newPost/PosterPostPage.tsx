@@ -23,19 +23,17 @@ import { useRecoilState } from "recoil";
 
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
-  const [post, setPost] = useState<PostType>(defaultPostValue);
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   const { performTempPostToast } = useTempPostLoader(editor);
   const categories = useCategories();
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
   const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
-
-  console.log("selectedCategory", selectedCategory);
+  const [post, setPost] = useState<PostType>({...defaultPostValue, category: selectedCategory});
 
   const location = useLocation();
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const postId = queryParams.get('postId');
-  const postExist = post ? true : false;
+  const postExist = postId ? true : false;
   const { goBack } = useNavigationHistory();
 
   // 임시 저장 관련 처리

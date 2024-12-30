@@ -8,9 +8,9 @@ export enum Visibility {
 }
 
 export enum PostStatus {
-  DRAFT = 1,
-  PUBLISHED = 2,
-  UNREGISTERED = 3,
+  DRAFT = 1, // 임시 글 게시판에서 작성한 글
+  PUBLISHED = 2, // 게시판에서 작성한 글
+  UNREGISTERED = 3, // 게시글의 일부만 올라가 있는 경우 (이미지 등을 업로드하여 자동 임시 저장이 되어있으나 게시글 작성이 완료되지 않은 경우)
 }
 
 export interface UserState {
