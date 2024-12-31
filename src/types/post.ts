@@ -1,3 +1,4 @@
+import { CommentType } from "./comments.type";
 import { CustomElement } from "./slate";
 import { UserState } from "./users.type";
 
@@ -53,4 +54,5 @@ export interface PostType {
   updatedAt: string;
   visibilityId: Visibility;
   tempPost?: tempPostType;
+  comments: CommentType[];
 };

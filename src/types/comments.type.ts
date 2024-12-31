@@ -1,8 +1,10 @@
 import { UserState } from "./users.type";
 
 export interface CommentType {
-  id?: number;
+  id: string;
+  postId?: string;
   content?: string;
   createdAt?: string;
+  updatedAt?: string;
   user?: UserState;
 }

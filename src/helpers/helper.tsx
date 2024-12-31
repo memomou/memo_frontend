@@ -22,7 +22,8 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-export const changeDateFormat = (utcDate: string) => {
+export const changeDateFormat = (utcDate?: string) => {
+  if (!utcDate) return '';
   const date = new Date(utcDate);
   const options : Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'Asia/Seoul' };
   return date.toLocaleDateString('ko-KR', options);

@@ -16,6 +16,7 @@ import { createEditor } from "slate";
 import { withReact } from "slate-react";
 import { updateEditorContent } from "../newPost/PosterPostPage.fn";
 import { PostType } from "../../../types/post";
+import CommentSection from "./Comment/CommentSection";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
@@ -119,6 +120,7 @@ function DetailPostPage(props: any) {
             )}
           </DetailPosterForm>
         </div>
+        {post && <CommentSection post={post} user={user} />}
       </PosterNewContainer>
     </PageContainer>
   );
