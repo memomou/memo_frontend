@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom';
 import { CategoriesState } from '../../types/post';
 
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import CategoryItem from './CategoryItem';
-import { CategoryItemStyle } from './CategoryItem.style';
 import { axiosInstance } from '../../helpers/helper';
 import { CategoryListItem } from './CategoryListItem';
 import { UserState } from '../../types/users.type';

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Editor, Transforms } from 'slate';
+import { Editor } from 'slate';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../../../helpers/helper';
 import { PostStatus, PostType } from '../../../../types/post';

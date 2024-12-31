@@ -1,7 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import { CategoriesState } from '../../types/post';
-import { CategoryItemStyle } from './CategoryItem.style'
 import { useSortable } from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities';
 import { CategoryListItem } from './CategoryListItem'

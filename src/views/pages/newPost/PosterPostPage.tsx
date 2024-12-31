@@ -1,4 +1,4 @@
-import {PosterNewForm, PosterNewContainer, PosterNewPageContainer} from "./posterPostPage.style";
+import {PosterNewForm, PosterNewPageContainer} from "./posterPostPage.style";
 import {StyledSlateEditor, StyledEditable} from "./posterPostPage.style";
 import { useEffect, useState, useMemo } from "react";
 import { withReact } from "slate-react";
