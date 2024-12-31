@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { CategoriesState } from '../atom/atoms';
+import { CategoriesState } from '../../types/post';
 import { axiosInstance } from '../../helpers/helper';
 import { RiDraggable } from 'react-icons/ri';
 import { CategoryItemStyle } from './CategoryItem.style';

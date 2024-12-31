@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { FileUploadArea as StyledFileUploadArea } from './FileUploadArea.style';
-import { PostFile, PostStatus, PostType } from '../../../../components/atom/atoms';
+import { PostFile, PostStatus,  PostType } from '../../../../types/post';
 import { useFileUpload } from '../../../../hooks/useFileUpload';
 import { Editor } from 'slate';
 import { handlePostSubmission } from '../PosterPostPage.fn';

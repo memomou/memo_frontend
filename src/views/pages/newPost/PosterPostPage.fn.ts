@@ -1,12 +1,11 @@
-import { PostStatus, PostType } from "../../../components/atom/atoms";
-
+import { PostStatus } from "../../../types/post";
 import { Editor, Transforms } from "slate";
 import { axiosInstance } from "../../../helpers/helper";
 import { serialize } from "../../../components/SlateEditor/serialize";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useRef } from "react";
 import { CustomElement } from "../../../types/slate";
-
+import { PostType } from "../../../types/post";
 export const handlePostSubmission = async (post: PostType, editor: Editor, statusId: PostStatus) => {
   try {
     const postData = {

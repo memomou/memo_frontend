@@ -1,9 +1,10 @@
 import { useParams, Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom, UserState } from '../atom/atoms';
+import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom } from '../atom/atoms';
 import CategoryList from './CategoryList';
 import AddCategory from './AddCategory';
 import { SideBarContainer } from './SideBar.style';
+import { UserState } from '../../types/users.type';
 export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);

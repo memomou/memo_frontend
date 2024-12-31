@@ -3,7 +3,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
 import { Link, useSearchParams } from "react-router-dom";
-import { PostType, authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom, PostStatus } from "../../../components/atom/atoms";
+import { authorAtom, selectedCategoriesAtom, authorCategoriesAtom, userAtom, postsAtom } from "../../../components/atom/atoms";
+import { PostStatus, PostType } from "../../../types/post";
 
 export const Content = ({isTempPostPage = false}: {isTempPostPage?: boolean}) => {
   const [author] = useRecoilState(authorAtom);

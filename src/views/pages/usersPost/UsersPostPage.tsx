@@ -4,10 +4,10 @@ import { useRecoilState } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
-import { postsAtom, PostStatus, PostType, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { postsAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 import { axiosInstance } from "../../../helpers/helper";
-
+import { PostStatus, PostType } from "../../../types/post";
 export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolean}) {
   const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../helpers/helper";
-import { CategoriesState } from "../../../components/atom/atoms";
+import { CategoriesState } from "../../../types/post";
 
 export function useCategories() {
   const [categories, setCategories] = useState<CategoriesState[]>([]);

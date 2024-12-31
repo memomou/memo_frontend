@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Editor, Transforms } from 'slate';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../../../helpers/helper';
-import { PostStatus, PostType } from '../../../../components/atom/atoms';
+import { PostStatus, PostType } from '../../../../types/post';
 import { getSendPostData, handlePostSubmission, updateEditorContent } from '../PosterPostPage.fn';
 
 export const useTempPostLoader = (editor: Editor) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostFile } from '../../../../components/atom/atoms';
+import { PostFile } from '../../../../types/post';
 import { formatFileSize, formatDate } from '../../../../utils/formatters';
 import { UploadedFileArea as StyledUploadedFileArea } from './UploadedFileArea.style';
 import { axiosInstance } from '../../../../helpers/helper';

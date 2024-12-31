@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { axiosInstance } from '../helpers/helper';
-import { PostFile } from '../components/atom/atoms';
+import { PostFile } from '../types/post';
 
 export const useFileUpload = (setUploadedFiles: React.Dispatch<React.SetStateAction<PostFile[]>>) => {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'complete'>('idle');

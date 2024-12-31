@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance, changeDateFormat } from '../../../helpers/helper';
 import { Link } from "react-router-dom";
-import { PostType, userAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { userAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
@@ -15,6 +15,7 @@ import { defaultValue } from "../newPost/component/Editor";
 import { createEditor } from "slate";
 import { withReact } from "slate-react";
 import { updateEditorContent } from "../newPost/PosterPostPage.fn";
+import { PostType } from "../../../types/post";
 
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
