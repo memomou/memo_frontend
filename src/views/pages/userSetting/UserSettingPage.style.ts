@@ -55,7 +55,7 @@ export const SettingWindow = styled.div`
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 0.9rem;
-      font-weight: bold;
+      font-weight: 500;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // 그림자 추가
 
       &:hover {

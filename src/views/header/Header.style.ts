@@ -44,7 +44,7 @@ export const Title = styled.div`
   left: 50%;
   transform: translateX(-50%);
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 500;
 `;
 
 export const StyledBase = css<StyledProps>`
@@ -98,7 +98,7 @@ export const HeaderContainer = styled.div`
     /* gap: 10px; */
     /* margin-right: auto; */
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: 500;
     background-color: ${(props) => props.theme.headerbgColor};
     color: ${(props) => props.theme.headerTextColor};
     height: 1.6rem;

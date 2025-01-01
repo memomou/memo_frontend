@@ -28,7 +28,7 @@ export const ContentContainer = styled.div`
       align-items: center;
       .recentPostText {
         font-size: 1.2rem;
-        font-weight: bold;
+        font-weight: 500;
       }
       .searchInputWrapper {
         min-width: 200px;
@@ -76,7 +76,7 @@ export const ContentContainer = styled.div`
             display: -webkit-box;
             line-height: 1.5rem;
             overflow: hidden;
-            font-weight: bold;
+            font-weight: 500;
           }
         }
         .content {

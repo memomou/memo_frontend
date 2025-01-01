@@ -23,11 +23,11 @@ export const ContentContainer = styled.div`
         justify-content: space-between;
         margin-right: 20px;
         .categoryName {
-          font-weight: bold;
+          font-weight: 500;
           margin-right: 10px;
         }
         input {
-          font-weight: bold;
+          font-weight: 500;
           margin-right: 10px;
           padding: 5px;
           width: 200px; // 적절한 너비 설정
@@ -74,7 +74,7 @@ export const ContentContainer = styled.div`
         background-color: white;
         padding: 5px 10px;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 7px;
         height: 100%;
         min-height: 150px;
         display: flex;
@@ -99,7 +99,7 @@ export const ContentContainer = styled.div`
             display: -webkit-box;
             line-height: 1.5rem;
             overflow: hidden;
-            font-weight: bold;
+            font-weight: 500;
           }
         }
         .content {

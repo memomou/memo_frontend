@@ -33,7 +33,7 @@ export const CommentWrapper = styled.div`
 
       .comment-user-nickname {
         font-size: 14px;
-        font-weight: bold;
+        font-weight: 500;
       }
 
       .comment-user-created-at {
