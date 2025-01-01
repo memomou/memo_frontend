@@ -70,7 +70,7 @@ function DetailPostPage(props: any) {
           <DetailPosterForm>
             <div className="wrapperOne">
               <span className="title">{post?.title ?? "..."}</span>
-              <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt) : "..."}</span>
+              <span className="date">{post?.createdAt ? changeDateFormat(post.createdAt, true) : "..."}</span>
             </div>
             <div className="wrapperTwo">
               <div className="author">

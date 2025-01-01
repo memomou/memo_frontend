@@ -1,8 +1,8 @@
 import React from 'react'
 import { CommentWrapper } from './Comment.style'
-import { CommentType } from '../../../../types/comments.type';
 import { changeDateFormat } from '../../../../helpers/helper';
 import { UserState } from '../../../../types/users.type';
+import { CommentType } from '../../../../types/comments.type';
 
 export default function Comment({ comment, user, handleDeleteComment }: { comment: CommentType, user?: UserState, handleDeleteComment: () => void }) {
   return (
@@ -16,7 +16,7 @@ export default function Comment({ comment, user, handleDeleteComment }: { commen
             {comment.user?.nickname}
           </div>
           <div className='comment-user-created-at'>
-            {changeDateFormat(comment.createdAt)}
+            {changeDateFormat(comment.createdAt, true)}
           </div>
         </div>
         {user?.id === comment.user?.id && <div className='comment-user-delete' onClick={handleDeleteComment}>삭제</div>}
