@@ -76,14 +76,14 @@ export const PosterNewContainer = styled.div`
     flex-direction: row;
     width: -webkit-fill-available;
     justify-content: center;
-    min-height: 70%;
+    min-height: 450px;
     margin-top: 10px;
   }
 `;
 
 export const DetailPosterForm = styled.div`
   ${PostForm}
-  min-height: 70%;
+  min-height: 450px;
 
   .wrapperOne {
     display: flex;

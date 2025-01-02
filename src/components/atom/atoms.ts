@@ -36,6 +36,7 @@ export const defaultPostValue: PostType = {
   statusId: PostStatus.PUBLISHED,
   updatedAt: '',
   visibilityId: Visibility.PUBLIC,
+  comments: [],
 }
 
 export const authorCategoriesAtom = atom<CategoriesState[]>({
