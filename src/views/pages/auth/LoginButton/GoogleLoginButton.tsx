@@ -4,20 +4,19 @@ import { axiosInstance } from '../../../../helpers/helper';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../../../types/users.type';
 
-export const GoogleLoginButton = ({setUser}: {setUser: (user: UserState) => void}) => {
+export const GoogleLoginButton = ({userLogin}: {userLogin: (user: any) => void}) => {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const response = await axiosInstance.post('/auth/google', {
-          token: tokenResponse.access_token,
+        console.log('tokenResponse', tokenResponse);
+        const response = await axiosInstance.post('/auth/oauth/google/login', {
+          accessToken: tokenResponse.access_token,
         });
-
-        if (response.data.accessToken) {
-          localStorage.setItem('accessToken', response.data.accessToken);
-          setUser(response.data.user);
-          navigate('/');
+        console.log('response', response);
+        if (response.data.token) {
+          userLogin(response.data);
         }
       } catch (error) {
         console.error('Google 로그인 실패:', error);
@@ -26,7 +25,12 @@ export const GoogleLoginButton = ({setUser}: {setUser: (user: UserState) => void
   });
 
   return (
-    <GoogleButton onClick={() => login()}>
+    <GoogleButton
+      onClick={(e) => {
+        e.preventDefault();
+        login();
+      }}
+    >
       <img src="/google-icon.svg" alt="Google" />
       Google로 계속하기
     </GoogleButton>

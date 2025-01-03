@@ -16,6 +16,15 @@ function LoginPage(props: any) {
   const navigate = useNavigate();
   const location = useLocation();
   console.log('tetst',config.googleClientId);
+  const handleUserLogin = (data: any) => {
+    setUser(data.user);
+    localStorage.setItem('accessToken', data.token.accessToken);
+    localStorage.setItem('refreshToken', data.token.refreshToken);
+    console.log('location.state', location.state);
+    const from = location.state?.from?.pathname || '/';
+    const search = location.state?.from?.search || '';
+    navigate(`${from}${search}`);
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -27,12 +36,8 @@ function LoginPage(props: any) {
         }
       );
       console.log('Login Successful:', response);
-      setUser({...response.data.user});
-      localStorage.setItem('accessToken', response.data.token.accessToken);
-      localStorage.setItem('refreshToken', response.data.token.refreshToken);
-      const from = location.state?.from?.pathname || '/';
-      const search = location.state?.from?.search || '';
-      navigate(`${from}${search}`);
+      handleUserLogin(response.data.user);
+
     } catch (error) {
       alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
       console.error("Login Failed1ddd:", error);
@@ -67,7 +72,7 @@ function LoginPage(props: any) {
         </div>
         <button type="submit" className="login-button">로그인</button>
         <GoogleOAuthProvider clientId={config.googleClientId}>
-          <GoogleLoginButton setUser={setUser} />
+          <GoogleLoginButton userLogin={handleUserLogin} />
         </GoogleOAuthProvider>
         <div className="additional-options">
           <a href="/signup">계정이 없으신가요? 회원가입</a>
