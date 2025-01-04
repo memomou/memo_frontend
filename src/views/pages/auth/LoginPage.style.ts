@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const Styled = styled.div`
+export const LoginPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   align-items: center;
-  .login-title, .signup-title {
+  .login-title {
     text-align: center;
     color: #2c3e50;
     margin-bottom: 30px;
@@ -38,7 +38,7 @@ export const Styled = styled.div`
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
   }
 
-  .login-button, .signup-button {
+  .login-button {
     width: 100%;
     padding: 12px;
     background-color: #3498db;
@@ -51,29 +51,30 @@ export const Styled = styled.div`
     transition: background-color 0.3s, transform 0.1s;
   }
 
-  .login-button:hover, .signup-button:hover {
+  .login-button:hover {
     background-color: #2980b9;
   }
 
-  .login-button:active, .signup-button:active {
+  .login-button:active {
     transform: scale(0.98);
+  }
+
+  .or-text {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 500;
   }
 
   .additional-options {
     margin-top: 20px;
     text-align: center;
-  }
-
-  .additional-options a {
-    display: block;
-    margin-top: 10px;
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s;
-    font-weight: 500;
-  }
-
-  .additional-options a:hover {
-    color: #2980b9;
+    a {
+      color: #3498db;
+      display: block;
+      margin-top: 10px;
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 500;
+    }
   }
 `;

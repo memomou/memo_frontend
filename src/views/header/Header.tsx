@@ -96,14 +96,6 @@ function Header() {
             >
               로그인
             </StyledLink>
-            <StyledLink
-              to="/signup"
-              selected={location.pathname === "/signup"}
-              state={{ from: { pathname: location.pathname, search: location.search }}}
-              replace
-            >
-              회원가입
-            </StyledLink>
           </>
         )}
       </Action>
