@@ -27,7 +27,7 @@ function SignUpPage() {
         nickname: username,
       });
       console.log('회원가입 완료:', response.data);
-      handleUserLogin(response.data.user);
+      handleUserLogin(response.data);
     } catch (error) {
       console.error("회원가입 오류:", error);
       alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
