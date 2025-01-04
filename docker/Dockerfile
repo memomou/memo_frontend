@@ -2,8 +2,7 @@
 FROM node:20-alpine as build
 WORKDIR /app
 
-ARG REACT_APP_BACKEND_URI
-ENV REACT_APP_BACKEND_URI=$REACT_APP_BACKEND_URI
+COPY .env.prod ./.env
 
 COPY package.json yarn.lock ./
 

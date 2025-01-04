@@ -1,18 +1,18 @@
 import { useState } from "react";
 import CenterForm from "../../../components/Form.style";
-import { useSetRecoilState } from "recoil";
-import { userAtom } from "../../../components/atom/atoms";
-import { useNavigate } from "react-router-dom";
-import { Styled } from "./authPage.style";
+import { Link } from "react-router-dom";
+import { Styled } from "./SignUpPage.style";
 import { axiosInstance } from '../../../helpers/helper';
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLoginButton } from "./LoginButton/GoogleLoginButton";
+import config from "../../../config";
+import { useLogin } from "./useAuth";
 function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
-  const setUser = useSetRecoilState(userAtom);
-  const navigate = useNavigate();
+  const { handleUserLogin } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,10 +27,7 @@ function SignUpPage() {
         nickname: username,
       });
       console.log('회원가입 완료:', response.data);
-      setUser({...response.data.user});
-      localStorage.setItem('accessToken', response.data.token.accessToken);
-      localStorage.setItem('refreshToken', response.data.token.refreshToken);
-      navigate('/');
+      handleUserLogin(response.data.user);
     } catch (error) {
       console.error("회원가입 오류:", error);
       alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
@@ -86,8 +83,12 @@ function SignUpPage() {
           />
         </div>
         <button type="submit" className="signup-button">회원가입</button>
+        <div className="or-text">또는</div>
+        <GoogleOAuthProvider clientId={config.googleClientId}>
+          <GoogleLoginButton userLogin={handleUserLogin} />
+        </GoogleOAuthProvider>
         <div className="additional-options">
-          <a href="/login">이미 계정이 있으신가요? 로그인</a>
+          <Link to="/login">이미 계정이 있으신가요? 로그인</Link>
         </div>
       </CenterForm>
     </Styled>
