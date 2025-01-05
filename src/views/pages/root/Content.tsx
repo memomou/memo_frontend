@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
-import { axiosInstance, changeDateFormat } from "../../../helpers/helper";
+import { axiosInstance } from "../../../helpers/helper";
 import {ContentContainer} from './Content.style';
-import { Link } from "react-router-dom";
 import { PostType } from "../../../types/post";
+import PostList from "./PostList/PostList";
+import SearchInput from "./SearchInput";
 
 function Content() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [searchedPosts, setSearchedPosts] = useState<PostType[]>([]);
   const [searchInputValue, setSearchInputValue] = useState('');
   const postToDisplay = searchInputValue ? searchedPosts : posts;
-  const isSearchedPostEmpty = searchInputValue && searchedPosts.length === 0;
+  const isSearchedPostEmpty = !!(searchInputValue && searchedPosts.length === 0);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axiosInstance.get('/posts');
+        const response = await axiosInstance.get('/posts', {
+          params: {
+            take: 20,
+          },
+        });
         console.log('Posts:', response);
         const posts = response.data.posts.data as PostType[];
         posts.map((post) => {
@@ -40,6 +45,7 @@ function Content() {
     const response = await axiosInstance.get('/posts', {
       params: {
         content_or_title_include: e.target.value,
+        take: 20,
     }});
 
     const searchedPosts = response.data.posts.data as PostType[];
@@ -56,38 +62,9 @@ function Content() {
       <div className="recentPosterWrapper">
         <div className="topContainer">
           <span className="recentPostText">{searchInputValue ? `- 검색 결과 (${searchedPosts.length})` : `- 전체 게시글`}</span>
-          <span className="searchInputWrapper">
-            <svg width="17" height="17" viewBox="0 0 17 17"><path fillRule="evenodd" d="M13.66 7.36a6.3 6.3 0 1 1-12.598 0 6.3 6.3 0 0 1 12.598 0zm-1.73 5.772a7.36 7.36 0 1 1 1.201-1.201l3.636 3.635c.31.31.31.815 0 1.126l-.075.075a.796.796 0 0 1-1.126 0l-3.636-3.635z" clipRule="evenodd" fill="currentColor"></path></svg>
-            <input className="searchInput" type="text" placeholder="검색"       value={searchInputValue}
-      onChange={handleInputChange} />
-          </span>
+          <SearchInput value={searchInputValue} onChange={handleInputChange} />
         </div>
-        <div className="recentPosts">
-          {isSearchedPostEmpty ? (<div>검색 결과가 없습니다.</div>) : (<></>)}
-        {(postToDisplay)?.map((post) => (
-          <Link to={`/${post.author.nickname}/post/${post.id}`} key={post.id}>
-            <div className="post" key={post.id}>
-              <div className="top-wrapper">
-                <div className="title">{post.title}</div>
-              </div>
-              <div className="content">
-                <p>{post.content}</p>
-              </div>
-              <div className="bottom-wrapper">
-                <div className="author">
-                  <img
-                    src={post.author.profileImage?.url || '/defaultAvatar.png'}
-                    alt={`${post.author.nickname}의 프로필`}
-                    className="profile-image"
-                  />
-                  {post.author.nickname}
-                </div>
-                <div className="date">{changeDateFormat(post.createdAt)}</div>
-              </div>
-            </div>
-          </Link>
-        ))}
-        </div>
+        <PostList isSearchedPostEmpty={isSearchedPostEmpty} posts={postToDisplay} />
       </div>
     </ContentContainer>
   );
