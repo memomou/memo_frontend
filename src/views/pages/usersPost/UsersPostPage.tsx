@@ -1,18 +1,16 @@
 import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
-import { postsAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
+import { selectedCategoriesAtom, userAtom } from "../../../components/atom/atoms";
 import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
-import { axiosInstance } from "../../../helpers/helper";
-import { PostStatus, PostType } from "../../../types/post";
 export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolean}) {
   const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
-  const {author, authorCategories } = useAuthorInfo(nickname);
-  const [, setPosts] = useRecoilState(postsAtom);
+  const { authorCategories } = useAuthorInfo(nickname);
+  const currentUser = useRecoilValue(userAtom);
   const [searchParams] = useSearchParams();
 
   // 특정 쿼리 파라미터 값 가져오기
@@ -30,45 +28,10 @@ export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolea
     }
   }, [authorCategories, selectedCategoryName, setSelectedCategory]);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        if (!author?.id) return;
-        if (selectedCategoryName && selectedCategoryName !== selectedCategory?.categoryName) {
-          return;
-        }
-        // 카테고리가 선택되어 있고, 선택된 카테고리가 변경되지 않았을 때만 해당 카테고리의 게시글을 가져옴
-        if (selectedCategory && selectedCategory.categoryName !== selectedCategoryName) {
-          console.log('카테고리 업데이트중이라 미요청함');
-          console.log('Selected category:', selectedCategory);
-          return;
-        }
-
-        const response = await axiosInstance.get('/posts', {
-          params: {
-            author_id: author?.id,
-            category_id: selectedCategory?.id,
-            status_id: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED,
-          },
-        });
-        console.log('Posts:', response);
-        const fetchedPosts = response.data.posts.data as PostType[];
-        fetchedPosts.map((post) => {
-          post.content = post.content.replace(/<[^>]+>/g, '');
-          return post;
-        });
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    };
-    fetchPosts();
-  }, [selectedCategory, author?.id, setPosts, selectedCategoryName, isTempPostPage]);
-
   return (
     <PageContainer>
       <SideBar isTempPostPage={isTempPostPage} />
-      <Content isTempPostPage={isTempPostPage} />
+      <Content selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} currentUser={currentUser} isTempPostPage={isTempPostPage} />
     </PageContainer>
   );
 }

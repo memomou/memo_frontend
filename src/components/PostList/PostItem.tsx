@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { changeDateFormat } from "../../../../helpers/helper";
-import { PostType } from "../../../../types/post";
+import { changeDateFormat } from "../../helpers/helper";
+import { PostType } from "../../types/post";
+import PostItemWrapper from "./PostItem.style";
 
 export default function PostItem({ post }: { post: PostType }) {
   return (
     <Link to={`/${post.author.nickname}/post/${post.id}`} key={post.id}>
-      <div className="post" key={post.id}>
+      <PostItemWrapper className="post" key={post.id}>
         <div className="top-wrapper">
           <div className="title">{post.title}</div>
         </div>
@@ -24,7 +25,7 @@ export default function PostItem({ post }: { post: PostType }) {
           </div>
           <div className="date">{changeDateFormat(post.createdAt)}</div>
         </div>
-      </div>
+      </PostItemWrapper>
     </Link>
   );
 }
