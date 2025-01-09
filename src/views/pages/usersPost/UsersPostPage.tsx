@@ -1,15 +1,14 @@
 import { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
 import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
-import { selectedCategoriesAtom, userAtom } from "../../../components/atom/atoms";
-import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
+import { authorCategoriesAtom, selectedCategoriesAtom, userAtom } from "../../../components/atom/atoms";
+import CategoryMenu from "./CategoryMenu";
 export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolean}) {
-  const { nickname } = useParams();
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
-  const { authorCategories } = useAuthorInfo(nickname);
+  const [authorCategories] = useRecoilState(authorCategoriesAtom);
   const currentUser = useRecoilValue(userAtom);
   const [searchParams] = useSearchParams();
 
@@ -31,6 +30,7 @@ export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolea
   return (
     <PageContainer>
       <SideBar isTempPostPage={isTempPostPage} />
+      <CategoryMenu selectedCategory={selectedCategory} authorCategories={authorCategories || []} />
       <Content selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} currentUser={currentUser} isTempPostPage={isTempPostPage} />
     </PageContainer>
   );

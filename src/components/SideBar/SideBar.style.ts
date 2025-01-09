@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../styles";
 
 export const SideBarContainer = styled.div`
   display: flex;
@@ -8,6 +9,10 @@ export const SideBarContainer = styled.div`
   padding: 20px 5px;
   max-width: 250px;
   min-width: 220px;
+
+  ${media.mobile} {
+    display: none;
+  }
 
   .nicknameWrapper {
     display: flex;

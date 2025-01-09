@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../../styles";
 
 export const ContentContainer = styled.div`
   // font-size: 1.1rem;
@@ -8,12 +9,21 @@ export const ContentContainer = styled.div`
   padding: 20px;
   flex-grow: 5;
 
+  ${media.mobile} {
+    padding: 8px;
+  }
+
   .recentPosterWrapper {
     flex: 4;
     .topContainer {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      ${media.mobile} {
+        display: block;
+      }
+
       .recentPostText {
         font-size: 1.2rem;
         display: flex;
@@ -22,9 +32,13 @@ export const ContentContainer = styled.div`
         flex: 1;
         justify-content: space-between;
         margin-right: 20px;
+        ${media.mobile} {
+            display: none;
+        }
         .categoryName {
           font-weight: 500;
           margin-right: 10px;
+
         }
         input {
           font-weight: 500;
@@ -55,6 +69,11 @@ export const ContentContainer = styled.div`
         position: relative;
         display: flex;
         align-items: center;
+
+        ${media.mobile} {
+          margin-top: 8px;
+        }
+
         svg {
           margin-right: 10px;
           margin-left: 10px;

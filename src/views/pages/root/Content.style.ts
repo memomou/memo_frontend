@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../../styles";
 
 export const ContentContainer = styled.div`
   // font-size: 1.1rem;
@@ -6,6 +7,11 @@ export const ContentContainer = styled.div`
   flex: 1;
   flex-direction: row;
   padding: 20px;
+
+  ${media.mobile} {
+    padding: 8px;
+  }
+
   .sidebarWrapper {
     flex: 1;
     display: flex;
@@ -26,7 +32,14 @@ export const ContentContainer = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      ${media.mobile} {
+        display: block;
+      }
       .recentPostText {
+        ${media.mobile} {
+          display: none;
+        }
         font-size: 1.2rem;
         font-weight: 500;
       }

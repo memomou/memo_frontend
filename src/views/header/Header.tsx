@@ -3,17 +3,22 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { userAtom } from "../../components/atom/atoms";
+import { authorAtom, userAtom } from "../../components/atom/atoms";
 import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Action } from "./Header.style";
 import { useEffect, useRef, useState } from "react";
+import { useAuthorInfo } from "../../hooks/useAuthorInfo";
 
 function Header() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileBtnRef = useRef<HTMLButtonElement>(null);
-  const location = useLocation();
+  const {pathname, search} = useLocation();
+  const authorNickname = pathname.split('/')[1];
+  console.log('authorNickname', authorNickname);
+  const { author } = useAuthorInfo(authorNickname);
   const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
+
   const navigateToFn = (path: string) => {
     return () => {
       navigate(path);
@@ -49,16 +54,20 @@ function Header() {
 
   return (
     <HeaderContainer>
-      {/* // https://www.onlinewebfonts.com/icon/80555 */}
+      <div className="header-left">
+        <HomeButton to="/">
+          <img className="logo" src="/catQuestionLogo.svg" alt="logo" />
+        </HomeButton>
+        <Link to={`/${authorNickname}`}>
+          <span>{(author?.nickname && `${author?.nickname}`) || 'Memou'}</span>
+        </Link>
+      </div>
 
-      <HomeButton to="/">
-        <img className="logo" src="/catQuestionLogo.svg" alt="logo" />
-      <span>Memou</span></HomeButton>
       <Action>
         {user ? (
           <>
         {
-          location.pathname !== "/post/write" && (
+          pathname !== "/post/write" && user.id === author?.id && (
             <StyledBtn>
               <Link to="/post/write" >
                 새 글 작성
@@ -66,13 +75,13 @@ function Header() {
             </StyledBtn>
           )
         }
-            <StyledBtn ref={profileBtnRef} className='profileBtn'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" fill="currentColor">
-                <circle cx="12" cy="8" r="4" fill="currentColor" />
-                <path d="M12 12c-3.87 0-7 3.13-7 7h14c0-3.87-3.13-7-7-7z" fill="currentColor"/>
-              </svg>
-              <span>{user.nickname} 님</span>
-            </StyledBtn>
+            <button ref={profileBtnRef} className='profileBtn'>
+              <img
+                src={user?.profileImage?.url || '/defaultAvatar.png'}
+                className="profileImage"
+                alt={``}
+              />
+            </button>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
               <MenuItem onClick={navigateToFn(`/${user.nickname}`)} >
                 개인 블로그
@@ -90,8 +99,8 @@ function Header() {
           <>
             <StyledLink
               to="/login"
-              selected={location.pathname === "/login"}
-              state={{ from: { pathname: location.pathname, search: location.search }}}
+              selected={pathname === "/login"}
+              state={{ from: { pathname, search }}}
               replace
             >
               로그인

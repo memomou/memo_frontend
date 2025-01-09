@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../../styles";
 
 export const PageContainer = styled.div`
   // font-size: 1.1rem;
@@ -7,4 +8,9 @@ export const PageContainer = styled.div`
   flex-direction: row;
   padding: 20px;
   padding-top: 0px;
+
+  ${media.mobile} {
+    padding: 0px;
+    flex-direction: column;
+  }
 `;

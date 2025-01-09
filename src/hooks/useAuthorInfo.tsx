@@ -8,7 +8,12 @@ export function useAuthorInfo(nickname: string | undefined) {
   const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
 
   const fetchAuthorInformation = useCallback(async () => {
-    if (!nickname) return;
+    console.log('fetchAuthorInformation', nickname);
+    if (!nickname || nickname === 'users' || nickname === 'post') {
+      setAuthor(undefined);
+      setAuthorCategories([]);
+      return;
+    }
     if (author?.nickname === nickname) return;
     try {
       const response = await axiosInstance.get(`/users/nickname/${nickname}`);

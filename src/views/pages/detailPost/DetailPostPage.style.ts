@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { PostForm } from "../../../components/PostForm.style";
 import SlateEditor from "../../../components/SlateEditor";
+import { media } from "../../../styles";
 
 export const PageContainer = styled.div`
   // font-size: 1.1rem;
@@ -10,6 +11,10 @@ export const PageContainer = styled.div`
   padding: 20px;
   padding-top: 0px;
   flex-grow: 5;
+
+  ${media.mobile} {
+    padding: 0px;
+  }
 
   .attachment-section {
     margin-top: 20px;
@@ -55,6 +60,11 @@ export const PosterNewContainer = styled.div`
   flex: 5;
   flex-direction: column;
   padding: 20px;
+
+  ${media.mobile} {
+    padding: 8px;
+  }
+
   .options-bar {
     width: -webkit-fill-available;
     display: flex;

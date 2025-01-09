@@ -13,6 +13,7 @@ interface StyledProps {
 export const MenuItem = styled.div``;
 
 export const DropdownMenu = styled.div<DropdownMenuProps>`
+
   position: absolute;
   top: 105%; /* 부모 요소 아래에 위치하게 함 */
   right: 0;
@@ -21,7 +22,7 @@ export const DropdownMenu = styled.div<DropdownMenuProps>`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   min-width: 141px;
-  z-index: 1000;
+  z-index: 2000;
   color: black;
   display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
   flex-direction: column;
@@ -74,7 +75,15 @@ export const StyledBtn = styled.button<{ selected?: boolean }>`
 
 export const HomeButton = styled(Link)``;
 
-export const Action = styled.div``;
+export const Action = styled.div`
+  display: flex;
+  align-items: center;
+  .profileImage {
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+  }
+`;
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -84,21 +93,18 @@ export const HeaderContainer = styled.div`
   background-color: ${(props) => props.theme.headerbgColor};
   color: ${(props) => props.theme.headerTextColor};
   border-bottom: 2px solid #ddd;
-  padding: 10px 10px;
+  padding: 3px 10px;
 
-
-  .profileBtn {
-    min-width: 50px;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 500;
   }
 
   ${HomeButton} {
     display: flex;
-    justify-content: center;  /* 가로 중앙 정렬 */
-    align-items: center;
-    /* gap: 10px; */
-    /* margin-right: auto; */
-    font-size: 1.4rem;
-    font-weight: 500;
     background-color: ${(props) => props.theme.headerbgColor};
     color: ${(props) => props.theme.headerTextColor};
     height: 1.6rem;

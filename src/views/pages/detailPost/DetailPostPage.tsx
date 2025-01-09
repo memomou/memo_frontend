@@ -21,8 +21,6 @@ import CommentSection from "./Comment/CommentSection";
 function DetailPostPage(props: any) {
   const [post, setPost] = useState<PostType>();
   const { id: postId } = useParams();
-  const { nickname } = useParams();
-  useAuthorInfo(nickname);
   const [user] = useRecoilState(userAtom);
   const [, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const navigate = useNavigate();
