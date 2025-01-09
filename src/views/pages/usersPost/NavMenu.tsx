@@ -28,9 +28,11 @@ export default function NavMenu({title, navList}: Props) {
   return (
     <NavMenuWrapper
     >
-      <div className="container">
+      <div className="container"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <div className="title">{title}</div>
-        <div className={`hamburger ${isOpen ? 'close' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+        <div className={`hamburger ${isOpen ? 'close' : ''}`}>
                     <span className="meat"></span>
                     <span className="meat"></span>
                     <span className="meat"></span>

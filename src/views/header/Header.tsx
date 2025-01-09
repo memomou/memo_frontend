@@ -59,7 +59,7 @@ function Header() {
           <img className="logo" src="/catQuestionLogo.svg" alt="logo" />
         </HomeButton>
         <Link to={`/${authorNickname}`}>
-          <span>{(author?.nickname && `${author?.nickname}`) || 'Memou'}</span>
+          <span className="title">{(author?.nickname && `${author?.nickname}`) || 'Memou'}</span>
         </Link>
       </div>
 
@@ -68,7 +68,7 @@ function Header() {
           <>
         {
           pathname !== "/post/write" && user.id === author?.id && (
-            <StyledBtn>
+            <StyledBtn className="writebtn">
               <Link to="/post/write" >
                 새 글 작성
               </Link>
@@ -83,6 +83,9 @@ function Header() {
               />
             </button>
             <DropdownMenu $isVisible={isDropdownVisible} ref={dropdownRef}>
+              <MenuItem className="write" onClick={navigateToFn(`/post/write`)} >
+                새 글 작성
+              </MenuItem>
               <MenuItem onClick={navigateToFn(`/${user.nickname}`)} >
                 개인 블로그
               </MenuItem>

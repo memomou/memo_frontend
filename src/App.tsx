@@ -32,7 +32,6 @@ function App() {
   }, [user?.id, setUser]); // 빈 배열로 설정
 
   return (
-      <div className="App">
         <Router>
           <Wrapper>
             <Header />
@@ -40,7 +39,6 @@ function App() {
             <Footer />
           </Wrapper>
         </Router>
-      </div>
   );
 }
 

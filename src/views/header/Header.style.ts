@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import { Link } from "react-router-dom";
+import { media } from "../../styles";
 
 
 interface DropdownMenuProps {
@@ -13,7 +14,6 @@ interface StyledProps {
 export const MenuItem = styled.div``;
 
 export const DropdownMenu = styled.div<DropdownMenuProps>`
-
   position: absolute;
   top: 105%; /* 부모 요소 아래에 위치하게 함 */
   right: 0;
@@ -26,6 +26,13 @@ export const DropdownMenu = styled.div<DropdownMenuProps>`
   color: black;
   display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
   flex-direction: column;
+
+  .write {
+    display: none;
+    ${media.mobile} {
+      display: block;
+    }
+  }
   ${MenuItem} {
     width: 100%;
     font-size: 1.2rem;
@@ -83,6 +90,11 @@ export const Action = styled.div`
     border-radius: 50%;
     border: 1px solid #ddd;
   }
+  .writebtn {
+    ${media.mobile} {
+      display: none;
+    }
+  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -101,6 +113,13 @@ export const HeaderContainer = styled.div`
     gap: 10px;
     font-size: 1.4rem;
     font-weight: 500;
+    .title {
+      max-width: calc(100vw - 136px);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+    }
   }
 
   ${HomeButton} {

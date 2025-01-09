@@ -5,7 +5,8 @@ import { media } from "../../../styles";
 
 export const PageContainer = styled.div`
   // font-size: 1.1rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 230px calc(100% - 230px);
   flex: 1;
   flex-direction: row;
   padding: 20px;
@@ -14,6 +15,7 @@ export const PageContainer = styled.div`
 
   ${media.mobile} {
     padding: 0px;
+    grid-template-columns: 100%;
   }
 
   .attachment-section {
@@ -55,10 +57,7 @@ export const PageContainer = styled.div`
 `;
 
 export const PosterNewContainer = styled.div`
-  display: flex;
   align-items: center;
-  flex: 5;
-  flex-direction: column;
   padding: 20px;
 
   ${media.mobile} {
@@ -93,7 +92,8 @@ export const PosterNewContainer = styled.div`
 
 export const DetailPosterForm = styled.div`
   ${PostForm}
-  min-height: 450px;
+  min-height: 70%;
+  margin-top: 20px;
 
   .wrapperOne {
     display: flex;

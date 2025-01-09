@@ -1,5 +1,6 @@
 import {css} from "styled-components";
 export const PostForm = css`
+  width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   padding: 20px;

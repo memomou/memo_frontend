@@ -9,6 +9,7 @@ export const SideBarContainer = styled.div`
   padding: 20px 5px;
   max-width: 250px;
   min-width: 220px;
+  overflow-x: hidden;
 
   ${media.mobile} {
     display: none;

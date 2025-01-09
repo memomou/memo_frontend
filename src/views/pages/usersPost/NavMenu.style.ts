@@ -18,12 +18,12 @@ export const NavMenuWrapper = styled.div`
   }
   a {
     text-decoration: none;
+    display: block;
   }
 
   ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
   }
 
   .hamburger {
@@ -99,7 +99,9 @@ export const NavLinks = styled.div<NavLinksProps>`
   }
 
   ul {
-    padding: 3px;
+    a {
+      padding: 7px;
+    }
   }
 `;
 

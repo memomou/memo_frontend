@@ -16,7 +16,7 @@ const Container = styled.div`
 
 function Body() {
   return (
-    <Container>
+    <>
         <Routes>
           <Route path="/" element={<Root/>} />
           <Route path="/:nickname" element={<UsersPostPage />} />
@@ -27,7 +27,7 @@ function Body() {
           <Route path="/post/write" element={<PosterPostPage/>} />
           <Route path="/user/setting" element={<UserSettingPage />} />
         </Routes>
-    </Container>
+    </>
   );
 }
 

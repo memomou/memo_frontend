@@ -64,7 +64,6 @@ function DetailPostPage(props: any) {
             {post?.category?.categoryName ?? "전체 게시글"}
           </div>
         </div>
-        <div className="editor-container">
           <DetailPosterForm>
             <div className="wrapperOne">
               <span className="title">{post?.title ?? "..."}</span>
@@ -117,7 +116,6 @@ function DetailPostPage(props: any) {
               </div>
             )}
           </DetailPosterForm>
-        </div>
         {post && <CommentSection post={post} user={user} />}
       </PosterNewContainer>
     </PageContainer>
