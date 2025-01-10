@@ -10,7 +10,7 @@ export const PostForm = css`
   border-radius: 10px;
   background-color: white;
   flex: 1;
-  min-height: 70%;
+  min-height: 73vh;
   /* min-height: -webkit-fill-available; */
   font-size: var(--font-size-base);
 `;

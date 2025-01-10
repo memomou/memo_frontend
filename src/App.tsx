@@ -36,7 +36,7 @@ function App() {
           <Wrapper>
             <Header />
             <Body />
-            <Footer />
+            {/* <Footer /> */}
           </Wrapper>
         </Router>
   );
