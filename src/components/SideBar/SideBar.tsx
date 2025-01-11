@@ -30,19 +30,21 @@ export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
         <h1 className="nickname">@{nickname}</h1>
         </Link>
       </div>
-      {author && (
-        <CategoryList
-          categories={authorCategories}
-          selectedCategory={selectedCategory}
-          author={author as UserState}
-          setCategories={setAuthorCategories}
-          isMyCategory={isCurrentUserOwner}
+      <div className="categoryListWrapper">
+        {author && (
+          <CategoryList
+            categories={authorCategories}
+            selectedCategory={selectedCategory}
+            author={author as UserState}
+            setCategories={setAuthorCategories}
+            isMyCategory={isCurrentUserOwner}
           isTempPostPage={isTempPostPage}
         />
-      )}
-      {isCurrentUserOwner && showAddCategory && (
-        <AddCategory onAddCategory={handleAddCategory} />
-      )}
+        )}
+        {isCurrentUserOwner && showAddCategory && (
+          <AddCategory onAddCategory={handleAddCategory} />
+        )}
+      </div>
     </SideBarContainer>
   );
 }

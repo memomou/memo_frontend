@@ -28,6 +28,10 @@ export const SideBarContainer = styled.div`
     .nickname {
       margin: 0;
       font-size: 1.3rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: calc(230px - 83px);
     }
     .profileImage {
       width: 3rem;

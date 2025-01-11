@@ -6,6 +6,7 @@ import CategoryItem from './CategoryItem';
 import { axiosInstance } from '../../helpers/helper';
 import { CategoryListItem } from './CategoryListItem';
 import { UserState } from '../../types/users.type';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 interface CategoryListProps {
   categories: CategoriesState[];
@@ -42,6 +43,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, setCategories, 
     <DndContext
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      modifiers={[restrictToVerticalAxis]}
     >
       <CategoryListItem
         to={navigateToBase}
