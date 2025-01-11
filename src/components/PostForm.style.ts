@@ -3,7 +3,7 @@ export const PostForm = css`
   width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: min(20px, 2%);
   margin: 0px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

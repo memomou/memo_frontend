@@ -8,12 +8,6 @@ import DetailPostPage from "./pages/detailPost/DetailPostPage";
 import { UsersPostPage } from "./pages/usersPost/UsersPostPage";
 import UserSettingPage from "./pages/userSetting/UserSettingPage";
 
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-  background-color: ${(props) => props.theme.ContentbgColor};
-`;
-
 function Body() {
   return (
     <>

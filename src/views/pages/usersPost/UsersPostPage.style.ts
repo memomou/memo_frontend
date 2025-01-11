@@ -3,14 +3,12 @@ import { media } from "../../../styles";
 
 export const PageContainer = styled.div`
   // font-size: 1.1rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 230px calc(100% - 230px);
+  grid-template-rows: max-content;
   flex: 1;
-  flex-direction: row;
-  padding: 20px;
-  padding-top: 0px;
 
   ${media.mobile} {
-    padding: 0px;
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 `;

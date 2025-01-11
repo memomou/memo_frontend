@@ -10,7 +10,7 @@ export const SideBarContainer = styled.div`
   max-width: 250px;
   min-width: 220px;
   overflow-x: hidden;
-
+  color: ${props => props.theme.SideBarTextColor};
   ${media.mobile} {
     display: none;
   }

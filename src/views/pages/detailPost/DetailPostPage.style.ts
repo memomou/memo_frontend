@@ -9,9 +9,7 @@ export const PageContainer = styled.div`
   grid-template-columns: 230px calc(100% - 230px);
   flex: 1;
   flex-direction: row;
-  padding: 20px;
   padding-top: 0px;
-  flex-grow: 5;
 
   ${media.mobile} {
     padding: 0px;
