@@ -6,6 +6,7 @@ import Wrapper from "./views/Wrapper";
 import { BrowserRouter as Router } from "react-router-dom";
 import { userAtom } from "./components/atom/atoms";
 import "./App.css";
+import "./styles/tailwind.css";
 import { axiosInstance } from './helpers/helper';
 import { useEffect } from "react";
 function App() {
