@@ -13,6 +13,9 @@ export default function SideBar() {
         <li className={setting === 'password' ? 'focus' : ''}>
           <Link to='/user/setting/password'>비밀번호 변경</Link>
         </li>
+        <li className={setting === 'category' ? 'focus' : ''}>
+        <Link to='/user/setting/category'>카테고리 관리</Link>
+        </li>
       </ul>
     </SideBarWrapper>
   )

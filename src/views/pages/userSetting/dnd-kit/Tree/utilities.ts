@@ -61,6 +61,8 @@ export function getProjection(
 }
 
 function getMaxDepth({previousItem}: {previousItem: FlattenedItem}) {
+  // 2차 Tree 까지만 적용되도록 함.
+  return 1;
   if (previousItem) {
     return previousItem.depth + 1;
   }

@@ -4,6 +4,7 @@ import { ContentWrapper } from './Content.style';
 import ContentProfile from './ContentProfile';
 import ContentPassword from './ContentPassword';
 import { UserState } from '../../../types/users.type';
+import ContentCategory from './ContentCategory';
 
 export default function Content() {
   const { setting } = useParams();  // URL 파라미터 가져오기
@@ -14,6 +15,8 @@ export default function Content() {
         return <ContentProfile />;
       case 'password':
         return <ContentPassword />;
+      case 'category':
+        return <ContentCategory />;
       default:
         return <div>404 Not Found</div>;
     }
