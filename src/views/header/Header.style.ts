@@ -101,10 +101,10 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* height: 60px; */
+  height: var(--header-height);
   background-color: ${(props) => props.theme.headerbgColor};
+  border-bottom: 1px solid ${(props) => props.theme.headerBorderColor};
   color: ${(props) => props.theme.headerTextColor};
-  border-bottom: 2px solid #ddd;
   padding: 3px 10px;
 
   .header-left {

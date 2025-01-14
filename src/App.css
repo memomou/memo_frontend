@@ -5,6 +5,7 @@
 :root {
   --font-size-base: 1.0rem;
   --font-size-title: 1.3rem;
+  --header-height: 43px;
 }
 
 body {
@@ -202,6 +203,5 @@ button {
 
 a {
   text-decoration: none;
-  color: black;
   cursor: pointer;
 }

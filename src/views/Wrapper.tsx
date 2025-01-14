@@ -14,6 +14,19 @@ const Styled = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: ${(props) => props.theme.defaultTextColor};
+  a {
+    /* -webkit-any-link 스타일 재정의 */
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:-webkit-any-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
 `;
 
 function Wrapper({children}: WrapperProps) {

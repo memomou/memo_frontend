@@ -13,7 +13,11 @@ function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileBtnRef = useRef<HTMLButtonElement>(null);
   const {pathname, search} = useLocation();
-  const authorNickname = pathname.split('/')[1];
+  const paths = pathname.split('/');
+  console.log('paths', paths);
+  const authorNickname = ['user', 'setting', 'post'].includes(paths[1])
+    ? ''
+    : paths[1];
   console.log('authorNickname', authorNickname);
   const { author } = useAuthorInfo(authorNickname);
   const [user, setUser] = useRecoilState(userAtom);
@@ -89,7 +93,7 @@ function Header() {
               <MenuItem onClick={navigateToFn(`/${user.nickname}`)} >
                 개인 블로그
               </MenuItem>
-              <MenuItem onClick={navigateToFn(`/user/setting`)}>
+              <MenuItem onClick={navigateToFn(`/user/setting/profile`)}>
                 개인 설정
               </MenuItem>
               <MenuItem onClick={navigateToFn(`/${user.nickname}/posts/saves`)}>
