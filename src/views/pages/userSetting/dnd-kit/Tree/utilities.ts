@@ -14,7 +14,8 @@ export function getProjection(
   activeId: UniqueIdentifier,
   overId: UniqueIdentifier,
   dragOffset: number,
-  indentationWidth: number
+  indentationWidth: number,
+  maxAvailableDepth: number = 1
 ) {
   const overItemIndex = items.findIndex(({id}) => id === overId);
   const activeItemIndex = items.findIndex(({id}) => id === activeId);
@@ -28,15 +29,32 @@ export function getProjection(
     previousItem,
   });
   const minDepth = getMinDepth({nextItem});
-  let depth = projectedDepth;
 
-  if (projectedDepth >= maxDepth) {
-    depth = maxDepth;
-  } else if (projectedDepth < minDepth) {
-    depth = minDepth;
+  let depth = Math.min(projectedDepth, maxAvailableDepth);
+
+
+  if (isOverDepth()) {
+    depth = 0;
   }
 
-  return {depth, maxDepth, minDepth, parentId: getParentId()};
+  return {depth, maxDepth, minDepth, parentId: depth === 0 ? null : getParentId()};
+
+  function getActiveItemMaxDepth() {
+    return flattenTree([activeItem]).reduce((acc, {depth}) => Math.max(acc, depth), 0);
+  }
+
+  function getParentItemMaxDepth() {
+    const parentId = getParentId();
+    const parentItem = items.find(({id}) => id === parentId);
+    return parentItem ? parentItem.depth + 1 : 0;
+  }
+
+  function getSumDepth() {
+    return getActiveItemMaxDepth() + getParentItemMaxDepth();
+  }
+  function isOverDepth() {
+    return getSumDepth() > maxAvailableDepth;
+  }
 
   function getParentId() {
     if (depth === 0 || !previousItem) {
@@ -61,8 +79,6 @@ export function getProjection(
 }
 
 function getMaxDepth({previousItem}: {previousItem: FlattenedItem}) {
-  // 2차 Tree 까지만 적용되도록 함.
-  return 1;
   if (previousItem) {
     return previousItem.depth + 1;
   }

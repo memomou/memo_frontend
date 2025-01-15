@@ -5,7 +5,7 @@ export default function ContentCategory() {
     <div className='p-6'>
       <h1 className='text-2xl text-center'>카테고리 관리</h1>
       <div className='mt-4'>
-        <SortableTree collapsible indicator removable />
+        <SortableTree collapsible  removable />
       </div>
     </div>
   )
