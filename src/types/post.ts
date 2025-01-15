@@ -2,7 +2,7 @@ import { CommentType } from "./comments.type";
 import { CustomElement } from "./slate";
 import { UserState } from "./users.type";
 
-export interface CategoriesState {
+export interface CategoryType {
   id: number;
   categoryName: string;
   pos: number;
@@ -48,7 +48,7 @@ export interface PostType {
   title: string;
   content: string;
   contentSlate: (CustomElement)[];
-  category?: CategoriesState;
+  category?: CategoryType;
   postFiles: PostFile[];
   statusId: PostStatus;
   updatedAt: string;

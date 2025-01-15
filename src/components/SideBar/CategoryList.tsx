@@ -1,4 +1,4 @@
-import { CategoriesState } from '../../types/post';
+import { CategoryType } from '../../types/post';
 
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -9,10 +9,10 @@ import { UserState } from '../../types/users.type';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 interface CategoryListProps {
-  categories: CategoriesState[];
-  selectedCategory: CategoriesState | undefined;
+  categories: CategoryType[];
+  selectedCategory: CategoryType | undefined;
   author: UserState;
-  setCategories: React.Dispatch<React.SetStateAction<CategoriesState[]
+  setCategories: React.Dispatch<React.SetStateAction<CategoryType[]
   >>;
   isMyCategory: boolean;
   isTempPostPage: boolean;

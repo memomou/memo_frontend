@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { CategoriesState } from '../../types/post';
+import { CategoryType } from '../../types/post';
 import { axiosInstance } from '../../helpers/helper';
 import { RiDraggable } from 'react-icons/ri';
 import { CategoryItemStyle } from './CategoryItem.style';
 interface AddCategoryProps {
-  onAddCategory: (newCategory: CategoriesState) => void;
+  onAddCategory: (newCategory: CategoryType) => void;
 }
 
 const AddCategory: React.FC<AddCategoryProps> = ({ onAddCategory }) => {

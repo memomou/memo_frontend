@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../helpers/helper";
-import { CategoriesState } from "../../../types/post";
+import { CategoryType } from "../../../types/post";
 
 export function useCategories() {
-  const [categories, setCategories] = useState<CategoriesState[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {

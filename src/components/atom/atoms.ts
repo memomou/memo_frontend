@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { Element} from "slate";
 import { UserState } from "../../types/users.type";
-import { CategoriesState, PostStatus, PostType, Visibility } from "../../types/post";
+import { CategoryType, PostStatus, PostType, Visibility } from "../../types/post";
 
 export const userAtom = atom<UserState | undefined>({
   key: 'user',
@@ -39,12 +39,12 @@ export const defaultPostValue: PostType = {
   comments: [],
 }
 
-export const authorCategoriesAtom = atom<CategoriesState[]>({
+export const authorCategoriesAtom = atom<CategoryType[]>({
   key: 'authorCategories',
   default: [],
 });
 
-export const selectedCategoriesAtom = atom<CategoriesState | undefined>({
+export const selectedCategoriesAtom = atom<CategoryType | undefined>({
   key: 'selectedCategory',
   default: undefined,
 });

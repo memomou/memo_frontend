@@ -1,11 +1,11 @@
 import React from 'react'
-import { CategoriesState } from '../../../types/post'
+import { CategoryType } from '../../../types/post'
 import NavMenu from './NavMenu'
 import { useLocation } from 'react-router-dom';
 
 interface Props {
-  selectedCategory?: CategoriesState,
-  authorCategories: CategoriesState[],
+  selectedCategory?: CategoryType,
+  authorCategories: CategoryType[],
 }
 
 export default function CategoryMenu({selectedCategory, authorCategories}: Props) {

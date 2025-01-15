@@ -1,10 +1,10 @@
-import { CategoriesState } from '../../types/post';
+import { CategoryType } from '../../types/post';
 import { useSortable } from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities';
 import { CategoryListItem } from './CategoryListItem'
 import { UserState } from '../../types/users.type';
 interface CategoryItemProps {
-  category: CategoriesState
+  category: CategoryType
   author: UserState
   index: number
   isSelected: boolean

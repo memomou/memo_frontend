@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRecoilState } from "recoil";
 import {ContentContainer} from './Content.style';
 import { authorAtom, authorCategoriesAtom } from "../../../components/atom/atoms";
-import { CategoriesState, PostStatus, PostType } from "../../../types/post";
+import { CategoryType, PostStatus, PostType } from "../../../types/post";
 import SearchInput from "../../../components/Input/SearchInput";
 import { UserState } from "../../../types/users.type";
 import { fetchPosts } from "../../../utils/fetchPosts";
@@ -12,8 +12,8 @@ import PostList from "../../../components/PostList/PostList";
 import { useInfiniteScroll } from "../root/useInfiniteScroll";
 
 interface ContentProps {
-  selectedCategory?: CategoriesState;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoriesState | undefined>>;
+  selectedCategory?: CategoryType;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoryType | undefined>>;
   currentUser?: UserState;
   isTempPostPage?: boolean;
 }

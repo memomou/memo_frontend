@@ -1,12 +1,12 @@
 import React from 'react'
-import { CategoriesState } from '../../../types/post';
+import { CategoryType } from '../../../types/post';
 import { axiosInstance } from '../../../helpers/helper';
 import { useSearchParams } from 'react-router-dom';
 
 interface Props {
-  selectedCategory: CategoriesState;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoriesState | undefined>>;
-  setAuthorCategories: React.Dispatch<React.SetStateAction<CategoriesState[]>>;
+  selectedCategory: CategoryType;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoryType | undefined>>;
+  setAuthorCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
   setIsCategoryEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
