@@ -9,6 +9,7 @@ export interface CategoryType {
   user: UserState;
   tempPostCount: number;
   postCount: number;
+  children: CategoryType[];
 }
 
 export interface PostFile {

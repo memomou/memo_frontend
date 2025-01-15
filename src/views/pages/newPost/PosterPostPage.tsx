@@ -25,7 +25,7 @@ function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   const { performTempPostToast } = useTempPostLoader(editor);
-  const categories = useCategories();
+  const { categories } = useCategories();
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
   const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [post, setPost] = useState<PostType>({...defaultPostValue, category: selectedCategory});

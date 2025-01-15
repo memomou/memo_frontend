@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {Action, Handle, Remove} from '../../../components';
 import styles from './TreeItem.module.css';
+import { TreeItem as TreeItemType } from '../../types';
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, 'id'> {
   childCount?: number;
@@ -15,7 +16,7 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, 'id'> {
   handleProps?: any;
   indicator?: boolean;
   indentationWidth: number;
-  value: string;
+  value: TreeItemType;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
@@ -74,7 +75,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
               {collapseIcon}
             </Action>
           )}
-          <span className={styles.Text}>{value}</span>
+          <span className={styles.Text}>{value.name}</span>
+          <span className={styles.ItemCount}>{value.count}</span>
           {!clone && onRemove && <Remove onClick={onRemove} />}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>

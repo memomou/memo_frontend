@@ -7,6 +7,7 @@ export interface AdditionalItem {
   name: string;
   pos?: number;
   count?: number;
+  tempPostCount?: number;
 }
 
 // 기존 필드

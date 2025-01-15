@@ -103,6 +103,10 @@
   color: #fff;
 }
 
+.ItemCount {
+  margin-right: 10px;
+}
+
 .disableInteraction {
   pointer-events: none;
 }
@@ -117,6 +121,7 @@
 }
 
 .Collapse {
+  margin-left: 5px;
   svg {
     transition: transform 250ms ease;
   }

@@ -33,7 +33,7 @@ import {
   removeChildrenOf,
   setProperty,
 } from './utilities';
-import type {FlattenedItem, SensorContext, TreeItems} from './types';
+import type {FlattenedItem, SensorContext, TreeItem, TreeItems} from './types';
 import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
 import {SortableTreeItem} from './components';
 import {CSS} from '@dnd-kit/utilities';
@@ -73,16 +73,20 @@ interface Props {
   indentationWidth?: number;
   indicator?: boolean;
   removable?: boolean;
+  items: TreeItems;
+  setItems: React.Dispatch<React.SetStateAction<TreeItem[]>>;
+  handleRemove: (id: UniqueIdentifier) => void;
 }
 
 export function SortableTree({
   collapsible,
-  defaultItems = initialItems,
+  items = initialItems,
   indicator = false,
   indentationWidth = 50,
   removable,
+  setItems,
+  handleRemove,
 }: Props) {
-  const [items, setItems] = useState(() => defaultItems);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null);
   const [offsetLeft, setOffsetLeft] = useState(0);
@@ -156,11 +160,12 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({id, children, collapsed, depth, name}) => (
-          <SortableTreeItem
+        {flattenedItems.map((item) => {
+          const {id, children, collapsed, depth} = item;
+          return <SortableTreeItem
             key={id}
             id={id}
-            value={name}
+            value={item}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
             indicator={indicator}
@@ -172,7 +177,7 @@ export function SortableTree({
             }
             onRemove={removable ? () => handleRemove(id) : undefined}
           />
-        ))}
+        })}
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
@@ -184,7 +189,7 @@ export function SortableTree({
                 depth={activeItem.depth}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
-                value={activeItem.name}
+                value={activeItem}
                 indentationWidth={indentationWidth}
               />
             ) : null}
@@ -253,9 +258,9 @@ export function SortableTree({
     document.body.style.setProperty('cursor', '');
   }
 
-  function handleRemove(id: UniqueIdentifier) {
-    setItems((items) => removeItem(items, id));
-  }
+  // function handleRemove(id: UniqueIdentifier) {
+  //   setItems((items) => removeItem(items, id));
+  // }
 
   function handleCollapse(id: UniqueIdentifier) {
     setItems((items) =>
