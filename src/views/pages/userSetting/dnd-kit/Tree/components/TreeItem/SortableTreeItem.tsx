@@ -2,7 +2,7 @@ import React, {CSSProperties} from 'react';
 import type {UniqueIdentifier} from '@dnd-kit/core';
 import {AnimateLayoutChanges, useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-
+import {EditorTreeItem } from './EditorTreeItem';
 import {TreeItem, Props as TreeItemProps} from './TreeItem';
 import {iOS} from '../../utilities';
 
@@ -33,19 +33,35 @@ export function SortableTreeItem({id, depth, ...props}: Props) {
   };
 
   return (
-    <TreeItem
-      ref={setDraggableNodeRef}
-      wrapperRef={setDroppableNodeRef}
-      style={style}
-      depth={depth}
-      ghost={isDragging}
-      disableSelection={iOS}
-      disableInteraction={isSorting}
-      handleProps={{
-        ...attributes,
-        ...listeners,
-      }}
-      {...props}
-    />
+    props.value.isEditing ?
+      <EditorTreeItem
+        ref={setDraggableNodeRef}
+        wrapperRef={setDroppableNodeRef}
+        style={style}
+        depth={depth}
+        ghost={isDragging}
+        disableSelection={iOS}
+        disableInteraction={isSorting}
+        handleProps={{
+          ...attributes,
+          ...listeners,
+        }}
+        {...props}
+      />
+    :
+      <TreeItem
+        ref={setDraggableNodeRef}
+        wrapperRef={setDroppableNodeRef}
+        style={style}
+        depth={depth}
+        ghost={isDragging}
+        disableSelection={iOS}
+        disableInteraction={isSorting}
+        handleProps={{
+          ...attributes,
+          ...listeners,
+        }}
+        {...props}
+      />
   );
 }

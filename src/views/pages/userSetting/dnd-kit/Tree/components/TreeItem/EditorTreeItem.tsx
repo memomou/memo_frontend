@@ -1,11 +1,10 @@
-import React, {forwardRef, HTMLAttributes} from 'react';
+import React, {forwardRef, HTMLAttributes, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import {Action, Handle, Remove} from '../../../components';
 import styles from './TreeItem.module.css';
 import { TreeItem as TreeItemType } from '../../types';
 import Collapse from '../../../components/Collapse/Collapse';
-import { CategoryEditBtn } from '../../../components/Edit/CategoryEditBtn';
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, 'id'> {
   childCount?: number;
@@ -21,15 +20,13 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, 'id'> {
   value: TreeItemType;
   onCollapse?(): void;
   onRemove?(): void;
-  onApply?(): void;
+  onEditingCancel?(): void;
+  onConfirm?(): void;
   onInputTextChange?(text: string): void;
   wrapperRef?(node: HTMLLIElement): void;
-  onConfirm?(): void;
-  onEditClicked?(): void;
-  onEditingCancel?(): void;
 }
 
-export const TreeItem = forwardRef<HTMLDivElement, Props>(
+export const EditorTreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
       childCount,
@@ -42,19 +39,26 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       indentationWidth,
       indicator,
       collapsed,
+      onEditingCancel,
+      onConfirm,
       onCollapse,
       onRemove,
+      onInputTextChange,
       style,
       value,
       wrapperRef,
-      onInputTextChange,
-      onConfirm,
-      onEditClicked,
-      onEditingCancel,
       ...props
     },
     ref
   ) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, [inputRef]);
+
     return (
       <li
         className={classNames(
@@ -73,29 +77,13 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
-        <div className={`${styles.TreeItem} ${!ghost ? 'h-full' : ''}`} ref={ref} style={style}>
+        <div className={`${styles.TreeItem} flex ${!ghost ? 'h-full' : ''}`} ref={ref} style={style}>
           {depth === 0 && <Collapse collapsed={!!collapsed} onClick={onCollapse} disabled={!onCollapse} />}
-          <Handle {...handleProps}/>
-          <span className={styles.Text}>{value.name}</span>
-
-          <span className={styles.ItemCount}>({value.count})</span>
-          {!clone && onEditClicked && (
-            <CategoryEditBtn className={styles.EditButton}
-              onEditClicked={onEditClicked}
-            >
-              변경
-            </CategoryEditBtn>
-          )}
-          {!clone && onRemove && (
-            <Remove
-              className={styles.Remove}
-              disabled={(Number(value.count) > 0 || !!onCollapse)}
-              onRemove={onRemove}
-            />
-          )}
-          {clone && childCount && childCount > 1 ? (
-            <span className={styles.Count}>{childCount}</span>
-          ) : null}
+          <input type="text" className="pl-2 flex-1 ml-2 border border-gray-300 border-solid border-gray-300" ref={inputRef} onChange={(e) => onInputTextChange && onInputTextChange(e.target.value)} />
+          <div className="flex justify-end ml-3 mr-1 gap-1 text-sm">
+            <button className={`border border-gray-300 border-solid px-1 px-1 ${value.children.length >= 1 ? 'cursor-not-allowed bg-gray-300 text-gray-500' : 'cursor-pointer bg-gray-100'}`} onClick={Number(value.id) < 0 ? onRemove : onEditingCancel}>취소</button>
+            <button className={`bg-gray-100 text-gray-700 border border-gray-300 border-solid px-1`} onClick={onConfirm}>적용</button>
+          </div>
         </div>
       </li>
     );

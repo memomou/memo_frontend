@@ -1,18 +1,14 @@
 import type {MutableRefObject} from 'react';
 import type {UniqueIdentifier} from '@dnd-kit/core';
 
-// 추가 필드
-export interface AdditionalItem {
+export interface TreeItem {
   id: UniqueIdentifier;
   name: string;
-  pos?: number;
+  pos: number;
   count?: number;
-}
-
-// 기존 필드
-export interface TreeItem extends AdditionalItem {
-  children: TreeItem[];
   collapsed?: boolean;
+  isEditing?: boolean;
+  children: TreeItem[];
 }
 
 export type TreeItems = TreeItem[];

@@ -2,12 +2,12 @@ import React from 'react';
 
 import {Action, ActionProps} from '../Action';
 
-interface RemoveProps extends ActionProps {
+interface CategoryEditBtnProps extends ActionProps {
   disabled?: boolean;
-  onRemove: () => void;
+  onEditClicked: () => void;
 }
 
-export function Remove({onRemove, disabled, ...props}: RemoveProps) {
+export function CategoryEditBtn({onEditClicked, disabled, ...props}: CategoryEditBtnProps) {
   return (
     <Action
       {...props}
@@ -19,11 +19,11 @@ export function Remove({onRemove, disabled, ...props}: RemoveProps) {
       }
       onClick={() => {
         if (!disabled) {
-          onRemove();
+          onEditClicked();
         }
       }}
     >
-      삭제
+      변경
     </Action>
   );
 }

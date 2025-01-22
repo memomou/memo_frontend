@@ -4,7 +4,7 @@ import { ContentWrapper } from './Content.style';
 import ContentProfile from './ContentProfile';
 import ContentPassword from './ContentPassword';
 import { UserState } from '../../../types/users.type';
-import ContentCategory from './ContentCategory';
+import ContentCategory from './ContentCategory/ContentCategory';
 
 export default function Content() {
   const { setting } = useParams();  // URL 파라미터 가져오기

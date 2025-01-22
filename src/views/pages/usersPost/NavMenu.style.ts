@@ -5,7 +5,7 @@ export const NavMenuWrapper = styled.div`
   display: none;
   flex-direction: column;
   background-color: #f3f3f3;
-  .container {
+  .container1 {
     z-index: 1000;
     background-color: #f3f3f3;
     display: flex;

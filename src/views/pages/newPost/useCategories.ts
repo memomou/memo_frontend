@@ -1,21 +1,51 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../helpers/helper";
 import { CategoryType } from "../../../types/post";
+import React from "react";
 
-export function useCategories() {
+type returnType = {
+  categories: CategoryType[];
+  setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
+  isLoading: boolean;
+  error: Error | null;
+};
+
+export function useCategories(): returnType {
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchCategories = async () => {
       try {
+        setIsLoading(true);
         const response = await axiosInstance.get(`/categories/me`);
-        setCategories(response.data);
+
+        if (isMounted) {
+          setCategories(response.data);
+          setError(null);
+        }
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
+        if (isMounted) {
+          console.error("Failed to fetch categories:", error);
+          setError(error instanceof Error ? error : new Error('Failed to fetch categories'));
+          setCategories([]);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
-    }
+    };
+
     fetchCategories();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  return categories;
+  return { categories, setCategories, isLoading, error };
 }

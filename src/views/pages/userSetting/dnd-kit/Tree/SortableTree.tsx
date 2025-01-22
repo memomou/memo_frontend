@@ -12,11 +12,8 @@ import {
   DragMoveEvent,
   DragEndEvent,
   DragOverEvent,
-  MeasuringStrategy,
-  DropAnimation,
-  Modifier,
-  defaultDropAnimation,
   UniqueIdentifier,
+  Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -33,39 +30,11 @@ import {
   removeChildrenOf,
   setProperty,
 } from './utilities';
-import type {FlattenedItem, SensorContext, TreeItems} from './types';
+import type {FlattenedItem, SensorContext, TreeItem, TreeItems} from './types';
 import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
 import {SortableTreeItem} from './components';
-import {CSS} from '@dnd-kit/utilities';
 import {initialItems} from './initialItem';
-const measuring = {
-  droppable: {
-    strategy: MeasuringStrategy.Always,
-  },
-};
-
-const dropAnimationConfig: DropAnimation = {
-  keyframes({transform}) {
-    return [
-      {opacity: 1, transform: CSS.Transform.toString(transform.initial)},
-      {
-        opacity: 0,
-        transform: CSS.Transform.toString({
-          ...transform.final,
-          x: transform.final.x + 5,
-          y: transform.final.y + 5,
-        }),
-      },
-    ];
-  },
-  easing: 'ease-out',
-  sideEffects({active}) {
-    active.node.animate([{opacity: 0}, {opacity: 1}], {
-      duration: defaultDropAnimation.duration,
-      easing: defaultDropAnimation.easing,
-    });
-  },
-};
+import { measuring, dropAnimationConfig } from '../config/dndConfig';
 
 interface Props {
   collapsible?: boolean;
@@ -73,16 +42,21 @@ interface Props {
   indentationWidth?: number;
   indicator?: boolean;
   removable?: boolean;
+  items: TreeItems;
+  setItems: React.Dispatch<React.SetStateAction<TreeItem[]>>;
+  handleItemChanged?: (id: UniqueIdentifier) => void;
+  handleEditClicked?: (id: UniqueIdentifier) => void;
 }
 
 export function SortableTree({
   collapsible,
-  defaultItems = initialItems,
+  items = initialItems,
   indicator = false,
   indentationWidth = 50,
   removable,
+  setItems,
+  handleItemChanged,
 }: Props) {
-  const [items, setItems] = useState(() => defaultItems);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null);
   const [offsetLeft, setOffsetLeft] = useState(0);
@@ -104,6 +78,7 @@ export function SortableTree({
       activeId != null ? [activeId, ...collapsedItems] : collapsedItems
     );
   }, [activeId, items]);
+
   const projected =
     activeId && overId
       ? getProjection(
@@ -156,11 +131,12 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({id, children, collapsed, depth, name}) => (
-          <SortableTreeItem
+        {flattenedItems.map((item) => {
+          const {id, children, collapsed, depth} = item;
+          return <SortableTreeItem
             key={id}
             id={id}
-            value={name}
+            value={item}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
             indicator={indicator}
@@ -170,9 +146,23 @@ export function SortableTree({
                 ? () => handleCollapse(id)
                 : undefined
             }
-            onRemove={removable ? () => handleRemove(id) : undefined}
+            onEditClicked={() => {
+              handleEditClicked(id);
+            }}
+            onEditingCancel={() => {
+              handleEditingCancel(id);
+            }}
+            onRemove={removable ? () => {
+              handleRemove(id);
+              handleItemChanged && handleItemChanged(id);
+            } : undefined}
+            onInputTextChange={handleInputTextChange ? (text) => handleInputTextChange(text, id) : undefined}
+            onConfirm={handleItemConfirm ? () => {
+              handleItemConfirm(id);
+              handleItemChanged && handleItemChanged(id);
+            } : undefined}
           />
-        ))}
+        })}
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
@@ -184,7 +174,7 @@ export function SortableTree({
                 depth={activeItem.depth}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
-                value={activeItem.name}
+                value={activeItem}
                 indentationWidth={indentationWidth}
               />
             ) : null}
@@ -219,6 +209,37 @@ export function SortableTree({
     setOverId(over?.id ?? null);
   }
 
+  function handleEditClicked(id: UniqueIdentifier) {
+    console.log('handleEditClicked', id);
+    setItems((items) => setProperty(items, id, 'isEditing', (value) => {
+      return true;
+    }));
+  }
+
+  function handleItemConfirm(id: UniqueIdentifier) {
+    setItems((items) => setProperty(items, id, 'isEditing', (value) => {
+      return false;
+    }));
+  };
+
+  function handleEditingCancel(id: UniqueIdentifier) {
+    if (Number(id) < 0) {
+      handleRemove(id);
+      handleItemChanged && handleItemChanged(id);
+    }
+    else {
+      setItems((items) => setProperty(items, id, 'isEditing', (value) => {
+        return false;
+      }));
+    }
+  }
+
+  function handleInputTextChange(text: string, id: UniqueIdentifier) {
+    setItems((items) => setProperty(items, id, 'name', (value) => {
+      return text;
+    }));
+  }
+
   function handleDragEnd({active, over}: DragEndEvent) {
     resetState();
 
@@ -237,6 +258,7 @@ export function SortableTree({
       const newItems = buildTree(sortedItems);
 
       setItems(newItems);
+      handleItemChanged && handleItemChanged(active.id);
     }
   }
 
