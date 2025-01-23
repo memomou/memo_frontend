@@ -57,7 +57,7 @@ function DetailPostPage(props: any) {
 
   return (
     <PageContainer>
-      <SideBar showAddCategory={false} />
+      <SideBar />
       <PosterNewContainer>
         <div className="options-bar">
           <div className="category-tag">

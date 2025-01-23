@@ -13,31 +13,14 @@ interface CategoryItemProps {
 }
 
 export default function CategoryItem({ category, author, index, isSelected, isMyCategory, navigateToBase }: CategoryItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: category.id});
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
     <CategoryListItem
       key={category.id || `category-${index}`}
-      ref={setNodeRef}
-      style={style}
       to={`${navigateToBase}?category=${category.categoryName}`}
       isSelected={isSelected}
       categoryName={category.categoryName}
       postCount={category.postCount}
       isMyCategory={isMyCategory}
-      dragAttributes={attributes}
-      dragListeners={listeners}
     />
   )
 }

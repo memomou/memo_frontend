@@ -2,10 +2,9 @@ import { useParams, Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom } from '../atom/atoms';
 import CategoryList from './CategoryList';
-import AddCategory from './AddCategory';
 import { SideBarContainer } from './SideBar.style';
 import { UserState } from '../../types/users.type';
-export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
+export function SideBar({ isTempPostPage = false }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);
   const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
@@ -13,10 +12,6 @@ export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
   const [currentUser] = useRecoilState(userAtom);
 
   const isCurrentUserOwner = currentUser?.id === author?.id;
-
-  const handleAddCategory = (newCategory) => {
-    setAuthorCategories([...authorCategories, newCategory]);
-  };
 
   return (
     <SideBarContainer>
@@ -40,9 +35,6 @@ export function SideBar({ showAddCategory = true, isTempPostPage = false }) {
             isMyCategory={isCurrentUserOwner}
           isTempPostPage={isTempPostPage}
         />
-        )}
-        {isCurrentUserOwner && showAddCategory && (
-          <AddCategory onAddCategory={handleAddCategory} />
         )}
       </div>
     </SideBarContainer>
