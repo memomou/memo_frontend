@@ -11,7 +11,7 @@ interface FetchPostsParams {
   requestParams?: {
     searchValue?: string;
     authorId?: number;
-    categoryId?: number;
+    categoryIds?: number[];
     statusId?: PostStatus;
   };
   funcList: FunctionList;
@@ -28,7 +28,7 @@ export const fetchPosts = async (params: FetchPostsParams) => {
           take: 15,
           content_or_title_include: params.requestParams?.searchValue,
           author_id: params.requestParams?.authorId,
-          category_id: params.requestParams?.categoryId,
+          category_ids: params.requestParams?.categoryIds?.join(','),
           status_id: params.requestParams?.statusId
         }
       }];

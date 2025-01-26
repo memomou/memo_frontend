@@ -3,7 +3,7 @@ import type {UniqueIdentifier} from '@dnd-kit/core';
 export interface TreeItem {
   id: UniqueIdentifier;
   name: string;
-  count?: number;
+  count: number;
   collapsed?: boolean;
   children: TreeItem[];
 }

@@ -5,7 +5,7 @@ export interface TreeItem {
   id: UniqueIdentifier;
   name: string;
   pos: number;
-  count?: number;
+  count: number;
   collapsed?: boolean;
   isEditing?: boolean;
   children: TreeItem[];

@@ -14,6 +14,7 @@ export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolea
 
   // 특정 쿼리 파라미터 값 가져오기
   const selectedCategoryName = searchParams.get('category');
+  const selectedSubCategoryName = searchParams.get('subCategory');
 
   // 선택된 카테고리가 변경될 때마다 해당 카테고리 정보를 가져옴
   useEffect(() => {
@@ -22,10 +23,13 @@ export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolea
       return;
     }
     const selectedCategoryObj = authorCategories.find((category) => category.categoryName === selectedCategoryName);
-    if (selectedCategoryObj) {
-      setSelectedCategory(selectedCategoryObj);
+    const selectedSubCategoryObj = selectedCategoryObj?.children.find((category) => category.categoryName === selectedSubCategoryName);
+    if (selectedSubCategoryObj || selectedCategoryObj) {
+      console.log('selectedSubCategoryObj: ', selectedSubCategoryObj);
+      console.log('selectedCategoryObj: ', selectedCategoryObj);
+      setSelectedCategory(selectedSubCategoryObj || selectedCategoryObj);
     }
-  }, [authorCategories, selectedCategoryName, setSelectedCategory]);
+  }, [authorCategories, selectedCategoryName, setSelectedCategory, selectedSubCategoryName]);
 
   return (
     <PageContainer>

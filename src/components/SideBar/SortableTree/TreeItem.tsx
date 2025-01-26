@@ -7,23 +7,23 @@ import Collapse from './Collapse/Collapse';
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, 'id'> {
   childCount?: number;
-  clone?: boolean;
   collapsed?: boolean;
   depth: number;
   indentationWidth: number;
   value: TreeItemType;
-  onCollapse(): void;
+  onCollapse?(): void;
+  onContentClick(): void;
 }
 
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
       childCount,
-      clone,
       depth,
       indentationWidth,
       collapsed,
       onCollapse,
+      onContentClick,
       style,
       value,
       ...props
@@ -45,11 +45,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         <div className={`${styles.TreeItem}`} ref={ref} style={style}>
           {depth === 0 && <Collapse collapsed={!!collapsed} onCollapse={onCollapse} disabled={!onCollapse} />}
           <span className={styles.Text}>{value.name}</span>
-
           <span className={styles.ItemCount}>({value.count})</span>
-          {clone && childCount && childCount > 1 ? (
-            <span className={styles.Count}>{childCount}</span>
-          ) : null}
         </div>
       </li>
     );

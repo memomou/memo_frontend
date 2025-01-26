@@ -5,7 +5,7 @@ import styles from './Collapse.module.css';
 interface CollapseProps extends ActionProps {
   collapsed: boolean;
   disabled?: boolean;
-  onCollapse(): void;
+  onCollapse?(): void;
 }
 
 export default function Collapse({collapsed, disabled, onCollapse, ...props}: CollapseProps) {

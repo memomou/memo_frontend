@@ -6,8 +6,6 @@ import { CategoryType, PostStatus, PostType } from "../../../types/post";
 import SearchInput from "../../../components/Input/SearchInput";
 import { UserState } from "../../../types/users.type";
 import { fetchPosts } from "../../../utils/fetchPosts";
-import CategoryEditButton from "./CategoryEditButton";
-import CategoryForm from "./CategoryForm";
 import PostList from "../../../components/PostList/PostList";
 import { useInfiniteScroll } from "../root/useInfiniteScroll";
 
@@ -20,7 +18,6 @@ interface ContentProps {
 
 export const Content = ({selectedCategory, setSelectedCategory, currentUser, isTempPostPage = false}: ContentProps) => {
   const [author] = useRecoilState(authorAtom);
-  const [,setAuthorCategories] = useRecoilState(authorCategoriesAtom);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
@@ -28,8 +25,8 @@ export const Content = ({selectedCategory, setSelectedCategory, currentUser, isT
   // 무한 스크롤 처리
   const loadMore = useCallback(() => {
     if (nextUrl) {
-      console.log('nextUrl Called');
-      fetchPosts({appendUrl: nextUrl, requestParams: {searchValue: searchInputValue, categoryId: selectedCategory?.id, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
+      const categoryIds = selectedCategory?.id ? selectedCategory.children ? [selectedCategory.id, ...selectedCategory.children.map((child) => child.id)] : [selectedCategory.id] : undefined;
+      fetchPosts({appendUrl: nextUrl, requestParams: {searchValue: searchInputValue, categoryIds, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
     }
   }, [nextUrl, searchInputValue, selectedCategory, isTempPostPage, author?.id]);
 
@@ -37,15 +34,16 @@ export const Content = ({selectedCategory, setSelectedCategory, currentUser, isT
     fetchMore: loadMore,
     hasMore: !!nextUrl
   });
-  const [isCategoryEditing, setIsCategoryEditing] = useState(false);
 
-    // 파생 상태
-    const isSearchMode = !!searchInputValue;
-    const isSearchedPostEmpty = isSearchMode && posts.length === 0;
+  // 파생 상태
+  const isSearchMode = !!searchInputValue;
+  const isSearchedPostEmpty = isSearchMode && posts.length === 0;
 
   useEffect(() => {
     console.log("Fetching posts...");
-    fetchPosts({requestParams: {searchValue: searchInputValue, categoryId: selectedCategory?.id, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
+    console.log('selectedCategory: ', selectedCategory);
+    const categoryIds = selectedCategory?.id ? selectedCategory.children ? [selectedCategory.id, ...selectedCategory.children.map((child) => child.id)] : [selectedCategory.id] : undefined;
+    fetchPosts({requestParams: {searchValue: searchInputValue, categoryIds, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
   }, [searchInputValue, selectedCategory, isTempPostPage, author?.id]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,13 +57,10 @@ export const Content = ({selectedCategory, setSelectedCategory, currentUser, isT
         <div className="topContainer">
           <span className="recentPostText">
               {searchInputValue ? `- 검색 결과 (${posts.length})` :
-                isCategoryEditing && selectedCategory ? <CategoryForm selectedCategory={selectedCategory} setAuthorCategories={setAuthorCategories} setIsCategoryEditing={setIsCategoryEditing} /> : (
-                  <span className="categoryName">
-                    - {selectedCategory?.categoryName || "전체 게시글"}
-                  </span>
-                )
+                <span className="categoryName">
+                  - {selectedCategory?.categoryName || "전체 게시글"}
+                </span>
               }
-            {currentUser?.id === author?.id && selectedCategory && !isCategoryEditing && <CategoryEditButton selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} setAuthorCategories={setAuthorCategories} setIsCategoryEditing={setIsCategoryEditing} />}
           </span>
           <SearchInput value={searchInputValue} onChange={handleInputChange} />
         </div>
