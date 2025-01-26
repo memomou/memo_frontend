@@ -1,9 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { authorAtom, authorCategoriesAtom, selectedCategoriesAtom, userAtom } from '../atom/atoms';
-import CategoryList from './CategoryList';
+import { authorAtom, authorCategoriesAtom } from '../atom/atoms';
 import { SideBarContainer } from './SideBar.style';
-import { UserState } from '../../types/users.type';
 import { useEffect, useMemo, useState } from 'react';
 import { TreeItem } from './SortableTree/types';
 import { SortableTree } from './SortableTree/SortableTree';
@@ -14,11 +12,8 @@ import { flattenTree } from './SortableTree/utilities';
 export function SideBar({ isTempPostPage = false }) {
   const { nickname } = useParams();
   const [author] = useRecoilState(authorAtom);
-  const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
-  const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
-  const [currentUser] = useRecoilState(userAtom);
+  const [authorCategories] = useRecoilState(authorCategoriesAtom);
   const navigate = useNavigate();
-  const isCurrentUserOwner = currentUser?.id === author?.id;
 
   const [items, setItems] = useState<TreeItem[]>([]);
   const flattenedItems = useMemo(() => {
@@ -28,7 +23,6 @@ export function SideBar({ isTempPostPage = false }) {
   const refactorCategories = useMemo(() => {
     const convert = (categories: CategoryType[] | undefined): TreeItem[] => {
       if (!categories || categories.length === 0) return [];
-
       return categories.map((category) => ({
         id: category.id,
         name: category.categoryName,
@@ -38,7 +32,6 @@ export function SideBar({ isTempPostPage = false }) {
         pos: category.pos,
       }));
     };
-
     return convert;
   }, []);
   useEffect(() => {
@@ -69,18 +62,6 @@ export function SideBar({ isTempPostPage = false }) {
         <h1 className="nickname">@{nickname}</h1>
         </Link>
       </div>
-      {/* <div className="categoryListWrapper">
-        {author && (
-          <CategoryList
-            categories={authorCategories}
-            selectedCategory={selectedCategory}
-            author={author as UserState}
-            setCategories={setAuthorCategories}
-            isMyCategory={isCurrentUserOwner}
-          isTempPostPage={isTempPostPage}
-        />
-        )}
-      </div> */}
       <SortableTree collapsible items={items} setItems={setItems} renderItem={CategoryTreeItem} onContentClick={onContentClick} />
     </SideBarContainer>
   );
