@@ -17,7 +17,7 @@ export const CategoryTreeItem = ({
       <li
         className={classNames(
           styles.Wrapper
-        ) + ' h-9 text-lg mb-1'}
+        ) + ' h-7 mb-1'}
         style={
           {
             '--spacing': `${indentationWidth * depth}px`,
@@ -28,7 +28,7 @@ export const CategoryTreeItem = ({
         <div style={style} className='flex flex-1 items-center border border-gray-300 border-solid rounded-md hover:border-blue-400 h-full px-1'>
           {depth === 0 && <Collapse collapsed={!!collapsed} onCollapse={onCollapse} disabled={!onCollapse} />}
           <div onClick={onContentClick} className='flex-1 cursor-pointer'>
-            <span className='ml-2'>{value.name}</span>
+            <span className='ml-2 text-base text-gray-700'>{value.name}</span>
             <span className='ml-1 text-sm text-gray-500'>({value.count})</span>
           </div>
         </div>
