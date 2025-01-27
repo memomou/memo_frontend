@@ -4,16 +4,12 @@ import { Editable } from "slate-react";
 import { PostForm } from "../../../components/PostForm.style";
 export const StyledEditable = styled(Editable)`
   background-color: white;
-  /* border-top: none;             위쪽 border 제거 */
-  /* min-height: 600px; */
   flex: 1;
   &:focus-visible {
   border: auto;
   outline: none;
   }
-  /* 필요에 따라 추가 스타일 정의 */
   padding: 10px;
-
 `;
 
 export const StyledSlateEditor = styled(SlateEditor)`
@@ -80,38 +76,7 @@ export const PosterNewPageContainer = styled.div`
     width: -webkit-fill-available;
     justify-content: center;
     margin-top: 10px;
-    max-width: 700px;
-
-    .options-bar {
-      width: -webkit-fill-available;
-      max-width: 700px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      select {
-        font-size: 1.2rem;
-        border: 1px solid #eee;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 2px 5px;
-        background-color: white;
-        border-radius: 5px;
-      }
-
-      .visibility-toggle {
-        display: flex;
-        align-items: center;
-        font-size: 0.9rem;
-
-        label {
-          margin-right: 10px;
-        }
-
-        input[type="checkbox"] {
-          margin-right: 5px;
-        }
-      }
-    }
+    max-width: 830px;
   }
 `;
 
@@ -122,10 +87,6 @@ export const PosterNewContainer = styled.div`
   max-width: 700px;
   padding: 20px;
   font-size: 0.9rem; // 기본 폰트 크기 축소
-
-
-
-
 `;
 
 export const PosterNewForm = styled.form`
@@ -173,16 +134,6 @@ export const PosterNewForm = styled.form`
     }
     color: #ccc;
   }
-
-  /* .BottomContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    div {
-      color: white;
-    }
-  } */
-
 
   label {
     display: flex;

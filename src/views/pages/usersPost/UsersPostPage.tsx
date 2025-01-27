@@ -6,6 +6,7 @@ import { SideBar } from "../../../components/SideBar/SideBar";
 import Content from "./Content";
 import { authorCategoriesAtom, selectedCategoriesAtom, userAtom } from "../../../components/atom/atoms";
 import CategoryMenu from "./CategoryMenu";
+
 export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolean}) {
   const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [authorCategories] = useRecoilState(authorCategoriesAtom);

@@ -20,12 +20,16 @@ import { ReactComponent as BackIcon } from "./assets/BackIcon.svg";
 import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
 import ToolbarImplement from "../../../components/SlateEditor/Components/ToolbarImplement";
 import { useRecoilState } from "recoil";
+import { flattenTree } from "../../../components/SideBar/SortableTree/utilities";
+import { convertCategoriesToTreeItems, findRecursively } from "../../../utils/categoryConverter";
 
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   const { performTempPostToast } = useTempPostLoader(editor);
   const { categories } = useCategories();
+  const flattenedCategories = flattenTree(convertCategoriesToTreeItems(categories));
+  console.log('flattenedCategories11: ', flattenedCategories);
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
   const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [post, setPost] = useState<PostType>({...defaultPostValue, category: selectedCategory});
@@ -72,13 +76,13 @@ function PosterPostPage() {
   // 별도의 컴포넌트로 분리
   return (
     <PosterNewPageContainer>
-        <div className="editor-container">
+        <div className="editor-container mb-10">
           <OptionsBar
-            categories={categories}
-            selectedCategoryId={post.category?.id || selectedCategory?.id}
+            items={flattenedCategories}
+            initItemId={post.category?.id || selectedCategory?.id || 0}
             visibilityId={post.visibilityId}
-            onCategoryChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              const selectedCategory = categories.find(category => category.id === Number(e.target.value));
+            onItemChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              const selectedCategory = findRecursively(categories, category => category.id === Number(e.target.value));
               setPost( prev => ({...prev, category: selectedCategory}))}
             }
             onVisibilityChange=

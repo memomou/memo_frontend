@@ -25,7 +25,7 @@ export const CategoryTreeItem = ({
         }
         {...props}
       >
-        <div style={style} className='flex flex-1 items-center border border-gray-300 border-solid rounded-md hover:border-blue-400 h-full px-1'>
+        <div style={style} className='flex flex-1 items-center border border-gray-200 border-solid rounded-md hover:border-blue-400 h-full px-1'>
           {depth === 0 && <Collapse collapsed={!!collapsed} onCollapse={onCollapse} disabled={!onCollapse} />}
           <div onClick={onContentClick} className='flex-1 cursor-pointer'>
             <span className='ml-2 text-base text-gray-700'>{value.name}</span>

@@ -13,9 +13,9 @@ function Body() {
     <>
         <Routes>
           <Route path="/" element={<Root/>} />
-          <Route path="/:nickname" element={<UsersPostPage />} />
           <Route path="/:nickname/posts/saves" element={<UsersPostPage isTempPostPage={true} />} />
           <Route path="/:nickname/post/:id" element={<DetailPostPage />} />
+          <Route path="/:nickname" element={<UsersPostPage />} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/signup" element={<SignupPage/>} />
           <Route path="/post/write" element={<PosterPostPage/>} />

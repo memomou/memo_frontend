@@ -72,11 +72,11 @@ function Header() {
           <>
         {
           pathname !== "/post/write" && user.id === author?.id && (
-            <StyledBtn className="writebtn">
+            <button className="writebtn px-1 border border-gray-300 rounded-md bg-gray-50 border-solid">
               <Link to="/post/write" >
                 새 글 작성
               </Link>
-            </StyledBtn>
+            </button>
           )
         }
             <button ref={profileBtnRef} className='profileBtn'>
