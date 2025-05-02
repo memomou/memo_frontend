@@ -2,7 +2,7 @@
 FROM node:20-alpine as build
 WORKDIR /app
 
-COPY .env.prod ./.env
+COPY .env.production ./.env
 
 COPY package.json yarn.lock ./
 
