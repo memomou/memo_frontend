@@ -8,7 +8,6 @@ export function useAuthorInfo(nickname: string | undefined) {
   const [authorCategories, setAuthorCategories] = useRecoilState(authorCategoriesAtom);
 
   const fetchAuthorInformation = useCallback(async () => {
-    console.log('fetchAuthorInformation', nickname);
     if (!nickname || nickname === 'users' || nickname === 'post' || nickname === 'user') {
       setAuthor(undefined);
       setAuthorCategories([]);

@@ -29,7 +29,6 @@ export function SortableTree({
 }: Props) {
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items);
-    console.log('flattenedTree', flattenedTree);
     const collapsedItems = flattenedTree.reduce<UniqueIdentifier[]>(
       (acc, {children, collapsed, id}) =>
         collapsed && children.length ? [...acc, id] : acc,

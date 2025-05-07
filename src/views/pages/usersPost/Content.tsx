@@ -8,6 +8,8 @@ import { UserState } from "../../../types/users.type";
 import { fetchPosts } from "../../../utils/fetchPosts";
 import PostList from "../../../components/PostList/PostList";
 import { useInfiniteScroll } from "../root/useInfiniteScroll";
+import { useLocation } from "react-router-dom";
+import { getAuthorNickname } from "../../../utils/utils";
 
 interface ContentProps {
   selectedCategory?: CategoryType;
@@ -21,6 +23,8 @@ export const Content = React.memo(({selectedCategory, setSelectedCategory, curre
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
+  const {pathname, search} = useLocation();
+  const authorNickname = getAuthorNickname(pathname);
 
   // 카테고리 ID 계산을 메모이제이션
   const categoryIds = useMemo(() => {
@@ -60,6 +64,9 @@ export const Content = React.memo(({selectedCategory, setSelectedCategory, curre
   // 초기 데이터 로드
   useEffect(() => {
     const fetchInitialPosts = async () => {
+      if (authorNickname !== author?.nickname) {
+        return;
+      }
       try {
         if (requestParams.authorId) {
         await fetchPosts({

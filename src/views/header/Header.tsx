@@ -7,18 +7,14 @@ import { authorAtom, userAtom } from "../../components/atom/atoms";
 import { DropdownMenu, MenuItem, StyledLink, StyledBtn, HeaderContainer, HomeButton, Action } from "./Header.style";
 import { useEffect, useRef, useState } from "react";
 import { useAuthorInfo } from "../../hooks/useAuthorInfo";
+import { getAuthorNickname } from "../../utils/utils";
 
 function Header() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileBtnRef = useRef<HTMLButtonElement>(null);
   const {pathname, search} = useLocation();
-  const paths = pathname.split('/');
-  console.log('paths', paths);
-  const authorNickname = ['user', 'setting', 'post'].includes(paths[1])
-    ? ''
-    : paths[1];
-  console.log('authorNickname', authorNickname);
+  const authorNickname = getAuthorNickname(pathname);
   const { author } = useAuthorInfo(authorNickname);
   const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();

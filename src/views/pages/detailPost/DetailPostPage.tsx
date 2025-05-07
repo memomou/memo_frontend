@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { userAtom, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { useRecoilState } from "recoil";
 import { SideBar } from "../../../components/SideBar/SideBar";
-import { useAuthorInfo } from "../../../hooks/useAuthorInfo";
 import { formatFileSize, formatDate } from '../../../utils/formatters';
 import { StyledEditable } from "../newPost/posterPostPage.style";
 import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
