@@ -31,6 +31,20 @@ export function Element({ attributes, children, element } : { attributes: any, c
     case "list-item":
       return <li {...attributes}>{children}</li>;
 
+    case "image":
+      return (
+        <div {...attributes}>
+          <div contentEditable={false}>
+            <img
+              src={element.url}
+              alt="uploaded"
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </div>
+          {children}
+        </div>
+      );
+
     default:
       return <p {...attributes}>{children}</p>;
   }

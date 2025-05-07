@@ -58,7 +58,7 @@ export type HeadingFourElement = {
 export type ImageElement = {
   type: 'image'
   url: string
-  children: EmptyText[]
+  children: Descendant[]
 }
 
 export type LinkElement = { type: 'link'; url: string; children: Descendant[] }

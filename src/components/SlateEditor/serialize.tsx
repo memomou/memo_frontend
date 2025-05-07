@@ -59,6 +59,8 @@ function serializeElement(node: Element | Editor) {
       return `<li>${children}</li>`
     case 'numbered-list':
       return `<ol>${children}</ol>`
+    case 'image':
+      return `<img src="${escapeHtml(node.url)}" alt="uploaded" style="max-width: 100%; height: auto;" />`
     default:
       return children
   }

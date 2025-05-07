@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { defaultPostValue, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { PostFile, PostStatus, PostType } from "../../../types/post";
-import React, { useCallback, ChangeEvent } from 'react';
+import React, { useCallback, ChangeEvent, DragEvent } from 'react';
 import { FileUploadArea } from './component/FileUploadArea';
 import OptionsBar from "./component/OptionBar";
 import { useCategories } from "./useCategories";
@@ -22,6 +22,7 @@ import ToolbarImplement from "../../../components/SlateEditor/Components/Toolbar
 import { useRecoilState } from "recoil";
 import { flattenTree } from "../../../components/SideBar/SortableTree/utilities";
 import { convertCategoriesToTreeItems, findRecursively } from "../../../utils/categoryConverter";
+import { Transforms } from 'slate';
 
 function PosterPostPage() {
   const [placeholder, setPlaceHolder] = useState('내용을 입력하세요');
@@ -33,6 +34,7 @@ function PosterPostPage() {
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
   const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [post, setPost] = useState<PostType>({...defaultPostValue, category: selectedCategory});
+  const [isUploading, setIsUploading] = useState(false);
 
   const location = useLocation();
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -72,6 +74,47 @@ function PosterPostPage() {
     event.preventDefault();
     publishPost(post, editor);
   }, [editor, post, publishPost]);
+
+  const handleEditorDrop = useCallback(async (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+    if (imageFiles.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      for (const file of imageFiles) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await axiosInstance.post('/posts/1/images', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+
+        console.log('response: ', response);
+
+        const imageNode = {
+          type: 'image' as const,
+          url: response.data.postImage.url,
+          children: [{ text: '' }]
+        };
+
+        Transforms.insertNodes(editor, imageNode);
+        const paragraph = {
+          type: 'paragraph' as const,
+          children: [{ text: '' }],
+        }
+        Transforms.insertNodes(editor, paragraph)
+      }
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  }, [editor]);
 
   // 별도의 컴포넌트로 분리
   return (
@@ -118,6 +161,9 @@ function PosterPostPage() {
                         onFocus={() => setPlaceHolder('')}
                         onBlur={() => setPlaceHolder('내용을 입력하세요')}
                         decorate={linkDecorator}
+                        onDrop={handleEditorDrop}
+                        onDragOver={(e) => e.preventDefault()}
+                        style={{ opacity: isUploading ? 0.5 : 1 }}
                       />
                   }
                 >

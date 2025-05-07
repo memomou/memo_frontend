@@ -10,6 +10,17 @@ export const StyledEditable = styled(Editable)`
   outline: none;
   }
   padding: 10px;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 1em 0;
+    border-radius: 4px;
+  }
+
+  [data-slate-node="element"] {
+    margin: 1em 0;
+  }
 `;
 
 export const StyledSlateEditor = styled(SlateEditor)`
