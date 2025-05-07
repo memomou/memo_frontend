@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import {ContentContainer} from './Content.style';
 import { authorAtom, authorCategoriesAtom } from "../../../components/atom/atoms";
@@ -16,53 +16,106 @@ interface ContentProps {
   isTempPostPage?: boolean;
 }
 
-export const Content = ({selectedCategory, setSelectedCategory, currentUser, isTempPostPage = false}: ContentProps) => {
+export const Content = React.memo(({selectedCategory, setSelectedCategory, currentUser, isTempPostPage = false}: ContentProps) => {
   const [author] = useRecoilState(authorAtom);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
 
+  // 카테고리 ID 계산을 메모이제이션
+  const categoryIds = useMemo(() => {
+    if (!selectedCategory?.id) return undefined;
+    return selectedCategory.children 
+      ? [selectedCategory.id, ...selectedCategory.children.map((child) => child.id)]
+      : [selectedCategory.id];
+  }, [selectedCategory]);
+
+  // 요청 파라미터 메모이제이션
+  const requestParams = useMemo(() => ({
+    searchValue: searchInputValue,
+    categoryIds,
+    statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED,
+    authorId: author?.id
+  }), [searchInputValue, categoryIds, isTempPostPage, author?.id]);
+
   // 무한 스크롤 처리
   const loadMore = useCallback(() => {
     if (nextUrl) {
-      const categoryIds = selectedCategory?.id ? selectedCategory.children ? [selectedCategory.id, ...selectedCategory.children.map((child) => child.id)] : [selectedCategory.id] : undefined;
-      fetchPosts({appendUrl: nextUrl, requestParams: {searchValue: searchInputValue, categoryIds, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
+      fetchPosts({
+        appendUrl: nextUrl,
+        requestParams,
+        funcList: [
+          setPosts,
+          setNextUrl
+        ]
+      });
     }
-  }, [nextUrl, searchInputValue, selectedCategory, isTempPostPage, author?.id]);
+  }, [nextUrl, requestParams]);
 
   const observerRef = useInfiniteScroll({
     fetchMore: loadMore,
     hasMore: !!nextUrl
   });
 
-  // 파생 상태
-  const isSearchMode = !!searchInputValue;
-  const isSearchedPostEmpty = isSearchMode && posts.length === 0;
+  // 초기 데이터 로드
+  useEffect(() => {
+    const fetchInitialPosts = async () => {
+      try {
+        if (requestParams.authorId) {
+        await fetchPosts({
+          requestParams,
+            funcList: [
+              setPosts,
+              setNextUrl
+            ]
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch initial posts:', error);
+      }
+    };
+
+    fetchInitialPosts();
+  }, [requestParams]);
+
+  // 검색 입력 핸들러 메모이제이션
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputValue(e.target.value);
+  }, []);
 
   useEffect(() => {
-    console.log("Fetching posts...");
-    console.log('selectedCategory: ', selectedCategory);
-    const categoryIds = selectedCategory?.id ? selectedCategory.children ? [selectedCategory.id, ...selectedCategory.children.map((child) => child.id)] : [selectedCategory.id] : undefined;
-    fetchPosts({requestParams: {searchValue: searchInputValue, categoryIds, statusId: isTempPostPage ? PostStatus.DRAFT : PostStatus.PUBLISHED, authorId: author?.id}, funcList: [setPosts, setNextUrl]});
-  }, [searchInputValue, selectedCategory, isTempPostPage, author?.id]);
+    console.log('posts: ', posts);
+  }, [posts]);
 
-  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
-    console.log(e.target.value);
-  }
+  // 파생 상태 메모이제이션
+  const { isSearchMode, isSearchedPostEmpty } = useMemo(() => ({
+    isSearchMode: !!searchInputValue,
+    isSearchedPostEmpty: !!searchInputValue && posts.length === 0
+  }), [searchInputValue, posts.length]);
+
+  // 헤더 텍스트 메모이제이션
+  const headerText = useMemo(() => {
+    if (searchInputValue) {
+      return `- 검색 결과 (${posts.length})`;
+    }
+    return (
+      <span className="categoryName">
+        - {selectedCategory?.categoryName || "전체 게시글"}
+      </span>
+    );
+  }, [searchInputValue, posts.length, selectedCategory?.categoryName]);
 
   return (
     <ContentContainer>
       <div className="recentPosterWrapper">
         <div className="topContainer">
           <span className="recentPostText">
-              {searchInputValue ? `- 검색 결과 (${posts.length})` :
-                <span className="categoryName">
-                  - {selectedCategory?.categoryName || "전체 게시글"}
-                </span>
-              }
+            {headerText}
           </span>
-          <SearchInput value={searchInputValue} onChange={handleInputChange} />
+          <SearchInput 
+            value={searchInputValue} 
+            onChange={handleInputChange} 
+          />
         </div>
         <PostList
           isSearchMode={isSearchedPostEmpty}
@@ -72,6 +125,8 @@ export const Content = ({selectedCategory, setSelectedCategory, currentUser, isT
       </div>
     </ContentContainer>
   );
-};
+});
+
+Content.displayName = 'Content';
 
 export default Content;

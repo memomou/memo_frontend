@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { PageContainer } from "./UsersPostPage.style";
@@ -13,30 +13,69 @@ export function UsersPostPage({isTempPostPage = false}: {isTempPostPage?: boolea
   const currentUser = useRecoilValue(userAtom);
   const [searchParams] = useSearchParams();
 
-  // 특정 쿼리 파라미터 값 가져오기
-  const selectedCategoryName = searchParams.get('category');
-  const selectedSubCategoryName = searchParams.get('subCategory');
+  // URL 파라미터를 메모이제이션
+  const { selectedCategoryName, selectedSubCategoryName } = useMemo(() => ({
+    selectedCategoryName: searchParams.get('category'),
+    selectedSubCategoryName: searchParams.get('subCategory')
+  }), [searchParams]);
 
-  // 선택된 카테고리가 변경될 때마다 해당 카테고리 정보를 가져옴
-  useEffect(() => {
+  // 카테고리 찾기 로직을 메모이제이션
+  const findSelectedCategory = useCallback(() => {
     if (!selectedCategoryName || !authorCategories) {
-      setSelectedCategory(undefined);
-      return;
+      return undefined;
     }
-    const selectedCategoryObj = authorCategories.find((category) => category.categoryName === selectedCategoryName);
-    const selectedSubCategoryObj = selectedCategoryObj?.children.find((category) => category.categoryName === selectedSubCategoryName);
-    if (selectedSubCategoryObj || selectedCategoryObj) {
-      console.log('selectedSubCategoryObj: ', selectedSubCategoryObj);
-      console.log('selectedCategoryObj: ', selectedCategoryObj);
-      setSelectedCategory(selectedSubCategoryObj || selectedCategoryObj);
-    }
-  }, [authorCategories, selectedCategoryName, setSelectedCategory, selectedSubCategoryName]);
 
-  return (
+    const selectedCategoryObj = authorCategories.find(
+      (category) => category.categoryName === selectedCategoryName
+    );
+    
+    if (!selectedCategoryObj) {
+      return undefined;
+    }
+
+    const selectedSubCategoryObj = selectedCategoryObj.children.find(
+      (category) => category.categoryName === selectedSubCategoryName
+    );
+
+    return selectedSubCategoryObj || selectedCategoryObj;
+  }, [authorCategories, selectedCategoryName, selectedSubCategoryName]);
+
+  // 카테고리 선택 로직을 메모이제이션
+  const handleCategorySelection = useCallback(() => {
+    const category = findSelectedCategory();
+    if (category) {
+      setSelectedCategory(category);
+    } else {
+      setSelectedCategory(undefined);
+    }
+  }, [findSelectedCategory, setSelectedCategory]);
+
+  useEffect(() => {
+    handleCategorySelection();
+  }, [handleCategorySelection]);
+
+  // 컴포넌트 렌더링 부분을 메모이제이션
+  const renderedContent = useMemo(() => (
     <PageContainer>
       <SideBar isTempPostPage={isTempPostPage} />
-      <CategoryMenu selectedCategory={selectedCategory} authorCategories={authorCategories || []} />
-      <Content selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} currentUser={currentUser} isTempPostPage={isTempPostPage} />
+      <CategoryMenu 
+        selectedCategory={selectedCategory} 
+        authorCategories={authorCategories || []} 
+      />
+      <Content 
+        selectedCategory={selectedCategory} 
+        setSelectedCategory={setSelectedCategory} 
+        currentUser={currentUser} 
+        isTempPostPage={isTempPostPage} 
+      />
     </PageContainer>
-  );
+  ), [
+    isTempPostPage,
+    selectedCategory,
+    authorCategories,
+    setSelectedCategory,
+    currentUser
+  ]);
+
+  return renderedContent;
 }
