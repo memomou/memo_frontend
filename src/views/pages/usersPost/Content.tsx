@@ -64,7 +64,8 @@ export const Content = React.memo(({selectedCategory, setSelectedCategory, curre
   // 초기 데이터 로드
   useEffect(() => {
     const fetchInitialPosts = async () => {
-      if (authorNickname !== author?.nickname) {
+      const decodedAuthorNickname = decodeURIComponent(authorNickname);
+      if (decodedAuthorNickname !== author?.nickname) {
         return;
       }
       try {

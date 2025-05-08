@@ -13,12 +13,13 @@ export function useAuthorInfo(nickname: string | undefined) {
       setAuthorCategories([]);
       return;
     }
-    if (author?.nickname === nickname) return;
+
+    const decodedNickname = decodeURIComponent(nickname);
+    if (author?.nickname === decodedNickname) return;
     try {
-      const response = await axiosInstance.get(`/users/nickname/${nickname}`);
+      const response = await axiosInstance.get(`/users/nickname/${decodedNickname}`);
       if (author?.id !== response.data.user.id) {
         setAuthor(response.data.user);
-
         const categoriesResponse = await axiosInstance.get(`/categories`, {
           params: { authorId: response.data.user.id }
         });
