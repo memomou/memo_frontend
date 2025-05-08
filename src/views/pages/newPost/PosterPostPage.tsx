@@ -30,7 +30,6 @@ function PosterPostPage() {
   const { performTempPostToast } = useTempPostLoader(editor);
   const { categories } = useCategories();
   const flattenedCategories = flattenTree(convertCategoriesToTreeItems(categories));
-  console.log('flattenedCategories11: ', flattenedCategories);
   const [uploadedFiles, setUploadedFiles] = useState<PostFile[]>([]);
   const [selectedCategory] = useRecoilState(selectedCategoriesAtom);
   const [post, setPost] = useState<PostType>({...defaultPostValue, category: selectedCategory});
@@ -61,7 +60,6 @@ function PosterPostPage() {
         setUploadedFiles(fetchedPost.postFiles);
         // 에디터의 값 설정
         updateEditorContent(editor, fetchedPost.contentSlate);
-        console.log("Loaded post");
         return fetchedPost;
     };
     if (postId) {
@@ -93,9 +91,7 @@ function PosterPostPage() {
         const response = await axiosInstance.post('/posts/1/images', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-
         console.log('response: ', response);
-
         const imageNode = {
           type: 'image' as const,
           url: response.data.postImage.url,

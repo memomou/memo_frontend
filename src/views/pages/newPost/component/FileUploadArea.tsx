@@ -5,6 +5,7 @@ import { useFileUpload } from '../../../../hooks/useFileUpload';
 import { Editor } from 'slate';
 import { handlePostSubmission } from '../PosterPostPage.fn';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 interface FileUploadAreaProps {
   post: PostType;
@@ -28,19 +29,19 @@ export const FileUploadArea: React.FC<FileUploadAreaProps> = ({
     handleFileUpload,
   } = useFileUpload(setUploadedFiles);
 
-  const navigate = useNavigate();
+  const [,setSearchParams] = useSearchParams();
 
     // 파일 업로드 관련 처리
   const onFileUpload = useCallback(async(files: FileList | null) => {
     if (!post.id) {
       const UpdatedPost = await handlePostSubmission(post, editor, PostStatus.UNREGISTERED);
       const {id: fetchedPostId} = UpdatedPost;
-      navigate(`/post/write?postId=${fetchedPostId}`);
+      setSearchParams({ postId: fetchedPostId });
       handleFileUpload(files, fetchedPostId);
     } else {
       handleFileUpload(files, post.id);
     }
-  }, [post.id, handleFileUpload, navigate]);
+  }, [post, handleFileUpload, setSearchParams]);
 
   const renderContent = () => {
     switch (uploadStatus) {
