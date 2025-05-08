@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { createEditor} from "slate";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { axiosInstance } from '../../../helpers/helper';
 import { defaultPostValue, selectedCategoriesAtom } from "../../../components/atom/atoms";
 import { PostFile, PostStatus, PostType } from "../../../types/post";
@@ -14,7 +14,7 @@ import OptionsBar from "./component/OptionBar";
 import { useCategories } from "./useCategories";
 import UploadedFileArea from "./component/UploadedFileArea";
 import { useTempPostLoader, useTempSave } from "./component/useTempPostLoader";
-import { updateEditorContent, useNavigationHistory, usePublishPost } from "./PosterPostPage.fn";
+import { handlePostSubmission, updateEditorContent, useNavigationHistory, usePublishPost } from "./PosterPostPage.fn";
 import { defaultValue, renderPlaceholder } from "./component/Editor";
 import { ReactComponent as BackIcon } from "./assets/BackIcon.svg";
 import { linkDecorator } from "../../../components/SlateEditor/LinkPlugin";
@@ -50,6 +50,7 @@ function PosterPostPage() {
   });
 
   const { publishPost } = usePublishPost();
+  const [,setSearchParams] = useSearchParams();
 
   // 게시글 초기화
   useEffect(() => {
@@ -81,36 +82,42 @@ function PosterPostPage() {
     const imageFiles = files.filter(file => file.type.startsWith('image/'));
 
     if (imageFiles.length === 0) return;
+    let _postId = postId;
+    if (!_postId) {
+      const UpdatedPost = await handlePostSubmission(post, editor, PostStatus.UNREGISTERED);
+      _postId = UpdatedPost.id;
+      setSearchParams({ postId: _postId });
+    }
 
     setIsUploading(true);
     try {
-      for (const file of imageFiles) {
-        const formData = new FormData();
-        formData.append('image', file);
+      // 첫 번째 이미지만 처리
+      const file = imageFiles[0];
+      const formData = new FormData();
+      formData.append('image', file);
 
-        const response = await axiosInstance.post('/posts/1/images', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        console.log('response: ', response);
-        const imageNode = {
-          type: 'image' as const,
-          url: response.data.postImage.url,
-          children: [{ text: '' }]
-        };
+      const response = await axiosInstance.post(`/posts/${_postId}/images`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      console.log('response: ', response);
+      const imageNode = {
+        type: 'image' as const,
+        url: response.data.postImage.url,
+        children: [{ text: '' }]
+      };
 
-        Transforms.insertNodes(editor, imageNode);
-        const paragraph = {
-          type: 'paragraph' as const,
-          children: [{ text: '' }],
-        }
-        Transforms.insertNodes(editor, paragraph)
+      Transforms.insertNodes(editor, imageNode);
+      const paragraph = {
+        type: 'paragraph' as const,
+        children: [{ text: '' }],
       }
+      Transforms.insertNodes(editor, paragraph);
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
     } finally {
       setIsUploading(false);
     }
-  }, [editor]);
+  }, [editor, post]);
 
   // 별도의 컴포넌트로 분리
   return (
