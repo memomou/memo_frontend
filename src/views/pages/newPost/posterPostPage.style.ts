@@ -17,11 +17,11 @@ export const StyledEditable = styled(Editable)`
     margin: 1em 0;
     border-radius: 4px;
   }
-
-  [data-slate-node="element"] {
-    margin: 1em 0;
-  }
 `;
+// [data-slate-node="element"] {
+//   margin: 1em 0;
+// }
+
 
 export const StyledSlateEditor = styled(SlateEditor)`
 `;
