@@ -92,9 +92,10 @@ function PosterPostPage() {
     setIsUploading(true);
     try {
       // 첫 번째 이미지만 처리
-      const file = imageFiles[0];
       const formData = new FormData();
-      formData.append('image', file);
+      const encodedFilename = encodeURIComponent(files[0].name);
+      const encodedFile = new File([files[0]], encodedFilename, { type: files[0].type });
+      formData.append('image', encodedFile);
 
       const response = await axiosInstance.post(`/posts/${_postId}/images`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
