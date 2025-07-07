@@ -33,7 +33,7 @@ export const changeDateFormat = (utcDate: string, isDetails?: boolean) => {
 };
 
 export const axiosInstanceExample = axios.create({
-  baseURL: 'https://eks-core.onione.me',
+  baseURL: 'https://test.onione.me',
   headers: {
       'Content-Type': 'application/json',
   },
