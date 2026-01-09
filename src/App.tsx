@@ -7,14 +7,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { userAtom } from "./components/atom/atoms";
 import "./App.css";
 import "./styles/tailwind.css";
-import { axiosInstance, axiosInstanceExample } from './helpers/helper';
+import { axiosInstance } from './helpers/helper';
 import { useEffect } from "react";
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
 
-  axiosInstanceExample.get('').then((response) => {
-    console.log(response);
-  });
   useEffect(() => {
     const fetchUserData = async () => {
       try {

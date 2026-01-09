@@ -31,24 +31,3 @@ export const changeDateFormat = (utcDate: string, isDetails?: boolean) => {
   }
   return date.toLocaleDateString('ko-KR', options);
 };
-
-export const axiosInstanceExample = axios.create({
-  baseURL: 'https://test.onione.me',
-  headers: {
-      'Content-Type': 'application/json',
-  },
-});
-
-// 요청 인터셉터 설정
-axiosInstanceExample.interceptors.request.use(
-(config) => {
-  const accesstoken = localStorage.getItem('accessToken');
-  if (accesstoken) {
-    config.headers['Authorization'] = `Bearer ${accesstoken}`;
-  }
-  return config;
-},
-(error) => {
-  return Promise.reject(error);
-}
-);
